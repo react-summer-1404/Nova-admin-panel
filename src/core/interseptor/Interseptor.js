@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getToken, removeToken } from "../../utility/hooks/localStorage";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -24,7 +24,7 @@ instance.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401) {
-      toast.error("ابتدا لاگین کنید")
+    //   toast.error("ابتدا لاگین کنید")
       removeToken("token");
       
     } else if (status >= 404 && status < 500) {
