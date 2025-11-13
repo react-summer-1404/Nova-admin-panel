@@ -167,8 +167,8 @@ const GoalOverview = props => {
       </CardBody>
       <Row className='border-top text-center mx-0'>
         <Col xs='4' className='border-end py-1'>
-          <CardText className='text-muted '>رزرو ها</CardText>
-          <h3 className='fw-bolder mt-[15px]'>{data?.allReserve}</h3>
+          <CardText className='text-muted mb-0'>رزرو ها</CardText>
+          <h3 className='fw-bolder mb-0'>{data?.allReserve}</h3>
         </Col>
         <Col xs='4' className='py-1 border-end'>
           <CardText className='text-muted mb-0'>رزرو های تایید شده </CardText>

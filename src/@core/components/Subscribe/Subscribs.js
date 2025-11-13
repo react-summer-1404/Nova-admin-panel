@@ -1,6 +1,6 @@
 // ** Third Party Components
 import { Users } from 'react-feather'
-import { Card, CardBody } from 'reactstrap'
+import { Card} from 'reactstrap'
 // ** Custom Components
 
 import { useQuery } from '@tanstack/react-query'
