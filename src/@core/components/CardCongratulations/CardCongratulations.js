@@ -11,11 +11,13 @@ import { Card, CardBody, CardText } from 'reactstrap'
 import decorationLeft from '@src/assets/images/elements/decore-left.png'
 import decorationRight from '@src/assets/images/elements/decore-right.png'
 import {useQuery} from "@tanstack/react-query";
+import { getReport } from '../../../core/Services/api/Dashbord/DashboardReport'
 
 const CardCongratulations = () => {
   const {data} = useQuery({
-    queryK
-  })
+    queryKey : ["adminReport"],
+    queryFn : getReport,
+  });
 
   return (
     <Card className='card-congratulations'>
@@ -27,7 +29,7 @@ const CardCongratulations = () => {
         <div className='text-center'>
           <h1 className='mb-1 text-white'>Congratulations John,</h1>
           <CardText className='m-auto w-75'>
-            You have done <strong>57.6%</strong> more sales today. Check your new badge in your profile.
+            You have done <strong>{data?.allPaymentCost}</strong> more sales today. Check your new badge in your profile.
           </CardText>
         </div>
       </CardBody>
