@@ -7,24 +7,24 @@ import {
   CardLink,
 } from "reactstrap";
 import CardCongratulations from "../@core/components/CardCongratulations/CardCongratulations";
-// import { useQuery } from "@tanstack/react-query";
-// import { getReport } from "../core/Services/api/Dashbord/DashboardReport";
+import GoalOverview from "../@core/components/GoalView/GoalOverview";
+import { Row, Col } from 'reactstrap'
+import SubscribersGained from "../@core/components/Subscribe/Subscribs.js";
+
 
 const Home = () => {
-  // const {data} = useQuery({
-  //   queryKey : ["adminReport"],
-  //   queryFn : getReport,
-  // });
   return (
-    <div>
-      {/* {data?.map((item) => (
-        <CardCongratulations
-          key={item.id}
-          allPaymentCost={item.allPaymentCost}
-        />
-      ))} */}
-      <CardCongratulations/>
-    </div>
+    <Row>        
+      <Col lg={4} sm={6}>   
+        <CardCongratulations />
+      </Col>
+      <Col lg={4} sm={6}>   
+      <GoalOverview />
+      </Col> 
+      <Col lg={2} sm={4}>   
+      <SubscribersGained/>
+      </Col>       
+    </Row>
   );
 };
 

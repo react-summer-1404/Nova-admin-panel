@@ -27,9 +27,9 @@ const CardCongratulations = () => {
         
         <Avatar icon={<Award size={28} />} className='shadow' color='primary' size='xl' />
         <div className='text-center'>
-          <h1 className='mb-1 text-white'>Congratulations John,</h1>
+          <h1 className='mb-1 text-white'>عزیز تبریک! John</h1>
           <CardText className='m-auto w-75'>
-            You have done <strong>{data?.allPaymentCost}</strong> more sales today. Check your new badge in your profile.
+           مبلغ تمام پرداختی دوره های تیم نامبر وان  <strong>{data?.allPaymentCost}</strong> تومان رسید.
           </CardText>
         </div>
       </CardBody>
