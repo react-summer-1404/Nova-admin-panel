@@ -1,11 +1,3 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  CardText,
-  CardLink,
-} from "reactstrap";
 import CardCongratulations from "../@core/components/CardCongratulations/CardCongratulations";
 import GoalOverview from "../@core/components/GoalView/GoalOverview";
 import { Row, Col } from 'reactstrap'
@@ -14,7 +6,6 @@ import InCompeletSubscribe from "../@core/components/inCompeletSubscribe/inCompe
 import Earnings from "../@core/components/Earnings/Earnings.js";
 import TableStriped from "../@core/components/CourseTable/TableStriped.js";
 import { useQuery } from "@tanstack/react-query";
-// import { getReport } from "../core/Services/api/Dashbord/DashboardReport/index.js";
 import { getTechReport } from "../core/Services/api/Dashbord/DashboardTechnologyReport/index.js";
 
 

@@ -26,7 +26,7 @@ const Earnings = () => {
     comparedResult: [2, -3, 8],
     labels: ['کاربران فعال', 'کاربران در تعامل'],
     stroke: { width: 0 },
-    colors: ['#28c76f', '#d0d0d0'],
+    colors: ['#282568', '#6196ea'],
     grid: {
       padding: {
         right: -20,
