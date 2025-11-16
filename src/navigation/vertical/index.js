@@ -1,5 +1,8 @@
 import { Mail, Home, Airplay, Circle,Users } from "react-feather";
+// ** Navigation imports
+import pages from "./pages"
 
+// ** Merge & Export
 export default [
   {
     id: "home",
@@ -33,4 +36,5 @@ export default [
       },
     ],
   },
+  ...pages
 ];
