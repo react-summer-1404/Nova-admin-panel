@@ -15,7 +15,7 @@ import { Card, CardBody } from 'reactstrap'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { getProduct, deleteWishlistItem, addToWishlist } from '../store'
+import { getProduct, deleteWishlistItem, addToWishlist, addToCart } from '../store'
 
 import '@styles/base/pages/app-ecommerce-details.scss'
 
@@ -42,7 +42,7 @@ const Details = () => {
             <CardBody>
               <ProductDetails
                 dispatch={dispatch}
-                // addToCart={addToCart}
+                addToCart={addToCart}
                 productId={productId}
                 getProduct={getProduct}
                 data={store.productDetail}

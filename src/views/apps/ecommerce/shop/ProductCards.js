@@ -14,39 +14,21 @@ const ProductCards = props => {
     store,
     products,
     dispatch,
-    // addToCart,
+    addToCart,
     activeView,
     getProducts,
-    // getCartItems,
+    getCartItems,
     addToWishlist,
     deleteWishlistItem
   } = props
 
-  // ** Handle Move/Add to cart
-  // const handleCartBtn = (id, val) => {
-  //   if (val === false) {
-  //     dispatch(addToCart(id))
-  //   }
-  //   dispatch(getCartItems())
-  //   dispatch(getProducts(store.params))
-  // }
-
-  // ** Handle Wishlist item toggle
-  const handleWishlistClick = (id, val) => {
-    if (val) {
-      dispatch(deleteWishlistItem(id))
-    } else {
-      dispatch(addToWishlist(id))
-    }
-    dispatch(getProducts(store.params))
-  }
+  
 
   // ** Renders products
   const renderProducts = () => {
     if (products.length) {
       return products.map(item => {
         const CartBtnTag = item.isInCart ? Link : 'button'
-        console.log("PRODUCT ITEM:", item)
 
         return (
           <Card className='ecommerce-card' key={item.id}>
@@ -59,22 +41,13 @@ const ProductCards = props => {
               <div className='item-wrapper'>
                 <div className='item-rating'>
                   <ul className='unstyled-list list-inline'>
-                    {/* {new Array(5).fill().map((listItem, index) => {
-                      return (
-                        <li key={index} className='ratings-list-item me-25'>
-                          <Star
-                            className={classnames({
-                              'filled-star': index + 1 <= item.rating,
-                              'unfilled-star': index + 1 > item.rating
-                            })}
-                          />
+                        <li key={item.id} className='ratings-list-item me-25'>
+                          <div style={{ fontSize:16,padding:2,borderRadius:8,backgroundColor:"#7367f0",color:"#fff",width:50,textAlign:"center"}}>{item.rating?"فعال":"غیرفعال"}</div>
                         </li>
-                      )
-                    })} */}
                   </ul>
                 </div>
-                <div className='item-cost'>
-                  <h6 className='item-price'>${item.price}</h6>
+                <div className='item-cost text-right'>
+                  <h6 className='item-price'> {item.price} تومان</h6>
                 </div>
               </div>
               <h6 className='item-name'>
@@ -101,35 +74,7 @@ const ProductCards = props => {
                   ) : null}
                 </div>
               </div>
-              <Button
-                className='btn-wishlist'
-                color='light'
-                onClick={() => handleWishlistClick(item.id, item.isInWishlist)}
-              >
-                <Heart
-                  className={classnames('me-50', {
-                    'text-danger': item.isInWishlist
-                  })}
-                  size={14}
-                />
-                <span>Wishlist</span>
-              </Button>
-              <Button
-                color='primary'
-                tag={CartBtnTag}
-                className='btn-cart move-cart'
-                onClick={() => handleCartBtn(item.id, item.isInCart)}
-                /*eslint-disable */
-                {...(item.isInCart
-                  ? {
-                      to: '/apps/ecommerce/checkout'
-                    }
-                  : {})}
-                /*eslint-enable */
-              >
-                <ShoppingCart className='me-50' size={14} />
-                <span>{item.isInCart ? 'View In Cart' : 'Add To Cart'}</span>
-              </Button>
+        
             </div>
           </Card>
         )

@@ -2,22 +2,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 // ** Axios Imports
-// import axios from 'axios'
+import axios from 'axios'
 import instance from '../../../../core/interseptor/Interseptor'
-
 export const getProducts = createAsyncThunk('courses/getList', async params => {
   const response = await instance.get('/Course/CourseList', { params })
   return { params, data: response.data }
 })
+export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, { dispatch, getState }) => {
+  const response = await axios.post('/apps/ecommerce/cart', { productId: id })
+  await dispatch(getProducts(getState().ecommerce.params))
+  return response.data
+})
 
-// export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, { dispatch, getState }) => {
-//   const response = await axios.post('/apps/ecommerce/cart', { productId: id })
-//   await dispatch(getProducts(getState().ecommerce.params))
-//   return response.data
-// })
-
-export const getWishlistItems = createAsyncThunk('courses/favorites', async () => {
-  const response = await instance.get('/SharePanel/GetMyFavoriteCourses')
+export const getWishlistItems = createAsyncThunk('appEcommerce/getWishlistItems', async () => {
+  const response = await axios.get('/apps/ecommerce/wishlist')
   return response.data
 })
 
@@ -34,10 +32,10 @@ export const deleteWishlistItem = createAsyncThunk('courses/deleteFavorites', as
   return response.data
 })
 
-// export const getCartItems = createAsyncThunk('appEcommerce/getCartItems', async () => {
-//   const response = await axios.get('/apps/ecommerce/cart')
-//   return response.data
-// })
+export const getCartItems = createAsyncThunk('appEcommerce/getCartItems', async () => {
+  const response = await axios.get('/apps/ecommerce/cart')
+  return response.data
+})
 
 export const getProduct = createAsyncThunk(
   'appCourses/getProduct',
@@ -52,22 +50,17 @@ export const addToWishlist = createAsyncThunk('courses/addFavorites', async id =
   return id
 })
 
-// export const deleteCartItem = createAsyncThunk('appEcommerce/deleteCartItem', async (id, { dispatch }) => {
-//   await axios.delete(`/apps/ecommerce/cart/${id}`)
-//   dispatch(getCartItems())
-//   return id
-// })
+export const deleteCartItem = createAsyncThunk('appEcommerce/deleteCartItem', async (id, { dispatch }) => {
+  await axios.delete(`/apps/ecommerce/cart/${id}`)
+  dispatch(getCartItems())
+  return id
+})
 
 export const appEcommerceSlice = createSlice({
   name: 'appEcommerce',
   initialState: {
     cart: [],
-    params: {
-      page: 1,
-      perPage: 10,
-      sortBy: 'featured',
-      q: ''
-    },
+    params: {},
     products: [],
     wishlist: [],
     totalProducts: 0,
@@ -87,7 +80,7 @@ export const appEcommerceSlice = createSlice({
         brand: course.fullName,
         slug: course.courseId, 
         description: course.describe, 
-      rating: 5,
+        rating:course.active
 
       }))
     
@@ -96,9 +89,9 @@ export const appEcommerceSlice = createSlice({
       .addCase(getWishlistItems.fulfilled, (state, action) => {
         state.wishlist = action.payload.favoriteCourseDto
       })
-      // .addCase(getCartItems.fulfilled, (state, action) => {
-      //   state.cart = action.payload.products
-      // })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.cart = action.payload.products
+      })
       .addCase(getProduct.fulfilled, (state, action) => {
         state.productDetail = action.payload
       })

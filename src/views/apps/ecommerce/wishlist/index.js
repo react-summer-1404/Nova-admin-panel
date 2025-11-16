@@ -14,7 +14,7 @@ import { Card, CardBody, CardText, Button, Alert } from 'reactstrap'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { getWishlistItems, deleteWishlistItem,  } from '../store'
+import { getWishlistItems, deleteWishlistItem, addToCart, getCartItems } from '../store'
 
 // ** Styles
 import '@styles/base/pages/app-ecommerce.scss'
@@ -30,13 +30,13 @@ const Wishlist = () => {
   }, [])
 
   // ** Handle Move/Add to cart
-  // const handleCartBtn = (id, val) => {
-  //   if (val === false) {
-  //     dispatch(addToCart(id))
-  //   }
-  //   dispatch(getWishlistItems())
-  //   dispatch(getCartItems())
-  // }
+  const handleCartBtn = (id, val) => {
+    if (val === false) {
+      dispatch(addToCart(id))
+    }
+    dispatch(getWishlistItems())
+    dispatch(getCartItems())
+  }
 
   // ** Renders wishlist products
   const renderWishlist = () => {
@@ -53,7 +53,7 @@ const Wishlist = () => {
             <div className='item-wrapper'>
               <div className='item-rating'>
                 <ul className='unstyled-list list-inline'>
-                  {/* {new Array(5).fill().map((listItem, index) => {
+                  {new Array(5).fill().map((listItem, index) => {
                     return (
                       <li key={index} className='ratings-list-item me-25'>
                         <Star
@@ -64,7 +64,7 @@ const Wishlist = () => {
                         />
                       </li>
                     )
-                  })} */}
+                  })}
                 </ul>
               </div>
               <div className='item-cost'>

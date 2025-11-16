@@ -1,4 +1,4 @@
-import { Mail, Home, Airplay, Circle, Users, BookOpen } from "react-feather";
+import { Mail, Home, Airplay, Circle, Users, BookOpen ,ShoppingCart} from "react-feather";
 
 export default [
   {
@@ -34,16 +34,33 @@ export default [
     ],
   },
   {
-    id: "coursePage",
-    title: "مدیریت دوره ها",
-    icon: <BookOpen size={20} />,
-    
+    id: "eCommerce",
+    title: "eCommerce",
+    icon: <ShoppingCart size={20} />,
     children: [
       {
-        id: "courses",
-        title: "لیست دوره ها",
+        id: "shop",
+        title: "Shop",
         icon: <Circle size={12} />,
-        navLink: "/courses/list",
+        navLink: "/apps/ecommerce/shop",
+      },
+      {
+        id: "detail",
+        title: "Details",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/product-detail",
+      },
+      {
+        id: "wishList",
+        title: "Wish List",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/wishlist",
+      },
+      {
+        id: "checkout",
+        title: "Checkout",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/checkout",
       },
     ],
   },

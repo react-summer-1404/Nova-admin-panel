@@ -1,5 +1,6 @@
 // ** React Imports
 import { Fragment, useState, useEffect } from 'react'
+
 // ** Shop Components
 import Sidebar from './Sidebar'
 import Products from './Products'
@@ -9,7 +10,7 @@ import Breadcrumbs from '@components/breadcrumbs'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { getProducts, addToWishlist, deleteWishlistItem } from '../store'
+import { addToCart, getProducts, getCartItems, addToWishlist, deleteCartItem, deleteWishlistItem } from '../store'
 
 // ** Styles
 import '@styles/react/apps/app-ecommerce.scss'
@@ -37,19 +38,19 @@ const Shop = () => {
 
   return (
     <Fragment>
-      <Breadcrumbs title='courses' data={[{ title: 'eCommerce' }, { title: 'courses' }]} />
+      <Breadcrumbs title='Shop' data={[{ title: 'eCommerce' }, { title: 'Shop' }]} />
       <Products
         store={store}
         dispatch={dispatch}
-        // addToCart={addToCart}
+        addToCart={addToCart}
         activeView={activeView}
         getProducts={getProducts}
         sidebarOpen={sidebarOpen}
-        // getCartItems={getCartItems}
+        getCartItems={getCartItems}
         setActiveView={setActiveView}
         addToWishlist={addToWishlist}
         setSidebarOpen={setSidebarOpen}
-        // deleteCartItem={deleteCartItem}
+        deleteCartItem={deleteCartItem}
         deleteWishlistItem={deleteWishlistItem}
       />
       <Sidebar sidebarOpen={sidebarOpen} />

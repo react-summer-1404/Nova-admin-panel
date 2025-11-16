@@ -20,7 +20,7 @@ import {
 
 const Product = props => {
   // ** Props
-  const { data, deleteWishlistItem, dispatch, addToWishlist, getProduct, productId } = props
+  const { data, deleteWishlistItem, dispatch, addToWishlist, getProduct, productId, addToCart } = props
 
   // ** State
   const [selectedColor, setSelectedColor] = useState('primary')
@@ -58,12 +58,12 @@ const Product = props => {
   }
 
   // ** Handle Move/Add to cart
-  // const handleCartBtn = (id, val) => {
-  //   if (val === false) {
-  //     dispatch(addToCart(id))
-  //   }
-  //   dispatch(getProduct(productId))
-  // }
+  const handleCartBtn = (id, val) => {
+    if (val === false) {
+      dispatch(addToCart(id))
+    }
+    dispatch(getProduct(productId))
+  }
 
   // ** Condition btn tag
   const CartBtnTag = data.isInCart ? Link : 'button'
@@ -86,7 +86,7 @@ const Product = props => {
         <div className='ecommerce-details-price d-flex flex-wrap mt-1'>
           <h4 className='item-price me-1'>${data.price}</h4>
           <ul className='unstyled-list list-inline'>
-            {/* {new Array(5).fill().map((listItem, index) => {
+            {new Array(5).fill().map((listItem, index) => {
               return (
                 <li key={index} className='ratings-list-item me-25'>
                   <Star
@@ -97,7 +97,7 @@ const Product = props => {
                   />
                 </li>
               )
-            })} */}
+            })}
           </ul>
         </div>
         <CardText>

@@ -14,7 +14,7 @@ import '@styles/react/libs/input-number/input-number.scss'
 
 const Cart = props => {
   // ** Props
-  const { products, stepper, dispatch, addToWishlist, deleteWishlistItem } = props
+  const { products, stepper, deleteCartItem, dispatch, addToWishlist, deleteWishlistItem, getCartItems } = props
 
   // ** Function to convert Date
   const formatDate = (value, formatting = { month: 'short', day: 'numeric', year: 'numeric' }) => {
@@ -29,7 +29,7 @@ const Cart = props => {
     } else {
       dispatch(addToWishlist(id))
     }
-    // dispatch(getCartItems())
+    dispatch(getCartItems())
   }
 
   // ** Render cart items
@@ -55,7 +55,7 @@ const Cart = props => {
               </span>
               <div className='item-rating'>
                 <ul className='unstyled-list list-inline'>
-                  {/* {new Array(5).fill().map((listItem, index) => {
+                  {new Array(5).fill().map((listItem, index) => {
                     return (
                       <li key={index} className='ratings-list-item me-25'>
                         <Star
@@ -66,7 +66,7 @@ const Cart = props => {
                         />
                       </li>
                     )
-                  })} */}
+                  })}
                 </ul>
               </div>
             </div>
@@ -100,10 +100,10 @@ const Cart = props => {
                 ) : null}
               </div>
             </div>
-            {/* <Button className='mt-1 remove-wishlist' color='light' onClick={() => dispatch(deleteCartItem(item.id))}>
+            <Button className='mt-1 remove-wishlist' color='light' onClick={() => dispatch(deleteCartItem(item.id))}>
               <X size={14} className='me-25' />
               <span>Remove</span>
-            </Button> */}
+            </Button>
             <Button
               className='btn-cart'
               color='primary'

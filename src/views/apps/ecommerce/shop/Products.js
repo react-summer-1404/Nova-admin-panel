@@ -17,14 +17,14 @@ const ProductsPage = props => {
   const {
     store,
     dispatch,
-    // addToCart,
+    addToCart,
     activeView,
     sidebarOpen,
     getProducts,
-    // getCartItems,
+    getCartItems,
     addToWishlist,
     setActiveView,
-    // deleteCartItem,
+    deleteCartItem,
     setSidebarOpen,
     deleteWishlistItem
   } = props
@@ -90,13 +90,13 @@ const ProductsPage = props => {
             <ProductCards
               store={store}
               dispatch={dispatch}
-              // addToCart={addToCart}
+              addToCart={addToCart}
               activeView={activeView}
               products={store.products}
               getProducts={getProducts}
-              // getCartItems={getCartItems}
+              getCartItems={getCartItems}
               addToWishlist={addToWishlist}
-              // deleteCartItem={deleteCartItem}
+              deleteCartItem={deleteCartItem}
               deleteWishlistItem={deleteWishlistItem}
             />
             <Pagination className='d-flex justify-content-center ecommerce-shop-pagination mt-2'>

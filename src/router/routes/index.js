@@ -6,6 +6,7 @@ import BlankLayout from "@layouts/BlankLayout";
 import VerticalLayout from "@src/layouts/VerticalLayout";
 import HorizontalLayout from "@src/layouts/HorizontalLayout";
 import LayoutWrapper from "@src/@core/layouts/components/layout-wrapper";
+// import '@src/@fake-db';
 
 // ** Route Components
 import PublicRoute from "@components/routes/PublicRoute";
@@ -33,7 +34,11 @@ const Register = lazy(() => import("../../pages/Register"));
 const ForgotPassword = lazy(() => import("../../pages/ForgotPassword"));
 const Error = lazy(() => import("../../pages/Error"));
 const Sample = lazy(() => import("../../pages/Sample"));
-const CourseList = lazy(() => import("../../views/apps/ecommerce/shop"));
+// const CourseList = lazy(() => import("../../views/apps/ecommerce/shop"));
+const EcommerceShop = lazy(() => import('../../views/apps/ecommerce/shop'))
+const EcommerceDetail = lazy(() => import('../../views/apps/ecommerce/detail'))
+const EcommerceWishlist = lazy(() => import('../../views/apps/ecommerce/wishlist'))
+const EcommerceCheckout = lazy(() => import('../../views/apps/ecommerce/checkout'))
 
 // ** Merge Routes
 const Routes = [
@@ -86,6 +91,43 @@ const Routes = [
       layout: "blank",
     },
   },
+  
+  
+  {
+    element: <EcommerceShop />,
+    path: '/apps/ecommerce/shop',
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    element: <EcommerceWishlist />,
+    path: '/apps/ecommerce/wishlist',
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/product-detail',
+    element: <Navigate to='/apps/ecommerce/product-detail/apple-i-phone-11-64-gb-black-26' />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/product-detail/:product',
+    element: <EcommerceDetail />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/checkout',
+    element: <EcommerceCheckout />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
   {
     path: "*",
     element: <Error />,
@@ -93,10 +135,6 @@ const Routes = [
       layout: "blank",
     },
   },
-  {
-    path: "/courses/list",
-    element: <CourseList />,
-  }
 ];
 
 const getRouteMeta = (route) => {
