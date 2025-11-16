@@ -68,6 +68,7 @@ const InputPasswordToggle = forwardRef((props, ref) => {
             : {})}
           {...rest}
           /*eslint-enable */
+          name
         />
         <InputGroupText
           className="cursor-pointer"

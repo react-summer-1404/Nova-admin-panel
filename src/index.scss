@@ -1,2 +1,10 @@
 @import '../node_modules/prismjs/themes/prism-tomorrow';
 @import './assets/scss/app.scss';
+
+.form-style {
+    display:flex;
+    justify-content: end;
+    margin-top: 7rem;
+    gap: 6rem; 
+    height: 100%;
+}
