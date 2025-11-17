@@ -3,29 +3,42 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 // ** Axios Imports
 import axios from 'axios'
+import instance from '../../../../../core/interseptor/Interseptor'
 
-export const getData = createAsyncThunk('datatables/getData', async params => {
-  const response = await axios.get('/api/datatables/data', params)
-  return { allData: response.data.allData, data: response.data.invoices, totalPages: response.data.total, params }
-})
+export const getData = createAsyncThunk(
+  'comments/getData',
+  async ({courseId}) => {
+    const response = await instance.get(`/Course/GetCourseCommnets/${courseId}`)
+    return response.data
+  }
+)
 
-export const datatablesSlice = createSlice({
-  name: 'datatables',
+export const commentsSlice = createSlice({
+  name: 'comments',
   initialState: {
     data: [],
     total: 1,
     params: {},
-    allData: []
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getData.fulfilled, (state, action) => {
-      state.data = action.payload.data
-      state.params = action.payload.params
-      state.allData = action.payload.allData
-      state.total = action.payload.totalPages
+
+      state.data = action.payload.map(item => ({
+        id: item.id,
+        courseId: item.courseId,
+        user: item.author,
+        title: item.title,
+        comment: item.describe,
+        date: item.insertDate,
+        like: item.likeCount,
+        dislike: item.disslikeCount,
+        accepted: item.accept
+      }))
+
+      state.total = action.payload.length
     })
   }
 })
 
-export default datatablesSlice.reducer
+export default commentsSlice.reducer

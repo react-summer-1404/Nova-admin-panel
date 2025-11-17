@@ -124,7 +124,7 @@ export const appEcommerceSlice = createSlice({
         state.cart = action.payload.products
     })
     .addCase(getProduct.fulfilled, (state, action) => {
-      const courseDetail = action.payload; // مستقیم آبجکت
+      const courseDetail = action.payload; 
       state.productDetail = {
         id: courseDetail.courseId,
         name: courseDetail.title,

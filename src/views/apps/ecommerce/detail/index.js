@@ -36,7 +36,7 @@ const Details = () => {
 
   return (
     <Fragment>
-      <BreadCrumbs title='جززیات دوره' data={[{ title: 'مدیریت دوره ها' }, { title: 'جزییات دوره' }]} />
+      <BreadCrumbs title='جزییات دوره' data={[{ title: 'مدیریت دوره ها' }, { title: 'جزییات دوره' }]} />
       <div className='app-ecommerce-details'>
         {Object.keys(store.productDetail).length ? (
           <Card>
