@@ -89,8 +89,22 @@ export const appEcommerceSlice = createSlice({
   extraReducers: builder => {
     builder
     .addCase(getProducts.fulfilled, (state, action) => {
-        state.params = action.payload.params
-    })
+      state.params = action.payload.params
+  
+      state.products = action.payload.data.courseDtos?.map(course => ({
+        id: course.courseId,
+        name: course.title,
+        image: course.imageAddress,
+        price: course.cost,
+        brand: course.fullName,
+        slug: course.courseId,
+        description: course.describe,
+        rating: course.active
+      })) || []
+  
+      state.totalProducts = action.payload.data.totalCount
+  })
+  
     .addCase(getWishlistItems.fulfilled, (state, action) => {
         state.wishlist = action.payload.favoriteCourseDto
     })
@@ -103,7 +117,6 @@ export const appEcommerceSlice = createSlice({
   }
 })
 
-// ⭐️ اکشن جدید را برای استفاده در Sidebar اکسپورت کنید
 export const { setCourseList } = appEcommerceSlice.actions
 
 

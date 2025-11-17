@@ -5,6 +5,7 @@ import { Fragment } from 'react'
 import ProductCards from './ProductCards'
 import ProductsHeader from './ProductsHeader'
 import ProductsSearchbar from './ProductsSearchbar'
+import { useDispatch, useSelector } from 'react-redux'
 
 // ** Third Party Components
 import classnames from 'classnames'
@@ -13,10 +14,12 @@ import classnames from 'classnames'
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 
 const ProductsPage = props => {
-  // ** Props
+  
+  const dispatch = useDispatch()
+
+  const store = useSelector(state => state.ecommerce)
+
   const {
-    store,
-    dispatch,
     addToCart,
     activeView,
     sidebarOpen,
@@ -28,6 +31,7 @@ const ProductsPage = props => {
     setSidebarOpen,
     deleteWishlistItem
   } = props
+
 
   // ** Handles pagination
   const handlePageChange = val => {
@@ -85,7 +89,7 @@ const ProductsPage = props => {
           onClick={() => setSidebarOpen(false)}
         ></div>
         <ProductsSearchbar dispatch={dispatch} getProducts={getProducts} store={store} />
-        {store.products.length ? (
+        {store.products?.length ? (
           <Fragment>
             <ProductCards
               store={store}

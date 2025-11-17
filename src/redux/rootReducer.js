@@ -5,6 +5,6 @@ import ecommerce from '@src/views/apps/ecommerce/store'
 
 
   
-  const rootReducer = { navbar, layout ,ecommerce,};
+  const rootReducer = { navbar, layout ,ecommerce ,};
 
 export default rootReducer;

@@ -1,13 +1,10 @@
 // ** Custom Hooks
 // import { useRTL } from "@hooks/useRTL";
 
-// ⭐️ ایمپورت‌های ضروری
 import { useState } from 'react'; 
 import { useDispatch } from "react-redux";
-// مسیر اینپورت instance در پروژه شما باید صحیح باشد
 import instance from '../../../../core/interseptor/Interseptor'; 
-import { setCourseList } from "../store"; // اکشن جدید
-// import { getProducts } from "../store"; // دیگر نیازی به این نیست
+import { setCourseList } from "../store";  
 
 // ** Third Party Components
 import classnames from "classnames";
@@ -27,15 +24,22 @@ const Sidebar = (props) => {
 
   const handleApi = async (id) => { 
     setSelectedFilter(id);
+    console.log(id)
 
     let url = ""; 
     let params = {};
   
     if (id === "myCourse") {
       url = "/SharePanel/GetMyCourses";
-      params = {};
+      params = {
+        PageNumber: 1,
+        RowsOfPage: 10,
+        SortingCol: "",
+        SortType: "",
+        Query: ""
+      };
     } 
-    else { 
+    else if(id === "all"){ 
       url = "/Course/CourseList";
       params = {
         PageNumber: 1,
@@ -45,7 +49,6 @@ const Sidebar = (props) => {
         Query: ""
       };
     }
-    
     try {
         const response = await instance.get(url, { params });
         
@@ -89,7 +92,7 @@ const Sidebar = (props) => {
                             type="radio"
                             id={category.id}
                             name="category-radio"
-                            checked={category.id === selectedFilter}
+                            checked={selectedFilter === category.id}
                             onChange={(e) => {
                               handleApi(e.target.id);
                             }}
