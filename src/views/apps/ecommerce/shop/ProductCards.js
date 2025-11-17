@@ -28,7 +28,7 @@ const ProductCards = props => {
   const renderProducts = () => {
     if (products.length) {
       return products.map(item => {
-        const CartBtnTag = item.isInCart ? Link : 'button'
+        // const CartBtnTag = item.isInCart ? Link : 'button'
 
         return (
           <Card className='ecommerce-card' key={item.id}>

@@ -3,11 +3,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 // ** Axios Imports
 import axios from 'axios'
-import instance from '../../../../core/interseptor/Interseptor'
+import instance from '../../../../core/interseptor/Interseptor' 
+
 export const getProducts = createAsyncThunk('courses/getList', async params => {
-  const response = await instance.get('/Course/CourseList', { params })
+  const response = await instance.get('/Course/CourseList', { params }) 
   return { params, data: response.data }
 })
+
 export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, { dispatch, getState }) => {
   const response = await axios.post('/apps/ecommerce/cart', { productId: id })
   await dispatch(getProducts(getState().ecommerce.params))
@@ -66,10 +68,8 @@ export const appEcommerceSlice = createSlice({
     totalProducts: 0,
     productDetail: {}
   },
-  reducers: {},
-  extraReducers: builder => {
-    builder
-    .addCase(getProducts.fulfilled, (state, action) => {
+  reducers: {
+    setCourseList: (state, action) => {
       state.params = action.payload.params
     
       state.products = action.payload.data.courseDtos?.map(course => ({
@@ -81,21 +81,30 @@ export const appEcommerceSlice = createSlice({
         slug: course.courseId, 
         description: course.describe, 
         rating:course.active
-
       }))
     
       state.totalProducts = action.payload.data.totalCount
+    },
+  },
+  extraReducers: builder => {
+    builder
+    .addCase(getProducts.fulfilled, (state, action) => {
+        state.params = action.payload.params
     })
-      .addCase(getWishlistItems.fulfilled, (state, action) => {
+    .addCase(getWishlistItems.fulfilled, (state, action) => {
         state.wishlist = action.payload.favoriteCourseDto
-      })
-      .addCase(getCartItems.fulfilled, (state, action) => {
+    })
+    .addCase(getCartItems.fulfilled, (state, action) => {
         state.cart = action.payload.products
-      })
-      .addCase(getProduct.fulfilled, (state, action) => {
+    })
+    .addCase(getProduct.fulfilled, (state, action) => {
         state.productDetail = action.payload
-      })
+    })
   }
 })
+
+// ⭐️ اکشن جدید را برای استفاده در Sidebar اکسپورت کنید
+export const { setCourseList } = appEcommerceSlice.actions
+
 
 export default appEcommerceSlice.reducer
