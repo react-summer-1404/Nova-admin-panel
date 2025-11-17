@@ -40,6 +40,9 @@ const EcommerceDetail = lazy(() => import('../../views/apps/ecommerce/detail'))
 // const EcommerceWishlist = lazy(() => import('../../views/apps/ecommerce/wishlist'))
 const EcommerceCheckout = lazy(() => import('../../views/apps/ecommerce/checkout'))
 
+
+const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
+
 // ** Merge Routes
 const Routes = [
   {
@@ -103,10 +106,13 @@ const Routes = [
  
   {
     path: '/apps/ecommerce/product-detail',
-    element: <Navigate to='/apps/ecommerce/product-detail/apple-i-phone-11-64-gb-black-26' />,
     meta: {
-      className: 'ecommerce-application'
+      className: '/apps/ecommerce/product-detail'
     }
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance />
   },
   {
     path: '/apps/ecommerce/product-detail/:product',

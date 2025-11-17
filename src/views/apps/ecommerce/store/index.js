@@ -124,8 +124,32 @@ export const appEcommerceSlice = createSlice({
         state.cart = action.payload.products
     })
     .addCase(getProduct.fulfilled, (state, action) => {
-        state.productDetail = action.payload
+      const courseDetail = action.payload; // مستقیم آبجکت
+      state.productDetail = {
+        id: courseDetail.courseId,
+        name: courseDetail.title,
+        image: courseDetail.imageAddress,
+        price: courseDetail.cost,
+        brand: courseDetail.teacherName,
+        slug: courseDetail.courseId,
+        description: courseDetail.describe,
+        rating: courseDetail.currentRate,
+        likeCount: courseDetail.likeCount,
+        isActive :courseDetail.isActive,
+        statusName:courseDetail.statusName,
+        dissLikeCount: courseDetail.dissLikeCount,
+        currentRate: courseDetail.currentRate,
+        courseRate: courseDetail.courseRate,
+        startTime: courseDetail.startTime,
+        endTime: courseDetail.endTime,
+        userFavorite: courseDetail.userFavorite,
+        userIsDissLike: courseDetail.userIsDissLike,
+        courseTeches: courseDetail.courseTeches,
+        miniDescribe: courseDetail.miniDescribe,
+        tumbImageAddress: courseDetail.tumbImageAddress,
+      }
     })
+    
   }
 })
 

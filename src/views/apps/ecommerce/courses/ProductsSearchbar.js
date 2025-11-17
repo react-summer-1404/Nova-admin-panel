@@ -16,7 +16,7 @@ const ProductsSearchbar = props => {
             <Input
               className='search-product'
               placeholder='Search Product'
-              onChange={e => dispatch(getProducts({ ...store.params, q: e.target.value }))}
+              onChange={e => dispatch(getProducts({ ...store.params, Query: e.target.value }))}
             />
             <InputGroupText>
               <Search className='text-muted' size={14} />

@@ -1,10 +1,20 @@
 // ** React Imports
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // ** Third Party Components
-import classnames from 'classnames'
-import { Star, ShoppingCart, DollarSign, Heart, Share2, Facebook, Twitter, Youtube, Instagram } from 'react-feather'
+import classnames from "classnames";
+import {
+  Star,
+  ShoppingCart,
+  DollarSign,
+  Heart,
+  Share2,
+  Facebook,
+  Twitter,
+  Youtube,
+  Instagram,
+} from "react-feather";
 
 // ** Reactstrap Imports
 import {
@@ -15,37 +25,40 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  UncontrolledButtonDropdown
-} from 'reactstrap'
+  UncontrolledButtonDropdown,
+} from "reactstrap";
+import { lazy } from "react";
+import { Suspense } from "react";
+const DTAdvance = lazy(() => import('../../../apps/tables/data-tables/advance'))
 
-const Product = props => {
+const Product = (props) => {
   // ** Props
-  const { data, dispatch, getProduct, productId, addToCart } = props
+  const { data, dispatch, getProduct, productId, addToCart } = props;
 
   // ** State
-  const [selectedColor, setSelectedColor] = useState('primary')
+  const [selectedColor, setSelectedColor] = useState("primary");
 
   // ** Renders color options
-  const renderColorOptions = () => {
-    return data.colorOptions.map((color, index) => {
-      const isLastColor = data.colorOptions.length - 1 === index
+  // const renderColorOptions = () => {
+  //   return data.colorOptions.map((color, index) => {
+  //     const isLastColor = data.colorOptions.length - 1 === index
 
-      return (
-        <li
-          key={color}
-          className={classnames('d-inline-block', {
-            'me-25': !isLastColor,
-            selected: selectedColor === color
-          })}
-          onClick={() => setSelectedColor(color)}
-        >
-          <div className={`color-option b-${color}`}>
-            <div className={`filloption bg-${color}`}></div>
-          </div>
-        </li>
-      )
-    })
-  }
+  //     return (
+  //       <li
+  //         key={color}
+  //         className={classnames('d-inline-block', {
+  //           'me-25': !isLastColor,
+  //           selected: selectedColor === color
+  //         })}
+  //         onClick={() => setSelectedColor(color)}
+  //       >
+  //         <div className={`color-option b-${color}`}>
+  //           <div className={`filloption bg-${color}`}></div>
+  //         </div>
+  //       </li>
+  //     )
+  //   })
+  // }
 
   // ** Handle Wishlist item toggle
   // const handleWishlist = val => {
@@ -60,86 +73,106 @@ const Product = props => {
   // ** Handle Move/Add to cart
   const handleCartBtn = (id, val) => {
     if (val === false) {
-      dispatch(addToCart(id))
+      dispatch(addToCart(id));
     }
-    dispatch(getProduct(productId))
-  }
+    dispatch(getProduct(productId));
+  };
 
   // ** Condition btn tag
-  const CartBtnTag = data.isInCart ? Link : 'button'
+  const CartBtnTag = data.isInCart ? Link : "button";
 
   return (
-    <Row className='my-2'>
-      <Col className='d-flex align-items-center justify-content-center mb-2 mb-md-0' md='5' xs='12'>
-        <div className='d-flex align-items-center justify-content-center'>
-          <img className='img-fluid product-img' src={data.image} alt={data.name} />
+    <Row className="my-2">
+      <Col
+        className="d-flex align-items-center justify-content-center mb-2 mb-md-0"
+        md="5"
+        xs="12"
+      >
+        <div className="d-flex align-items-center justify-content-center">
+          <img
+            className="img-fluid product-img"
+            src={data.image}
+            alt={data.name}
+          />
         </div>
       </Col>
-      <Col md='7' xs='12'>
-        <h4>{data.name}</h4>
-        <CardText tag='span' className='item-company'>
-          By
-          <a className='company-name' href='/' onClick={e => e.preventDefault()}>
+      <Col md="7" xs="12">
+        <h4 style={{ fontSize: 20 }}>{data.name}</h4>
+        <CardText tag="span" className="item-company" style={{ fontSize: 16 }}>
+          توسط
+          <a
+            className="company-name"
+            style={{ fontSize: 16 }}
+            href="/"
+            onClick={(e) => e.preventDefault()}
+          >
             {data.brand}
           </a>
         </CardText>
-        <div className='ecommerce-details-price d-flex flex-wrap mt-1'>
-          <h4 className='item-price me-1'>${data.price}</h4>
-          <ul className='unstyled-list list-inline'>
+        <div className="ecommerce-details-price d-flex flex-wrap mt-1">
+          <h4 className="item-price me-1">${data.price}</h4>
+          <ul className="unstyled-list list-inline">
             {new Array(5).fill().map((listItem, index) => {
               return (
-                <li key={index} className='ratings-list-item me-25'>
+                <li key={index} className="ratings-list-item me-25">
                   <Star
                     className={classnames({
-                      'filled-star': index + 1 <= data.rating,
-                      'unfilled-star': index + 1 > data.rating
+                      "filled-star": index + 1 <= data.rating,
+                      "unfilled-star": index + 1 > data.rating,
                     })}
                   />
                 </li>
-              )
+              );
             })}
           </ul>
         </div>
         <CardText>
-          Available -<span className='text-success ms-25'>In stock</span>
+          <div>
+            {data.isActive ? (
+              <span className="text-success ms-25" style={{ fontSize: 18 }}>
+                فعال
+              </span>
+            ) : (
+              <span className="ms-25" style={{ color: "red" }}>
+                غیر فعال
+              </span>
+            )}
+          </div>
         </CardText>
-        <CardText>{data.description}</CardText>
-        <ul className='product-features list-unstyled'>
-          {data.hasFreeShipping ? (
-            <li>
-              <ShoppingCart size={19} />
-              <span>Free Shipping</span>
-            </li>
-          ) : null}
-          <li>
-            <DollarSign size={19} />
-            <span>EMI options available</span>
-          </li>
-        </ul>
-        <hr />
-        <div className='product-color-options'>
-          <h6>Colors</h6>
-          <ul className='list-unstyled mb-0'>{renderColorOptions()}</ul>
+        <div style={{display:"flex",gap:3,alignItems:"center"}}> وضعیت دوره:
+        <CardText style={{ fontSize: 14 ,borderRadius:8,width:70,backgroundColor:"#eee" ,padding:3,color:"red",textAlign:"center"}}>{data.statusName} </CardText>
+
         </div>
-        <hr />
-        <div className='d-flex flex-column flex-sm-row pt-1'>
+        <CardText>{data.description}</CardText>
+
+
+        <div style={{display:"flex",gap:3,alignItems:"center"}}> زمان شروع دوره:
+        <CardText style={{ fontSize: 14,fontWeight:600 ,borderRadius:8 ,padding:3,textAlign:"center"}}>{data.endTime} </CardText>
+
+        </div>
+          <div style={{display:"flex",gap:3,alignItems:"center"}}> زمان پایان دوره:
+        <CardText style={{ fontSize: 14 ,fontWeight:600,borderRadius:8,padding:3 ,textAlign:"center"}}>{data.startTime} </CardText>
+
+        </div>
+        <div className="d-flex flex-column flex-sm-row pt-1">
           <Button
             tag={CartBtnTag}
-            className='btn-cart me-0 me-sm-1 mb-1 mb-sm-0'
-            color='primary'
+            className="btn-cart me-0 me-sm-1 mb-1 mb-sm-0"
+            color="primary"
             onClick={() => handleCartBtn(data.id, data.isInCart)}
             /*eslint-disable */
             {...(data.isInCart
               ? {
-                  to: '/apps/ecommerce/checkout'
+                  to: "/apps/ecommerce/checkout",
                 }
               : {})}
             /*eslint-enable */
           >
-            <ShoppingCart className='me-50' size={14} />
-            {data.isInCart ? 'View in cart' : 'Move to cart'}
+            <ShoppingCart className="me-50" size={14} />
+            {data.isInCart ? "View in cart" : "Move to cart"}
           </Button>
-          <Button
+          
+          {/* <Button
             className='btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0'
             color='secondary'
             outline
@@ -152,8 +185,8 @@ const Product = props => {
               })}
             />
             <span>Wishlist</span>
-          </Button>
-          <UncontrolledButtonDropdown className='dropdown-icon-wrapper btn-share'>
+          </Button> */}
+          {/* <UncontrolledButtonDropdown className='dropdown-icon-wrapper btn-share'>
             <DropdownToggle className='btn-icon hide-arrow' color='secondary' caret outline>
               <Share2 size={14} />
             </DropdownToggle>
@@ -171,11 +204,14 @@ const Product = props => {
                 <Instagram size={14} />
               </DropdownItem>
             </DropdownMenu>
-          </UncontrolledButtonDropdown>
+          </UncontrolledButtonDropdown> */}
         </div>
+        <Suspense fallback={<div>در حال بارگذاری جدول...</div>}>
+        <DTAdvance />
+      </Suspense>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

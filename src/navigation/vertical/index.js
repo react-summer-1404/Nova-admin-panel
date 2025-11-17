@@ -43,12 +43,12 @@ export default [
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/courses",
       },
-      {
-        id: "detail",
-        title: "Details",
-        icon: <Circle size={12} />,
-        navLink: "/apps/ecommerce/product-detail",
-      },
+      // {
+      //   id: "detail",
+      //   title: "Details",
+      //   icon: <Circle size={12} />,
+      //   navLink: "/apps/ecommerce/product-detail",
+      // },
       {
         id: "wishList",
         title: "Wish List",

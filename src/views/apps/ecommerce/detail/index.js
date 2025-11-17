@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getProduct, addToCart } from '../store'
 
 import '@styles/base/pages/app-ecommerce-details.scss'
+import { lazy } from 'react'
 
 const Details = () => {
   // ** Vars
@@ -35,7 +36,7 @@ const Details = () => {
 
   return (
     <Fragment>
-      <BreadCrumbs title='Product Details' data={[{ title: 'eCommerce' }, { title: 'Details' }]} />
+      <BreadCrumbs title='جززیات دوره' data={[{ title: 'مدیریت دوره ها' }, { title: 'جزییات دوره' }]} />
       <div className='app-ecommerce-details'>
         {Object.keys(store.productDetail).length ? (
           <Card>
@@ -52,7 +53,8 @@ const Details = () => {
             </CardBody>
             <ItemFeatures />
             <CardBody>
-              <RelatedProducts />
+              {/* <RelatedProducts /> */}
+              
             </CardBody>
           </Card>
         ) : null}
