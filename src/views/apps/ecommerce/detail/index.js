@@ -15,7 +15,7 @@ import { Card, CardBody } from 'reactstrap'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { getProduct, deleteWishlistItem, addToWishlist, addToCart } from '../store'
+import { getProduct, addToCart } from '../store'
 
 import '@styles/base/pages/app-ecommerce-details.scss'
 
@@ -46,8 +46,8 @@ const Details = () => {
                 productId={productId}
                 getProduct={getProduct}
                 data={store.productDetail}
-                addToWishlist={addToWishlist}
-                deleteWishlistItem={deleteWishlistItem}
+                // addToWishlist={addToWishlist}
+                // deleteWishlistItem={deleteWishlistItem}
               />
             </CardBody>
             <ItemFeatures />

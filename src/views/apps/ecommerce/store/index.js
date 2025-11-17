@@ -16,23 +16,23 @@ export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, {
   return response.data
 })
 
-export const getWishlistItems = createAsyncThunk('appEcommerce/getWishlistItems', async () => {
-  const response = await axios.get('/apps/ecommerce/wishlist')
-  return response.data
-})
+// export const getWishlistItems = createAsyncThunk('appEcommerce/getWishlistItems', async () => {
+//   const response = await axios.get('/apps/ecommerce/wishlist')
+//   return response.data
+// })
 
-export const deleteWishlistItem = createAsyncThunk('courses/deleteFavorites', async (id, { dispatch }) => {
-  const formData = new FormData()
-  formData.append('CourseFavoriteId', id)
-  const response = await instance.delete('/Course/DeleteCourseFavorite', {
-    data: formData,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  })
-  dispatch(getWishlistItems())
-  return response.data
-})
+// export const deleteWishlistItem = createAsyncThunk('courses/deleteFavorites', async (id, { dispatch }) => {
+//   const formData = new FormData()
+//   formData.append('CourseFavoriteId', id)
+//   const response = await instance.delete('/Course/DeleteCourseFavorite', {
+//     data: formData,
+//     headers: {
+//       'Content-Type': 'multipart/form-data',
+//     },
+//   })
+//   dispatch(getWishlistItems())
+//   return response.data
+// })
 
 export const getCartItems = createAsyncThunk('appEcommerce/getCartItems', async () => {
   const response = await axios.get('/apps/ecommerce/cart')
@@ -47,10 +47,10 @@ export const getProduct = createAsyncThunk(
   }
 )
 
-export const addToWishlist = createAsyncThunk('courses/addFavorites', async id => {
-  await instance.post('/Course/AddCourseFavorite', { courseId: id })
-  return id
-})
+// export const addToWishlist = createAsyncThunk('courses/addFavorites', async id => {
+//   await instance.post('/Course/AddCourseFavorite', { courseId: id })
+//   return id
+// })
 
 export const deleteCartItem = createAsyncThunk('appEcommerce/deleteCartItem', async (id, { dispatch }) => {
   await axios.delete(`/apps/ecommerce/cart/${id}`)
@@ -66,7 +66,10 @@ export const appEcommerceSlice = createSlice({
     products: [],
     wishlist: [],
     totalProducts: 0,
-    productDetail: {}
+    productDetail: {},
+    selectedFilter: "all",
+    selectedSort :"asc",
+    selectedSortCol :"active"
   },
   reducers: {
     setCourseList: (state, action) => {
@@ -85,6 +88,15 @@ export const appEcommerceSlice = createSlice({
     
       state.totalProducts = action.payload.data.totalCount
     },
+    setSelectedFilter: (state, action) => {
+      state.selectedFilter = action.payload    
+    },
+    setSelectedSort: (state, action) => {
+      state.selectedSort = action.payload    
+    },
+    setSelectedSortCol: (state, action) => {
+      state.selectedSortCol = action.payload    
+    }
   },
   extraReducers: builder => {
     builder
@@ -105,9 +117,9 @@ export const appEcommerceSlice = createSlice({
       state.totalProducts = action.payload.data.totalCount
   })
   
-    .addCase(getWishlistItems.fulfilled, (state, action) => {
-        state.wishlist = action.payload.favoriteCourseDto
-    })
+    // .addCase(getWishlistItems.fulfilled, (state, action) => {
+    //     state.wishlist = action.payload.favoriteCourseDto
+    // })
     .addCase(getCartItems.fulfilled, (state, action) => {
         state.cart = action.payload.products
     })
@@ -117,7 +129,5 @@ export const appEcommerceSlice = createSlice({
   }
 })
 
-export const { setCourseList } = appEcommerceSlice.actions
-
-
+export const { setCourseList, setSelectedFilter,setSelectedSort,setSelectedSortCol } = appEcommerceSlice.actions
 export default appEcommerceSlice.reducer

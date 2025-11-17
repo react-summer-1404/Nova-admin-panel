@@ -19,7 +19,6 @@ const ProductCards = props => {
     getProducts,
     getCartItems,
     addToWishlist,
-    deleteWishlistItem
   } = props
 
   

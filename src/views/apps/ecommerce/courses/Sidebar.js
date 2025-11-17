@@ -1,10 +1,10 @@
 // ** Custom Hooks
 // import { useRTL } from "@hooks/useRTL";
 
-import { useState } from 'react'; 
-import { useDispatch } from "react-redux";
-import instance from '../../../../core/interseptor/Interseptor'; 
-import { setCourseList } from "../store";  
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import instance from "../../../../core/interseptor/Interseptor";
+import { setCourseList, setSelectedFilter } from "../store";
 
 // ** Third Party Components
 import classnames from "classnames";
@@ -18,47 +18,34 @@ import "@styles/react/libs/noui-slider/noui-slider.scss";
 const Sidebar = (props) => {
   // ** Props
   const { sidebarOpen } = props;
-  
+
   const dispatch = useDispatch();
-  const [selectedFilter, setSelectedFilter] = useState('all'); 
+  const selectedFilter = useSelector((state) => state.ecommerce.selectedFilter);
 
-  const handleApi = async (id) => { 
-    setSelectedFilter(id);
-    console.log(id)
+  const handleApi = async (id) => {
+    dispatch(setSelectedFilter(id));
+    console.log(id);
 
-    let url = ""; 
+    let url = "";
     let params = {};
-  
+
     if (id === "myCourse") {
       url = "/SharePanel/GetMyCourses";
       params = {
         PageNumber: 1,
         RowsOfPage: 10,
-        SortingCol: "",
-        SortType: "",
-        Query: ""
       };
-    } 
-    else if(id === "all"){ 
+    } else if (id === "all") {
       url = "/Course/CourseList";
       params = {
         PageNumber: 1,
         RowsOfPage: 10,
-        SortingCol: "",
-        SortType: "",
-        Query: ""
       };
     }
-    try {
-        const response = await instance.get(url, { params });
-        
-        dispatch(setCourseList({ params, data: response.data }));
-        
-    } catch (error) {
-        console.error("Error fetching courses:", error);
-    }
+    const response = await instance.get(url, { params });
+    dispatch(setCourseList({ params, data: response.data }));
   };
-  
+
   const categories = [
     { id: "all", title: "همه دوره ها" },
     { id: "reserved", title: "رزرو شده" },
@@ -76,13 +63,14 @@ const Sidebar = (props) => {
         >
           <Row>
             <Col sm="12">
-              <h6 className="filter-heading d-none d-lg-block">Filters</h6>
+              <h6 className="filter-heading d-none d-lg-block">
+                فیلتر دوره ها
+              </h6>
             </Col>
           </Row>
           <Card>
             <CardBody>
               <div id="product-categories">
-                <h6 className="filter-title">مدیریت دوره ها</h6>
                 <ul className="list-unstyled categories-list">
                   {categories.map((category) => {
                     return (
@@ -105,12 +93,6 @@ const Sidebar = (props) => {
                     );
                   })}
                 </ul>
-              </div>
-
-              <div id="clear-filters">
-                <Button color="primary" block>
-                  Clear All Filters
-                </Button>
               </div>
             </CardBody>
           </Card>

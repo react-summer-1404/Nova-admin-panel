@@ -20,7 +20,7 @@ import {
 
 const Product = props => {
   // ** Props
-  const { data, deleteWishlistItem, dispatch, addToWishlist, getProduct, productId, addToCart } = props
+  const { data, dispatch, getProduct, productId, addToCart } = props
 
   // ** State
   const [selectedColor, setSelectedColor] = useState('primary')
@@ -48,14 +48,14 @@ const Product = props => {
   }
 
   // ** Handle Wishlist item toggle
-  const handleWishlist = val => {
-    if (val) {
-      dispatch(deleteWishlistItem(productId))
-    } else {
-      dispatch(addToWishlist(productId))
-    }
-    dispatch(getProduct(productId))
-  }
+  // const handleWishlist = val => {
+  //   if (val) {
+  //     dispatch(deleteWishlistItem(productId))
+  //   } else {
+  //     dispatch(addToWishlist(productId))
+  //   }
+  //   dispatch(getProduct(productId))
+  // }
 
   // ** Handle Move/Add to cart
   const handleCartBtn = (id, val) => {

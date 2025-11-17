@@ -15,7 +15,7 @@ import { ShoppingCart, Home, CreditCard } from 'react-feather'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { getCartItems, deleteCartItem, deleteWishlistItem, addToWishlist } from '../store'
+import { getCartItems, deleteCartItem } from '../store'
 
 // ** Styles
 import '@styles/base/pages/app-ecommerce.scss'
@@ -46,9 +46,9 @@ const Checkout = () => {
           dispatch={dispatch}
           products={store.cart}
           getCartItems={getCartItems}
-          addToWishlist={addToWishlist}
+          // addToWishlist={addToWishlist}
           deleteCartItem={deleteCartItem}
-          deleteWishlistItem={deleteWishlistItem}
+          // deleteWishlistItem={deleteWishlistItem}
         />
       )
     },

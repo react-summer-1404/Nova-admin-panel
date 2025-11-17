@@ -14,7 +14,7 @@ import '@styles/react/libs/input-number/input-number.scss'
 
 const Cart = props => {
   // ** Props
-  const { products, stepper, deleteCartItem, dispatch, addToWishlist, deleteWishlistItem, getCartItems } = props
+  const { products, stepper, deleteCartItem, dispatch, getCartItems } = props
 
   // ** Function to convert Date
   const formatDate = (value, formatting = { month: 'short', day: 'numeric', year: 'numeric' }) => {
@@ -23,14 +23,14 @@ const Cart = props => {
   }
 
   // ** Funciton Function to toggle wishlist item
-  const handleWishlistClick = (id, val) => {
-    if (val) {
-      dispatch(deleteWishlistItem(id))
-    } else {
-      dispatch(addToWishlist(id))
-    }
-    dispatch(getCartItems())
-  }
+  // const handleWishlistClick = (id, val) => {
+  //   if (val) {
+  //     dispatch(deleteWishlistItem(id))
+  //   } else {
+  //     dispatch(addToWishlist(id))
+  //   }
+  //   dispatch(getCartItems())
+  // }
 
   // ** Render cart items
   const renderCart = () => {

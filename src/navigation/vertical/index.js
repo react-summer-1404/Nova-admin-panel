@@ -23,7 +23,6 @@ export default [
     id: "smaplePage",
     title: "Sample Page",
     icon: <Airplay size={20} />,
-    // navLink: "/sample",
     children: [
       {
         id: "invoiceList",
@@ -35,14 +34,14 @@ export default [
   },
   {
     id: "eCommerce",
-    title: "eCommerce",
-    icon: <ShoppingCart size={20} />,
+    title: "مدیریت دوره ها",
+    icon: <BookOpen size={20} />,
     children: [
       {
         id: "shop",
-        title: "Shop",
+        title: "لیست دوره ها",
         icon: <Circle size={12} />,
-        navLink: "/apps/ecommerce/shop",
+        navLink: "/apps/ecommerce/courses",
       },
       {
         id: "detail",

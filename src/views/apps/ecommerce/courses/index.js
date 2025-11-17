@@ -10,7 +10,7 @@ import Breadcrumbs from '@components/breadcrumbs'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, getProducts, getCartItems, addToWishlist, deleteCartItem, deleteWishlistItem } from '../store'
+import { addToCart, getProducts, getCartItems,  deleteCartItem } from '../store'
 
 // ** Styles
 import '@styles/react/apps/app-ecommerce.scss'
@@ -38,7 +38,7 @@ const Shop = () => {
 
   return (
     <Fragment>
-      <Breadcrumbs title='Shop' data={[{ title: 'eCommerce' }, { title: 'Shop' }]} />
+      <Breadcrumbs title='دوره ها' data={[{ title: 'مدیریت دوره ها' }, { title: 'دوره ها' }]} />
       <Products
         store={store}
         dispatch={dispatch}
@@ -48,10 +48,10 @@ const Shop = () => {
         sidebarOpen={sidebarOpen}
         getCartItems={getCartItems}
         setActiveView={setActiveView}
-        addToWishlist={addToWishlist}
+        // addToWishlist={addToWishlist}
         setSidebarOpen={setSidebarOpen}
         deleteCartItem={deleteCartItem}
-        deleteWishlistItem={deleteWishlistItem}
+        // deleteWishlistItem={deleteWishlistItem}
       />
       <Sidebar sidebarOpen={sidebarOpen} />
     </Fragment>

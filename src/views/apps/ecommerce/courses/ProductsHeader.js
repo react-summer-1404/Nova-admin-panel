@@ -1,5 +1,6 @@
 // ** Third Party Components
 import classnames from 'classnames'
+import { useState } from 'react'
 import { Menu, Grid, List } from 'react-feather'
 
 // ** Reactstrap Imports
@@ -13,16 +14,63 @@ import {
   DropdownToggle,
   UncontrolledButtonDropdown
 } from 'reactstrap'
+import { setCourseList, setSelectedFilter,setSelectedSort, setSelectedSortCol } from "../store";
+import { useDispatch, useSelector } from 'react-redux';
+import instance from '../../../../core/interseptor/Interseptor';
+
+// const [selectedSortOption,setSelectedSortOption]=useState("")
+
 
 const ProductsHeader = props => {
+const selectedFilter = useSelector((state) => state.ecommerce.selectedFilter);
+const selectedSort = useSelector((state) => state.ecommerce.selectedSort);
+const selectedSortCol = useSelector((state) => state.ecommerce.selectedSortCol);
+
   // ** Props
   const { activeView, setActiveView, dispatch, getProducts, store, setSidebarOpen } = props
+  const handleApi = async (filterId = selectedFilter, sort = selectedSort,sortCol=selectedSortCol) => {
+    dispatch(setSelectedFilter(filterId))
+    dispatch(setSelectedSort(sort))
+    dispatch(setSelectedSortCol(sortCol))
 
+    console.log("filterId",filterId);
+    console.log("sort",sort);
+    console.log("sortCol",sortCol);
+  
+    let url = "";
+    let params = {};
+  
+    if (filterId === "myCourse") {
+      url = "/SharePanel/GetMyCourses";
+      params = {
+        PageNumber: 1,
+        RowsOfPage: 10,
+        SortType:sort ||null,
+        SortingCol:sortCol||null
+
+      };
+    } else if (filterId === "all") {
+      url = "/Course/CourseList";
+      params = {
+        PageNumber: 1,
+        RowsOfPage: 10,
+        SortType:sort || null,
+        SortingCol:sortCol||null
+      };
+    }
+    const response = await instance.get(url, { params });
+    dispatch(setCourseList({ params, data: response.data }));
+  };
   // ** Sorting obj
   const sortToggleText = {
-    'price-desc': 'Highest',
-    'price-asc': 'Lowest',
-    featured: 'Featured'
+    'asc': 'صعودی',
+    'desc': 'نزولی',
+    'featured': 'Featured'
+  }
+  const sortColToggleText = {
+    'active': 'فعال',
+    'cost': 'قیمت',
+    'featured': 'Featured'
   }
 
   return (
@@ -41,26 +89,37 @@ const ProductsHeader = props => {
             <div className='view-options d-flex'>
               <UncontrolledButtonDropdown className='dropdown-sort'>
                 <DropdownToggle className='text-capitalize me-1' color='primary' outline caret>
-                  {sortToggleText[store.params.sortBy]}
+                {sortToggleText[selectedSort] || 'Sort'}
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem
                     className='w-100'
-                    onClick={() => dispatch(getProducts({ ...store.params, sortBy: 'featured' }))}
-                  >
-                    Featured
+                    onClick={() => handleApi(selectedFilter, "asc")}>
+                  
+                    صعودی
                   </DropdownItem>
                   <DropdownItem
                     className='w-100'
-                    onClick={() => dispatch(getProducts({ ...store.params, sortBy: 'price-asc' }))}
-                  >
-                    Lowest
+                    onClick={() => handleApi(selectedFilter, "desc")}>
+                    نزولی
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledButtonDropdown>
+              <UncontrolledButtonDropdown className='dropdown-sort'>
+                <DropdownToggle className='text-capitalize me-1' color='primary' outline caret>
+                {sortColToggleText[selectedSortCol] || 'Sort'}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem
+                    className='w-100'
+                    onClick={() => handleApi(selectedFilter, selectedSort,"active")}>
+                  
+                    فعال
                   </DropdownItem>
                   <DropdownItem
                     className='w-100'
-                    onClick={() => dispatch(getProducts({ ...store.params, sortBy: 'price-desc' }))}
-                  >
-                    Highest
+                    onClick={() => handleApi(selectedFilter,selectedSort, "cost")}>
+                    قیمت
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledButtonDropdown>

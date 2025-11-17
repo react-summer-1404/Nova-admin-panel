@@ -99,9 +99,9 @@ const ProductsPage = props => {
               products={store.products}
               getProducts={getProducts}
               getCartItems={getCartItems}
-              addToWishlist={addToWishlist}
+              // addToWishlist={addToWishlist}
               deleteCartItem={deleteCartItem}
-              deleteWishlistItem={deleteWishlistItem}
+              // deleteWishlistItem={deleteWishlistItem}
             />
             <Pagination className='d-flex justify-content-center ecommerce-shop-pagination mt-2'>
               <PaginationItem
