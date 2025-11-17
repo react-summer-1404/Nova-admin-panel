@@ -1,4 +1,4 @@
-import { Mail, Home, Airplay, Circle,Users } from "react-feather";
+import { Mail, Home, Airplay, Circle,Users, User } from "react-feather";
 
 export default [
   {
@@ -8,10 +8,24 @@ export default [
     navLink: "/home",
   },
   {
-    id: "userManage",
+    id: "users",
     title: "مدیریت کاربران",
-    icon: <Users size={20} />,
-    navLink: "/userManagement",
+    icon: <User size={20} />,
+    // navLink: "/user/list",
+    children: [
+      {
+        id: "list",
+        title: "لیست",
+        icon: <Circle size={12} />,
+        navLink: "/user/list",
+      },
+      // {
+      //   id: "view",
+      //   title: "View",
+      //   icon: <Circle size={12} />,
+      //   navLink: "/user/view",
+      // },
+    ],
   },
   {
     id: "secondPage",

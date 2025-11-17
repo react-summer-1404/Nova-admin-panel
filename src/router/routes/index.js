@@ -13,6 +13,7 @@ import PublicRoute from "@components/routes/PublicRoute";
 // ** Utils
 import { isObjEmpty } from "@utils";
 
+
 const getLayout = {
   blank: <BlankLayout />,
   vertical: <VerticalLayout />,
@@ -26,13 +27,14 @@ const TemplateTitle = "%s - Vuexy React Admin Template";
 const DefaultRoute = "/home";
 
 const Home = lazy(() => import("../../pages/Home"));
-const UserManagement = lazy(() => import("../../pages/UserManagement"));
 const SecondPage = lazy(() => import("../../pages/SecondPage"));
 const Login = lazy(() => import("../../pages/Login"));
 const Register = lazy(() => import("../../pages/Register"));
 const ForgotPassword = lazy(() => import("../../pages/ForgotPassword"));
 const Error = lazy(() => import("../../pages/Error"));
 const Sample = lazy(() => import("../../pages/Sample"));
+const UsersList = lazy(() => import("../../@core/components/user/list"));
+const UserView = lazy(() => import("../../@core/components/user/view"));
 
 // ** Merge Routes
 const Routes = [
@@ -45,9 +47,18 @@ const Routes = [
     path: "/home",
     element: <Home />,
   },
+  
   {
-    path: "/userManagement",
-    element: <UserManagement />,
+    element: <UsersList/>,
+    path: '/user/list'
+  },
+  {
+    path: '/user/view',
+    element: <Navigate to='/apps/user/view/1' />
+  },
+  {
+    element: <UserView />,
+    path: '/user/view/:id'
   },
   {
     path: "/sample",
