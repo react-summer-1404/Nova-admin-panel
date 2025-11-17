@@ -27,9 +27,7 @@ import {
   DropdownToggle,
   UncontrolledButtonDropdown,
 } from "reactstrap";
-import { lazy } from "react";
-import { Suspense } from "react";
-const DTAdvance = lazy(() => import('../../../apps/tables/data-tables/advance'))
+
 
 const Product = (props) => {
   // ** Props
@@ -206,11 +204,10 @@ const Product = (props) => {
             </DropdownMenu>
           </UncontrolledButtonDropdown> */}
         </div>
-        <Suspense fallback={<div>در حال بارگذاری جدول...</div>}>
-        <DTAdvance />
-      </Suspense>
+
       </Col>
     </Row>
+
   );
 };
 

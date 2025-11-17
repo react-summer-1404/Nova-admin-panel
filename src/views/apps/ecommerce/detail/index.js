@@ -19,6 +19,7 @@ import { getProduct, addToCart } from '../store'
 
 import '@styles/base/pages/app-ecommerce-details.scss'
 import { lazy } from 'react'
+import { Suspense } from 'react'
 
 const Details = () => {
   // ** Vars
@@ -33,6 +34,7 @@ const Details = () => {
   useEffect(() => {
     dispatch(getProduct(productId))
   }, [])
+  const DTAdvance = lazy(() => import('../../../apps/tables/data-tables/advance'))
 
   return (
     <Fragment>
@@ -54,7 +56,9 @@ const Details = () => {
             <ItemFeatures />
             <CardBody>
               {/* <RelatedProducts /> */}
-              
+              <Suspense fallback={<div>در حال بارگذاری جدول...</div>}>
+        <DTAdvance />
+      </Suspense>
             </CardBody>
           </Card>
         ) : null}

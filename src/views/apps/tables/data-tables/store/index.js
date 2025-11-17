@@ -30,6 +30,7 @@ export const commentsSlice = createSlice({
         user: item.author,
         title: item.title,
         comment: item.describe,
+        userId:item.userId,
         date: item.insertDate,
         like: item.likeCount,
         dislike: item.disslikeCount,
