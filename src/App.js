@@ -6,6 +6,7 @@ const queryClient = new QueryClient();
 import Router from "./router/Router";
 
 const App = () => {
+  const queryClient = new QueryClient();
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={null}>
