@@ -31,18 +31,17 @@ const ProductCards = props => {
 
         return (
           <Card className='ecommerce-card' key={item.id}>
-            <div className='item-img text-center mx-auto'>
+            <div className='item-img text-center mx-auto' style={{position:"relative"}}>
               <Link to={`/apps/ecommerce/product-detail/${item.id}`}>
                 <img className='img-fluid card-img-top' src={item.image} alt={item.name} />
+                          <div style={{position:"absolute" ,top:30,right:5, fontSize:16,padding:2,borderRadius:8,backgroundColor:"#7367f0",color:"#fff",width:50,textAlign:"center"}}>{item.active?"فعال":"غیرفعال"}</div>
               </Link>
             </div>
             <CardBody>
               <div className='item-wrapper'>
                 <div className='item-rating'>
                   <ul className='unstyled-list list-inline'>
-                        <li key={item.id} className='ratings-list-item me-25'>
-                          <div style={{ fontSize:16,padding:2,borderRadius:8,backgroundColor:"#7367f0",color:"#fff",width:50,textAlign:"center"}}>{item.rating?"فعال":"غیرفعال"}</div>
-                        </li>
+                       <h5>{item.brand}</h5>
                   </ul>
                 </div>
                 <div className='item-cost text-right'>
@@ -54,7 +53,7 @@ const ProductCards = props => {
                   {item.name}
                 </Link>
                 <CardText tag='span' className='item-company'>
-                  By{' '}
+                  توسط{' '}
                   <a className='company-name' href='/' onClick={e => e.preventDefault()}>
                     {item.brand}
                   </a>

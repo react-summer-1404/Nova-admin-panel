@@ -46,29 +46,27 @@ const ProductsPage = props => {
 
   // ** Render pages
   const renderPageItems = () => {
-    const arrLength =
-      store.totalProducts !== 0 && store.products.length !== 0 ? Number(store.totalProducts) / store.products.length : 3
+const total = Number(store.totalProducts) || 0
+const perPage = store.products.length || 1
+let arrLength = Math.ceil(total / perPage)
 
-    return new Array(Math.trunc(arrLength)).fill().map((item, index) => {
-      return (
-        <PaginationItem
-          key={index}
-          active={store.params.page === index + 1}
-          onClick={() => handlePageChange(index + 1)}
-        >
-          <PaginationLink href='/' onClick={e => e.preventDefault()}>
-            {index + 1}
-          </PaginationLink>
-        </PaginationItem>
-      )
-    })
-  }
+if (!Number.isFinite(arrLength) || arrLength < 1) arrLength = 1
 
-  // ** handle next page click
-  const handleNext = () => {
-    if (store.params.page !== Number(store.totalProducts) / store.products.length) {
-      handlePageChange('next')
-    }
+
+return new Array(arrLength).fill().map((item, index) => {
+  return (
+    <PaginationItem
+      key={index}
+      active={store.params.page === index + 1}
+      onClick={() => handlePageChange(index + 1)}
+    >
+      <PaginationLink href='/' onClick={e => e.preventDefault()}>
+        {index + 1}
+      </PaginationLink>
+    </PaginationItem>
+  )
+})
+
   }
 
   return (

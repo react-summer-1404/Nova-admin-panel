@@ -75,18 +75,9 @@ export const appEcommerceSlice = createSlice({
     setCourseList: (state, action) => {
       state.params = action.payload.params
     
-      state.products = action.payload.data.courseDtos?.map(course => ({
-        id: course.courseId,
-        name: course.title,
-        image: course.imageAddress,
-        price: course.cost,
-        brand: course.fullName,
-        slug: course.courseId, 
-        description: course.describe, 
-        rating:course.active
-      }))
-    
-      state.totalProducts = action.payload.data.totalCount
+      state.products = action.payload.data.mappedData
+state.totalProducts = action.payload.data.totalCount
+
     },
     setSelectedFilter: (state, action) => {
       state.selectedFilter = action.payload    
@@ -111,7 +102,7 @@ export const appEcommerceSlice = createSlice({
         brand: course.fullName,
         slug: course.courseId,
         description: course.describe,
-        rating: course.active
+        active: course.active
       })) || []
   
       state.totalProducts = action.payload.data.totalCount

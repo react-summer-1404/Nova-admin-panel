@@ -42,10 +42,97 @@ const Sidebar = (props) => {
         RowsOfPage: 10,
       };
     }
-    const response = await instance.get(url, { params });
-    dispatch(setCourseList({ params, data: response.data }));
+    else if (id === "paidCourse") {
+      url = "/CoursePayment";
+      params = {};
+    }
+     else if (id === "reserved") {
+      url = "/SharePanel/GetMyCoursesReserve";
+      params = {};
+    }
+    const response = Object.keys(params).length>0 
+    ? await instance.get(url, { params })
+    : await instance.get(url);
+ 
+  
+  let mappedData = []
+  let total = 0
+  
+  if (id === "all") {
+    mappedData = response.data.courseDtos?.map(course => ({
+      id: course.courseId,
+      name: course.title,
+      image: course.imageAddress,
+      price: course.cost,
+      brand: course.fullName,
+      slug: course.courseId,
+      description: course.describe,
+      rating: course.active
+    }))
+    total = response.data.totalCount
+  }
+  
+  else if (id === "myCourse") {
+    mappedData = response.data?.map(item => ({
+      id: item.courseId,
+      name: item.title,
+      image: item.imageAddress,
+      price: item.cost,
+      brand: item.teacherName,
+      slug: item.courseId,
+      description: item.describe,
+      rating: item.currentRate
+    }))
+    total = mappedData.length
+  }
+  
+  else if (id === "reserved") {
+    mappedData = response.data?.map(item => ({
+      id: item.courseId,
+      name: item.courseName,
+      image: item.image,
+      // price: item.cost,
+      brand: item.teacher,
+      slug: item.courseId
+    }))
+    total = mappedData.length
+  }
+  
+  else if (id === "paidCourse") {
+    const payments = response.data || [];
+  
+    const coursesGet = await instance.get("/Course/CourseList", {
+      params: { PageNumber: 1, RowsOfPage: 10 }
+    });
+  
+    const courses = coursesGet.data.courseDtos || [];
+  
+    mappedData = payments.map(payment => {
+      const course = courses.find(item => item.courseId === payment.courseId);
+  console.log("course",course)
+  console.log("payments",payments)
+      return {
+        id: payment.courseId,
+        name: course?.title,
+        image: course?.imageAddress || null,
+        price: payment.Paid,
+        brand: course?.fullName ,
+        slug: payment.courseId,
+        paymentDate: payment.PeymentDate
+      };
+    });
+  
+    total = mappedData.length;
+  }
+  
+  
+  dispatch(setCourseList({ 
+    params, 
+    data: {  mappedData, totalCount: total } 
+  }));
+  
+console.log(mappedData)
   };
-
   const categories = [
     { id: "all", title: "همه دوره ها" },
     { id: "reserved", title: "رزرو شده" },
