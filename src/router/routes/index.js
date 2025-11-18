@@ -34,7 +34,6 @@ const Register = lazy(() => import("../../pages/Register"));
 const ForgotPassword = lazy(() => import("../../pages/ForgotPassword"));
 const Error = lazy(() => import("../../pages/Error"));
 const Sample = lazy(() => import("../../pages/Sample"));
-// const CourseList = lazy(() => import("../../views/apps/ecommerce/shop"));
 const EcommerceShop = lazy(() => import('../../views/apps/ecommerce/courses'))
 const EcommerceDetail = lazy(() => import('../../views/apps/ecommerce/detail'))
 // const EcommerceWishlist = lazy(() => import('../../views/apps/ecommerce/wishlist'))
@@ -42,6 +41,8 @@ const EcommerceCheckout = lazy(() => import('../../views/apps/ecommerce/checkout
 
 
 const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
+const DTAdvance2 = lazy(() => import('../../views/apps/tables/data-tables-user/advance'))
+const DTAdvance3 = lazy(() => import('../../views/apps/tables/data-tables-groups/advance'))
 
 // ** Merge Routes
 const Routes = [
@@ -113,6 +114,14 @@ const Routes = [
   {
     path: '/datatables/advance',
     element: <DTAdvance />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance2 />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance3 />
   },
   {
     path: '/apps/ecommerce/product-detail/:product',

@@ -153,22 +153,20 @@ const Product = (props) => {
 
         </div>
         <div className="d-flex flex-column flex-sm-row pt-1">
-          <Button
+          {/* <Button
             tag={CartBtnTag}
             className="btn-cart me-0 me-sm-1 mb-1 mb-sm-0"
             color="primary"
             onClick={() => handleCartBtn(data.id, data.isInCart)}
-            /*eslint-disable */
             {...(data.isInCart
               ? {
                   to: "/apps/ecommerce/checkout",
                 }
               : {})}
-            /*eslint-enable */
           >
             <ShoppingCart className="me-50" size={14} />
             {data.isInCart ? "View in cart" : "Move to cart"}
-          </Button>
+          </Button> */}
           
           {/* <Button
             className='btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0'

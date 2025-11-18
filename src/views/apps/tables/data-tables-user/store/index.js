@@ -6,15 +6,15 @@ import axios from 'axios'
 import instance from '../../../../../core/interseptor/Interseptor'
 
 export const getData = createAsyncThunk(
-  'comments/getData',
+  'courseUsers/getData',
   async ({courseId}) => {
-    const response = await instance.get(`/Course/GetCourseCommnets/${courseId}`)
+    const response = await instance.get(`/CourseReserve/${courseId}`)
     return response.data
   }
 )
 
-export const commentsSlice = createSlice({
-  name: 'comments',
+export const courseUsersSlice = createSlice({
+  name: 'courseUsers',
   initialState: {
     data: [],
     total: 1,
@@ -27,11 +27,8 @@ export const commentsSlice = createSlice({
       state.data = action.payload.map(item => ({
         id: item.id,
         courseId: item.courseId,
-        user: item.author,
-        title: item.title,
-        comment: item.describe,
-        userId:item.userId,
-        date: item.insertDate,
+        user: item.studentName,
+        title: item.courseName,
         accepted: item.accept
       }))
 
@@ -40,4 +37,4 @@ export const commentsSlice = createSlice({
   }
 })
 
-export default commentsSlice.reducer
+export default courseUsersSlice.reducer
