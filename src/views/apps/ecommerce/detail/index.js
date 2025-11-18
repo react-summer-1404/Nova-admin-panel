@@ -11,16 +11,15 @@ import RelatedProducts from "./RelatedProducts";
 import BreadCrumbs from "@components/breadcrumbs";
 
 // ** Reactstrap Imports
-import { Card, CardBody } from "reactstrap";
+import { Card, CardBody, Col } from "reactstrap";
 
 // ** Store & Actions
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct, addToCart } from "../store";
 
 import "@styles/base/pages/app-ecommerce-details.scss";
-import { lazy } from "react";
-import { Suspense } from "react";
-
+import TabsIcons from "../../components/tabs/TabsIconsCourses";
+import tabsBasic from "../../components/tabs/TabsBasic";
 const Details = () => {
   // ** Vars
   const params = useParams().product;
@@ -34,18 +33,7 @@ const Details = () => {
   useEffect(() => {
     dispatch(getProduct(productId));
   }, []);
-  const DTAdvance = lazy(() =>
-    import("../../../apps/tables/data-tables/advance")
-  );
-  const DTAdvance2 = lazy(() =>
-    import("../../../apps/tables/data-tables-user/advance")
-  );
-  const DTAdvance3 = lazy(() =>
-    import("../../../apps/tables/data-tables-groups/advance")
-  );
-  const DTAdvance4 = lazy(() =>
-    import("../../../apps/tables/data-tables-payment/advance")
-  );
+ 
 
   return (
     <Fragment>
@@ -67,25 +55,14 @@ const Details = () => {
                 // deleteWishlistItem={deleteWishlistItem}
               />
             </CardBody>
-            <ItemFeatures />
+            <ItemFeatures data={store.productDetail} />
             <CardBody>
-              {/* <RelatedProducts /> */}
-              {/* comment table */}
-              <Suspense>
-                <DTAdvance />
-              </Suspense>
-              {/* students table */}
-              <Suspense>
-                <DTAdvance2 />
-              </Suspense>
-              {/* group table */}
-              <Suspense>
-                <DTAdvance3 />
-              </Suspense>
-              {/* payment table */}
-              <Suspense>
-                <DTAdvance4 />
-              </Suspense>
+            <Col xl='12' lg='12'>
+          <Card title='Tabs with icons' code={tabsBasic}>
+            <TabsIcons />
+          </Card>
+        </Col>
+            
             </CardBody>
           </Card>
         ) : null}

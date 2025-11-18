@@ -44,6 +44,7 @@ const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance
 const DTAdvance2 = lazy(() => import('../../views/apps/tables/data-tables-user/advance'))
 const DTAdvance3 = lazy(() => import('../../views/apps/tables/data-tables-groups/advance'))
 const DTAdvance4 = lazy(() => import('../../views/apps/tables/data-tables-payment/advance'))
+const DTAdvance5 = lazy(() => import('../../views/apps/tables/data-tables-socialGroups/advance'))
 
 // ** Merge Routes
 const Routes = [
@@ -127,6 +128,10 @@ const Routes = [
   {
     path: '/datatables/advance',
     element: <DTAdvance4 />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance5 />
   },
   {
     path: '/apps/ecommerce/product-detail/:product',

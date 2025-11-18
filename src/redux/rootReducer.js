@@ -6,9 +6,10 @@ import comments from "../views/apps/tables/data-tables/store"
 import courseUsers from "../views/apps/tables/data-tables-user/store"
 import courseGroup from "../views/apps/tables/data-tables-groups/store"
 import coursePayment from "../views/apps/tables/data-tables-payment/store"
+import courseSocialGroup from "../views/apps/tables/data-tables-payment/store"
 
 
   
-  const rootReducer = { navbar, layout ,ecommerce ,comments,courseUsers,courseGroup,coursePayment};
+  const rootReducer = { navbar, layout ,ecommerce ,comments,courseUsers,courseGroup,coursePayment,courseSocialGroup};
 
 export default rootReducer;

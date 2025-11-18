@@ -139,6 +139,9 @@ state.totalProducts = action.payload.data.totalCount
         courseTeches: courseDetail.courseTeches,
         miniDescribe: courseDetail.miniDescribe,
         tumbImageAddress: courseDetail.tumbImageAddress,
+        courseCommentTotal:courseDetail.courseCommentTotal,
+        reserveUserTotal :courseDetail.reserveUserTotal,
+        courseGroupTotal :courseDetail.courseGroupTotal,
       }
     })
     

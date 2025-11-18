@@ -2,10 +2,10 @@
 import { Fragment, useState, useEffect, memo } from 'react'
 
 // ** Table Columns
-import { serverSideColumns } from '../paymentData'
+import { serverSideColumns } from '../socialGroupData'
 
 // ** Store & Actions
-import { getData } from '../../data-tables-payment/store'
+import { getData } from '../store'
 import { useSelector, useDispatch } from 'react-redux'
 
 // ** Third Party Components
@@ -19,33 +19,48 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col } from 'reactstrap'
 const DataTableServerSide = () => {
   const dispatch = useDispatch()
   const courseId = useSelector(state => state.ecommerce.productDetail.id)
-  const store = useSelector(state => state.coursePayment)
+  const store = useSelector(state => state.courseSocialGroup)
+  const newStore = store.data.filter(item=>item.courseId==courseId)
+  console.log("newStore",newStore)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
-
-  // ** Fetch data
-  useEffect(() => {
-    if (courseId) {
-      dispatch(getData({ courseId }))
-    }
-  }, [courseId])
 
   // ** Handle rows per page
   const handlePerPage = e => {
     const newPerPage = parseInt(e.target.value)
     setRowsPerPage(newPerPage)
-    setCurrentPage(1)
+    setCurrentPage(1)   
+  
+    useEffect(() => {
+      if (courseId) {
+        dispatch(
+          getData({
+            page: currentPage,
+            perPage: rowsPerPage
+          })
+        )
+      }
+    }, [courseId, currentPage, rowsPerPage])
+    
   }
+  
+  
 
   // ** Handle pagination
   const handlePagination = page => {
     setCurrentPage(page.selected + 1)
+    dispatch(
+      getData({
+        page: page.selected + 1,
+        perPage: rowsPerPage
+      })
+    )
   }
 
-  // ** Custom Pagination
+  // ** Custom Pagination component
   const CustomPagination = () => {
-    const pageCount = Math.ceil(store.total / rowsPerPage)
+    const pageCount = Math.ceil(newStore.length / rowsPerPage)
 
     return (
       <ReactPaginate
@@ -72,15 +87,21 @@ const DataTableServerSide = () => {
   }
 
   // ** Slice data for current page
-  const dataToRender = store.data.slice(
+  const dataToRender = newStore.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   )
 
+  // useEffect(() => {
+  //   if (courseId) {
+  //     dispatch(getData({ courseId }))
+  //   }
+  // }, [courseId])
+
   return (
     <Card>
       <CardHeader className='border-bottom'>
-        <CardTitle tag='h4'>وضعیت پرداخت</CardTitle>
+        <CardTitle tag='h4'>نظرات کاربران</CardTitle>
       </CardHeader>
 
       <Row className='mx-0 mt-1 mb-50'>
