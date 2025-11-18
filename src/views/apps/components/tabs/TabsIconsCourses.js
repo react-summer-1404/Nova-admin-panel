@@ -4,7 +4,7 @@ import { lazy } from "react";
 import { Fragment, useState } from "react";
 
 // ** Icons Imports
-import { MessageCircle, Box, Users,CreditCard, } from "react-feather";
+import { MessageCircle, Box, Users,CreditCard,Globe,UserCheck } from "react-feather";
 
 // ** Reactstrap Imports
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
@@ -18,6 +18,9 @@ import("../../../apps/tables/data-tables-payment/advance")
 );
 const DTAdvance5 = lazy(() =>
 import("../../../apps/tables/data-tables-socialGroups/advance")
+);
+const DTAdvance6 = lazy(() =>
+import("../../../apps/tables/data-tables-mentors/advance")
 );
 const TabsIcons = () => {
   {
@@ -90,8 +93,20 @@ const TabsIcons = () => {
               toggle("5");
             }}
           >
-            <CreditCard size={18} />
+            <Globe size={18} />
             <span className="align-middle">گروه های اجتماعی</span>
+          </NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink
+            active={active === "6"}
+            onClick={() => {
+              toggle("6");
+            }}
+          >
+            <UserCheck size={18} />
+            <span className="align-middle">منتور ها</span>
           </NavLink>
         </NavItem>
       </Nav>
@@ -125,9 +140,16 @@ const TabsIcons = () => {
         </TabPane>
 
         <TabPane tabId="5">
-          {/* group table */}
+          {/*social group table */}
           <Suspense>
             <DTAdvance5 />
+          </Suspense>
+        </TabPane>
+
+        <TabPane tabId="6">
+          {/*mentors table */}
+          <Suspense>
+            <DTAdvance6 />
           </Suspense>
         </TabPane>
 
