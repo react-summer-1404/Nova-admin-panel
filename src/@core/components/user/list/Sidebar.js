@@ -14,43 +14,17 @@ import { useForm, Controller } from 'react-hook-form'
 
 // ** Reactstrap Imports
 import { Button, Label, FormText, Form, Input } from 'reactstrap'
+import { UseCreateUser } from '../../../../core/Hook/useMUserApi'
+import toast from 'react-hot-toast'
 
 
 const defaultValues = {
-  email: '',
-  contact: '',
-  company: '',
-  fullName: '',
-  username: '',
-  country: null
+  gmail: '',
+  phoneNumber: '',
+  firstName: '',
+  lastName: '',
+  birthDay: '',
 }
-
-const countryOptions = [
-  { label: 'Australia', value: 'Australia' },
-  { label: 'Bangladesh', value: 'Bangladesh' },
-  { label: 'Belarus', value: 'Belarus' },
-  { label: 'Brazil', value: 'Brazil' },
-  { label: 'Canada', value: 'Canada' },
-  { label: 'China', value: 'China' },
-  { label: 'France', value: 'France' },
-  { label: 'Germany', value: 'Germany' },
-  { label: 'India', value: 'India' },
-  { label: 'Indonesia', value: 'Indonesia' },
-  { label: 'Israel', value: 'Israel' },
-  { label: 'Italy', value: 'Italy' },
-  { label: 'Japan', value: 'Japan' },
-  { label: 'Korea', value: 'Korea' },
-  { label: 'Mexico', value: 'Mexico' },
-  { label: 'Philippines', value: 'Philippines' },
-  { label: 'Russia', value: 'Russia' },
-  { label: 'South', value: 'South' },
-  { label: 'Thailand', value: 'Thailand' },
-  { label: 'Turkey', value: 'Turkey' },
-  { label: 'Ukraine', value: 'Ukraine' },
-  { label: 'United Arab Emirates', value: 'United Arab Emirates' },
-  { label: 'United Kingdom', value: 'United Kingdom' },
-  { label: 'United States', value: 'United States' }
-]
 
 const checkIsValid = data => {
   return Object.values(data).every(field => (typeof field === 'object' ? field !== null : field.length > 0))
@@ -59,11 +33,7 @@ const checkIsValid = data => {
 const SidebarNewUsers = ({ open, toggleSidebar }) => {
   // ** States
   const [data, setData] = useState(null)
-  const [plan, setPlan] = useState('basic')
-  const [role, setRole] = useState('subscriber')
-
-  // ** Store Vars
-  const dispatch = useDispatch()
+  const [role, setRole] = useState('student')
 
   // ** Vars
   const {
@@ -74,40 +44,36 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
     formState: { errors }
   } = useForm({ defaultValues })
 
+
+  const {mutate : createUser} = UseCreateUser(() =>{
+    toast.success('کاربر با موفقیت ایجاد شد')
+    toggleSidebar()
+  })
+
+  const handleCreate = (data) => {
+    if (!checkIsValid(data)){
+      for (const key in data){
+        if (data[key] === null || data[key].toString().trim().length === 0) {
+          setError(key, {type: 'manual'})
+        }     
+    }
+    return
+  }
+    const mappedRole = {
+      isStudent : role === "student",
+      isTeacher : role === "teacher"
+      }
+      createUser({
+        ...data,
+        ...mappedRole,
+      })
+    
+  }
+
   // ** Function to handle form submit
   const onSubmit = data => {
     setData(data)
-    if (checkIsValid(data)) {
-      toggleSidebar()
-      dispatch(
-        addUser({
-          role,
-          avatar: '',
-          status: 'active',
-          email: data.email,
-          currentPlan: plan,
-          billing: 'auto debit',
-          company: data.company,
-          contact: data.contact,
-          fullName: data.fullName,
-          username: data.username,
-          country: data.country.value
-        })
-      )
-    } else {
-      for (const key in data) {
-        if (data[key] === null) {
-          setError('country', {
-            type: 'manual'
-          })
-        }
-        if (data[key] !== null && data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
-        }
-      }
-    }
+    handleCreate(data)
   }
 
   const handleSidebarClosed = () => {
@@ -115,14 +81,13 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
       setValue(key, '')
     }
     setRole('subscriber')
-    setPlan('basic')
   }
 
   return (
     <Sidebar
       size='lg'
       open={open}
-      title='New User'
+      title='کاربر جدید'
       headerClassName='mb-1'
       contentClassName='pt-0'
       toggleSidebar={toggleSidebar}
@@ -130,121 +95,89 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
     >
       <Form onSubmit={handleSubmit(onSubmit)}>
         <div className='mb-1'>
-          <Label className='form-label' for='fullName'>
-            Full Name <span className='text-danger'>*</span>
+          <Label className='form-label' for='firstName'>
+            نام  <span className='text-danger'>*</span>
           </Label>
           <Controller
-            name='fullName'
+            name='firstName'
             control={control}
             render={({ field }) => (
-              <Input id='fullName' placeholder='John Doe' invalid={errors.fullName && true} {...field} />
+              <Input id='firstName' placeholder=' نام را وارد کنید' invalid={errors.firstName && true} {...field} />
             )}
           />
         </div>
         <div className='mb-1'>
-          <Label className='form-label' for='username'>
-            Username <span className='text-danger'>*</span>
+          <Label className='form-label' for='lastName'>
+          نام خانوادگی <span className='text-danger'>*</span>
           </Label>
           <Controller
-            name='username'
+            name='lastName'
             control={control}
             render={({ field }) => (
-              <Input id='username' placeholder='johnDoe99' invalid={errors.username && true} {...field} />
+              <Input id='lastName' placeholder='نام خاوادکی را وارد کنید' invalid={errors.lastName && true} {...field} />
             )}
           />
         </div>
         <div className='mb-1'>
-          <Label className='form-label' for='userEmail'>
-            Email <span className='text-danger'>*</span>
+          <Label className='form-label' for='gmail'>
+            ایمیل <span className='text-danger'>*</span>
           </Label>
           <Controller
-            name='email'
+            name='gmail'
             control={control}
             render={({ field }) => (
               <Input
-                type='email'
-                id='userEmail'
-                placeholder='john.doe@example.com'
-                invalid={errors.email && true}
+                type='gmail'
+                id='gmail'
+                placeholder='ایمیل را وارد کنید'
+                invalid={errors.gmail && true}
                 {...field}
               />
             )}
           />
-          <FormText color='muted'>You can use letters, numbers & periods</FormText>
+          <FormText color='muted'>از حروف اعداد و نقطه استفاده کنید</FormText>
         </div>
 
         <div className='mb-1'>
-          <Label className='form-label' for='contact'>
-            Contact <span className='text-danger'>*</span>
+          <Label className='form-label' for='phoneNumber'>
+            شماره تلفن <span className='text-danger'>*</span>
           </Label>
           <Controller
-            name='contact'
+            name='phoneNumber'
             control={control}
             render={({ field }) => (
-              <Input id='contact' placeholder='(397) 294-5153' invalid={errors.contact && true} {...field} />
+              <Input id='phoneNumber' placeholder='شماره را وارد کنید' invalid={errors.phoneNumber && true} {...field} />
             )}
           />
         </div>
+        
         <div className='mb-1'>
-          <Label className='form-label' for='company'>
-            Company <span className='text-danger'>*</span>
+          <Label className='form-label' for='password'>
+            رمز  <span className='text-danger'>*</span>
           </Label>
           <Controller
-            name='company'
+            name='password'
             control={control}
             render={({ field }) => (
-              <Input id='company' placeholder='Company Pvt Ltd' invalid={errors.company && true} {...field} />
+              <Input id='password' type='password' placeholder=' رمز را وارد کنید' invalid={errors.password && true} {...field} />
             )}
           />
         </div>
-        <div className='mb-1'>
-          <Label className='form-label' for='country'>
-            Country <span className='text-danger'>*</span>
-          </Label>
-          <Controller
-            name='country'
-            control={control}
-            render={({ field }) => (
-              // <Input id='country' placeholder='Australia' invalid={errors.country && true} {...field} />
-              <Select
-                isClearable={false}
-                classNamePrefix='select'
-                options={countryOptions}
-                theme={selectThemeColors}
-                className={classnames('react-select', { 'is-invalid': data !== null && data.country === null })}
-                {...field}
-              />
-            )}
-          />
-        </div>
+
         <div className='mb-1'>
           <Label className='form-label' for='user-role'>
-            User Role
+            نقش
           </Label>
           <Input type='select' id='user-role' name='user-role' value={role} onChange={e => setRole(e.target.value)}>
-            <option value='subscriber'>Subscriber</option>
-            <option value='editor'>Editor</option>
-            <option value='maintainer'>Maintainer</option>
-            <option value='author'>Author</option>
-            <option value='admin'>Admin</option>
-          </Input>
-        </div>
-        <div className='mb-1' value={plan} onChange={e => setPlan(e.target.value)}>
-          <Label className='form-label' for='select-plan'>
-            Select Plan
-          </Label>
-          <Input type='select' id='select-plan' name='select-plan'>
-            <option value='basic'>Basic</option>
-            <option value='enterprise'>Enterprise</option>
-            <option value='company'>Company</option>
-            <option value='team'>Team</option>
+            <option value='student'>دانش اموز</option>
+            <option value='teacher'>معلم</option>
           </Input>
         </div>
         <Button type='submit' className='me-1' color='primary'>
-          Submit
+          افزودن کاربر
         </Button>
         <Button type='reset' color='secondary' outline onClick={toggleSidebar}>
-          Cancel
+          بستن
         </Button>
       </Form>
     </Sidebar>

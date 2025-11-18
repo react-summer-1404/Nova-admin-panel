@@ -50,7 +50,7 @@ const Routes = [
   
   {
     element: <UsersList/>,
-    path: '/user/list'
+    path: '/list'
   },
   {
     path: '/user/view',

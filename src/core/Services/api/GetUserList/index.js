@@ -33,5 +33,5 @@ export const ReverseToActiveUser = async(id) => {
 
 export const AddUserAccess = async (data) => {
     const response = await instance.post("/User/AddUserAccess", data)
-    return response .data
+    return response.data
 }

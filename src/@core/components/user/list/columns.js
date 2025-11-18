@@ -27,7 +27,7 @@ const renderClient = row => {
 }
 
 // ** Renders Role Columns
-const renderRole = row => {
+const renderRole = role => {
   const roleObj = {
     student: {
       class : 'text-primary',
@@ -47,26 +47,26 @@ const renderRole = row => {
     }
   }
 
-  const Icon = roleObj[row.role] ?.icon || User
-  const iconClass = roleObj[row.role] ?.class || "text-secondary"
+  const Icon = roleObj[role] ?.icon || User
+  const iconClass = roleObj[role] ?.class || "text-secondary"
 
   return (
-    <span className ='text-truncate text-capitalize align-middle'>
+    <span key={role} className ='text-truncate text-capitalize align-middle'>
       <Icon size={18} className ={`${iconClass} me-50`} />
-      {row.role}
+      {role}
     </span>
   )
 }
 
-const statusObj = {
-  pending: 'light-warning',
-  active: 'light-success',
-  inactive: 'light-secondary'
+const statusObj = {  
+  true: 'light-success',
+  false: 'light-warning',
+  // inactive: 'light-secondary'
 }
 
-export const columns = [
+export const columns = ({handleDelete}) => [
   {
-    name: 'User',
+    name: 'کاربر',
     sortable: true,
     minWidth: '300px',
     sortField: 'fName',
@@ -78,7 +78,6 @@ export const columns = [
           <Link
             to={`/user/view/${row.id}`}
             className ='user_name text-truncate text-body'
-            onClick={() => store.dispatch(getUser(row.id))}
           >
             <span className ='fw-bolder'>{row.fName}</span>
           </Link>
@@ -88,44 +87,41 @@ export const columns = [
     )
   },
   {
-    name: 'Role',
+    name: 'نقش',
     sortable: true,
-    minWidth: '172px',
+    minWidth: '390px',
     sortField: 'roles',
-    selector: row => row.roles,
-    cell: row => renderRole(row)
-  },
-  {
-    name: 'Plan',
-    minWidth: '138px',
-    sortable: true,
-    sortField: 'currentPlan',
-    selector: row => row.currentPlan,
-    cell: row => <span className='text-capitalize'>{row.currentPlan}</span>
-  },
-  {
-    name: 'Billing',
-    minWidth: '230px',
-    sortable: true,
-    sortField: 'billing',
-    selector: row => row.billing,
-    cell: row => <span className='text-capitalize'>{row.billing}</span>
-  },
-  {
-    name: 'Status',
-    minWidth: '138px',
-    sortable: true,
-    sortField: 'status',
-    selector: row => row.status,
+    selector: row => row.roles.join(", "),
     cell: row => (
-      <Badge className ='text-capitalize' color={statusObj[row.status]} pill>
-        {row.status}
-      </Badge>
+    <div className='d-flex, flex-column'>
+      {row.roles.map(role => renderRole(role))}
+    </div>
     )
   },
   {
-    name: 'Actions',
-    minWidth: '100px',
+    name: 'درصد تکمیل پروفایل',
+    minWidth: '200px',
+    sortable: true,
+    sortField: 'profileCompletionPercentage',
+    selector: row => row.profileCompletionPercentage,
+    cell: row => <span className='text-capitalize'>{row.profileCompletionPercentage}</span>
+  },
+  {
+    name: 'وضعیت',
+    minWidth: '138px',
+    sortable: true,
+    sortField: 'active',
+    selector: row => row.active,
+    cell: row => (
+      <Badge className ='text-capitalize' color={statusObj[row.active]}>
+        {row.active == true ? "فعال": " غیر فعال"}
+      </Badge>
+    ),
+  },
+  
+  {
+    name: 'عملیات',
+    minWidth: '80px',
     cell: row => (
       <div className='column-action'>
         <UncontrolledDropdown>
@@ -136,27 +132,20 @@ export const columns = [
             <DropdownItem
               tag={Link}
               className='w-100'
-              to={`/apps/user/view/${row.id}`}
-              onClick={() => store.dispatch(getUser(row.id))}
+              to={`user/view/${row.id}`}              
             >
               <FileText size={14} className='me-50' />
-              <span className='align-middle'>Details</span>
+              <span className='align-middle'>جزییات</span>
             </DropdownItem>
-            <DropdownItem tag='a' href='/' className='w-100' onClick={e => e.preventDefault()}>
+            <DropdownItem tag={Link} to= {`user/edit/${row.id}`}>
               <Archive size={14} className='me-50' />
-              <span className='align-middle'>Edit</span>
+              <span className='align-middle'>ویرایش</span>
             </DropdownItem>
             <DropdownItem
-              tag='a'
-              href='/'
-              className='w-100'
-              onClick={e => {
-                e.preventDefault()
-                store.dispatch(deleteUser(row.id))
-              }}
+              onClick={() => handleDelete(row)} className='w-100'
             >
               <Trash2 size={14} className='me-50' />
-              <span className='align-middle'>Delete</span>
+              <span className='align-middle'>حذف</span>
             </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
