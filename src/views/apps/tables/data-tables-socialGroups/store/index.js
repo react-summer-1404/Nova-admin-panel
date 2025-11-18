@@ -9,11 +9,12 @@ export const getData = createAsyncThunk(
   'courseSocialGroup/getData',
   async () => {
     const response = await instance.get("/CourseSocialGroup")
+    console.log("response", response.data) 
     return response.data
   }
 )
 
-export const commentsSlice = createSlice({
+export const courseSocialGroupSlice = createSlice({
   name: 'courseSocialGroup',
   initialState: {
     data: [],
@@ -23,17 +24,18 @@ export const commentsSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(getData.fulfilled, (state, action) => {
-
-      state.data = action.payload.map(item => ({
+        
+        state.data = action.payload.map(item => ({
         id: item.id,
         courseId: item.courseId,
         groupLink: item.groupLink,
         groupName: item.groupName,
       }))
+      console.log("action.payload",action.payload)
 
       state.total = action.payload.length
     })
   }
 })
 
-export default commentsSlice.reducer
+export default courseSocialGroupSlice.reducer

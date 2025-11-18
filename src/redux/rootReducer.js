@@ -6,7 +6,7 @@ import comments from "../views/apps/tables/data-tables/store"
 import courseUsers from "../views/apps/tables/data-tables-user/store"
 import courseGroup from "../views/apps/tables/data-tables-groups/store"
 import coursePayment from "../views/apps/tables/data-tables-payment/store"
-import courseSocialGroup from "../views/apps/tables/data-tables-payment/store"
+import courseSocialGroup from "../views/apps/tables/data-tables-socialGroups/store"
 
 
   

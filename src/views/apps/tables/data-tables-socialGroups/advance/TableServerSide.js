@@ -20,83 +20,75 @@ const DataTableServerSide = () => {
   const dispatch = useDispatch()
   const courseId = useSelector(state => state.ecommerce.productDetail.id)
   const store = useSelector(state => state.courseSocialGroup)
-  const newStore = store.data.filter(item=>item.courseId==courseId)
+  const newStore = store?.data?.filter(item=>item.courseId==courseId)
   console.log("newStore",newStore)
+  console.log("store.data",store.data)
+  console.log("courseId",courseId)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
 
+  useEffect(() => {
+    dispatch(getData())
+  }, [])
   // ** Handle rows per page
-  const handlePerPage = e => {
-    const newPerPage = parseInt(e.target.value)
-    setRowsPerPage(newPerPage)
-    setCurrentPage(1)   
+  // const handlePerPage = e => {
+  //   const newPerPage = parseInt(e.target.value)
+  //   setRowsPerPage(newPerPage)
+  //   setCurrentPage(1)   
   
-    useEffect(() => {
-      if (courseId) {
-        dispatch(
-          getData({
-            page: currentPage,
-            perPage: rowsPerPage
-          })
-        )
-      }
-    }, [courseId, currentPage, rowsPerPage])
     
-  }
+  // }
   
   
 
   // ** Handle pagination
-  const handlePagination = page => {
-    setCurrentPage(page.selected + 1)
-    dispatch(
-      getData({
-        page: page.selected + 1,
-        perPage: rowsPerPage
-      })
-    )
-  }
+  // const handlePagination = page => {
+  //   setCurrentPage(page.selected + 1)
+  //   dispatch(
+  //     getData({
+  //       page: page.selected + 1,
+  //       perPage: rowsPerPage
+  //     })
+  //   )
+  // }
 
   // ** Custom Pagination component
-  const CustomPagination = () => {
-    const pageCount = Math.ceil(newStore.length / rowsPerPage)
+  // const CustomPagination = () => {
+  //   const pageCount = Math.ceil(newStore?.length / rowsPerPage)
 
-    return (
-      <ReactPaginate
-        previousLabel={''}
-        nextLabel={''}
-        breakLabel='...'
-        pageCount={pageCount || 1}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={2}
-        activeClassName='active'
-        forcePage={currentPage !== 0 ? currentPage - 1 : 0}
-        onPageChange={handlePagination}
-        pageClassName='page-item'
-        breakClassName='page-item'
-        nextLinkClassName='page-link'
-        pageLinkClassName='page-link'
-        breakLinkClassName='page-link'
-        previousLinkClassName='page-link'
-        nextClassName='page-item next-item'
-        previousClassName='page-item prev-item'
-        containerClassName='pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
-      />
-    )
-  }
+  //   return (
+  //     <ReactPaginate
+  //       previousLabel={''}
+  //       nextLabel={''}
+  //       breakLabel='...'
+  //       pageCount={pageCount || 1}
+  //       marginPagesDisplayed={2}
+  //       pageRangeDisplayed={2}
+  //       activeClassName='active'
+  //       forcePage={currentPage !== 0 ? currentPage - 1 : 0}
+  //       onPageChange={handlePagination}
+  //       pageClassName='page-item'
+  //       breakClassName='page-item'
+  //       nextLinkClassName='page-link'
+  //       pageLinkClassName='page-link'
+  //       breakLinkClassName='page-link'
+  //       previousLinkClassName='page-link'
+  //       nextClassName='page-item next-item'
+  //       previousClassName='page-item prev-item'
+  //       containerClassName='pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
+  //     />
+  //   )
+  // }
 
   // ** Slice data for current page
-  const dataToRender = newStore.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  )
+  // const dataToRender = newStore?.slice(
+  //   (currentPage - 1) * rowsPerPage,
+  //   currentPage * rowsPerPage
+  // )
 
-  // useEffect(() => {
-  //   if (courseId) {
-  //     dispatch(getData({ courseId }))
-  //   }
-  // }, [courseId])
+  
+  
 
   return (
     <Card>
@@ -104,7 +96,7 @@ const DataTableServerSide = () => {
         <CardTitle tag='h4'>نظرات کاربران</CardTitle>
       </CardHeader>
 
-      <Row className='mx-0 mt-1 mb-50'>
+      {/* <Row className='mx-0 mt-1 mb-50'>
         <Col sm='6'>
           <div className='d-flex align-items-center'>
             <Label for='sort-select'>show</Label>
@@ -126,17 +118,17 @@ const DataTableServerSide = () => {
             <Label for='sort-select'>entries</Label>
           </div>
         </Col>
-      </Row>
+      </Row> */}
 
       <div className='react-dataTable'>
         <DataTable
           columns={serverSideColumns}
-          data={dataToRender}
+          data={newStore}
           sortIcon={<ChevronDown size={10} />}
           className='react-dataTable'
-          pagination
-          paginationServer
-          paginationComponent={CustomPagination}
+          // pagination
+          // paginationServer
+          // paginationComponent={CustomPagination}
         />
       </div>
     </Card>

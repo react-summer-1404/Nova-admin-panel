@@ -23,7 +23,7 @@ export const coursePaymentSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getData.fulfilled, (state, action) => {
-      console.log("Payload from API:", action.payload); 
+     ; 
       state.data = action.payload.map(item => ({
         id: item.id,
         courseId: item.courseId,
