@@ -43,6 +43,9 @@ const Details = () => {
   const DTAdvance3 = lazy(() =>
     import("../../../apps/tables/data-tables-groups/advance")
   );
+  const DTAdvance4 = lazy(() =>
+    import("../../../apps/tables/data-tables-payment/advance")
+  );
 
   return (
     <Fragment>
@@ -67,14 +70,21 @@ const Details = () => {
             <ItemFeatures />
             <CardBody>
               {/* <RelatedProducts /> */}
-              <Suspense fallback={<div>در حال بارگذاری جدول...</div>}>
+              {/* comment table */}
+              <Suspense>
                 <DTAdvance />
               </Suspense>
-              <Suspense fallback={<div>در حال بارگذاری جدول...</div>}>
+              {/* students table */}
+              <Suspense>
                 <DTAdvance2 />
               </Suspense>
-              <Suspense fallback={<div>در حال بارگذاری جدول...</div>}>
+              {/* group table */}
+              <Suspense>
                 <DTAdvance3 />
+              </Suspense>
+              {/* payment table */}
+              <Suspense>
+                <DTAdvance4 />
               </Suspense>
             </CardBody>
           </Card>

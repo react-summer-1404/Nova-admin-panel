@@ -9,7 +9,7 @@ import { MoreVertical, Edit, FileText, Archive, Trash } from 'react-feather'
 const ExpandableTable = ({ data }) => {
   return (
     <div className='expandable-content p-2'>
-      <p><span className='fw-bold'>نام گروه</span>{data.groupCapacity} </p>
+      <p><span className='fw-bold'>ظرفیت گروه</span>{data.groupCapacity} </p>
       <p className='m-0'><span className='fw-bold'>عنوان:</span>{data.title}</p>
     </div>
   )
@@ -18,7 +18,7 @@ const ExpandableTable = ({ data }) => {
 
 // ** Table Server Side Column
 export const serverSideColumns = [
-  { name: 'نام گروه', selector: row => row.groupCapacity, sortable: true },
+  { name: 'ظرفیت گروه', selector: row => row.groupCapacity, sortable: true },
   { name: 'عنوان', selector: row => row.title, sortable: true },
 ]
 

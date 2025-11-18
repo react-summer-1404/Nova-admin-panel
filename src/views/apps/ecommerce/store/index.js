@@ -131,6 +131,7 @@ export const appEcommerceSlice = createSlice({
         image: courseDetail.imageAddress,
         price: courseDetail.cost,
         brand: courseDetail.teacherName,
+        teacherId:courseDetail.teacherId,
         slug: courseDetail.courseId,
         description: courseDetail.describe,
         rating: courseDetail.currentRate,

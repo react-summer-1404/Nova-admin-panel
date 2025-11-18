@@ -7,8 +7,10 @@ import instance from '../../../../../core/interseptor/Interseptor'
 
 export const getData = createAsyncThunk(
   'courseGroup/getData',
-  async ({courseId,teacherId}) => {
-    const response = await instance.get(`/CourseReserve/TeacherId=${teacherId}&CourseId=${courseId}`)
+  async ({ courseId, teacherId }) => {
+    const response = await instance.get(
+      `/CourseGroup/GetCourseGroup?TeacherId=${teacherId}&CourseId=${courseId}`
+    )
     return response.data
   }
 )

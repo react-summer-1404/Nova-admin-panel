@@ -25,17 +25,13 @@ const DataTableServerSide = () => {
 
   useEffect(() => {
     if (courseId) {
-      dispatch(getData({ courseId })).then(res => {
-        console.log("COMMENTS FROM API:", res.payload)
-      })
+      dispatch(getData({ courseId }))
     }
   }, [courseId])
-console.log(courseId)
   
   // const filteredData = store.data.filter(item =>
   //   item.comment?.toLowerCase().includes(searchValue.toLowerCase())
   // )
-  console.log("REDUX DATA:", store.data)
 
   return (
     <Card>

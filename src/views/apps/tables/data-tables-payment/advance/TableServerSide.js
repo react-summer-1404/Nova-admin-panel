@@ -2,10 +2,10 @@
 import { Fragment, useState, useEffect, memo } from 'react'
 
 // ** Table Columns
-import { serverSideColumns } from '../groupData'
+import { serverSideColumns } from '../paymentData'
 
 // ** Store & Actions
-import { getData } from '../store'
+import { getData } from '../../data-tables-payment/store'
 import { useSelector, useDispatch } from 'react-redux'
 // ** Third Party Components
 import ReactPaginate from 'react-paginate'
@@ -18,28 +18,26 @@ import { Card, CardHeader, CardTitle, Input, Label, Row, Col } from 'reactstrap'
 const DataTableServerSide = () => {
   const dispatch = useDispatch()
   const courseId = useSelector(state => state.ecommerce.productDetail.id)
-  const teacherId = useSelector(state => state.ecommerce.productDetail.teacherId)
-  const store = useSelector(state => state.courseGroup)
+  const store = useSelector(state => state.coursePayment)
   // const [searchValue, setSearchValue] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
 
-  useEffect(() => {
-    if (courseId && teacherId) {
-      dispatch(getData({ courseId ,teacherId })).then(res => {
-        console.log("group FROM API:", res.payload)
-      })
-    }
-  }, [courseId ,teacherId])
-  
+useEffect(() => {
+  if (courseId) {
+    dispatch(getData({courseId}))
+  }
+}, [courseId])
+
+
   // const filteredData = store.data.filter(item =>
   //   item.comment?.toLowerCase().includes(searchValue.toLowerCase())
   // )
- console.log("course",courseId,"teacher",teacherId)
+
   return (
     <Card>
       <CardHeader className='border-bottom'>
-        <CardTitle tag='h4'>گروه های دوره</CardTitle>
+        <CardTitle tag='h4'>وضعیت پرداخت</CardTitle>
       </CardHeader>
 
       {/* <Row className='mx-0 mt-1 mb-50'>
@@ -65,6 +63,7 @@ const DataTableServerSide = () => {
            paginationPerPage={rowsPerPage}
            paginationRowsPerPageOptions={[5, 7, 10, 15]} 
            onChangeRowsPerPage={(newPerPage, page) => setRowsPerPage(newPerPage)}
+           
         />
       </div>
     </Card>
