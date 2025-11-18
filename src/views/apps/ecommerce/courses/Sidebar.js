@@ -73,17 +73,17 @@ const Sidebar = (props) => {
   }
   
   else if (id === "myCourse") {
-    mappedData = response.data?.map(item => ({
-      id: item.courseId,
-      name: item.title,
-      image: item.imageAddress,
-      price: item.cost,
-      brand: item.teacherName,
-      slug: item.courseId,
-      description: item.describe,
-      rating: item.currentRate
-    }))
-    total = mappedData.length
+    // mappedData = response.data?.map(item => ({
+    //   id: item.courseId,
+    //   name: item.title,
+    //   image: item.imageAddress,
+    //   price: item.cost,
+    //   brand: item.teacherName,
+    //   slug: item.courseId,
+    //   description: item.describe,
+    //   rating: item.currentRate
+    // }))
+    // total = mappedData.length
   }
   
   else if (id === "reserved") {
