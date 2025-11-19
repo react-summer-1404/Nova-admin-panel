@@ -102,7 +102,9 @@ state.totalProducts = action.payload.data.totalCount
         brand: course.fullName,
         slug: course.courseId,
         description: course.describe,
-        active: course.active
+        active: course.active,
+        lastUpdate:course.lastUpdate,
+        isExpire:course.isExpire
       })) || []
   
       state.totalProducts = action.payload.data.totalCount
