@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import { CommentManagment } from '../../../core/Services/api/GetUserList'
-import { Cell } from 'recharts'
 import { Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
 
