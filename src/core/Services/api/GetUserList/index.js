@@ -35,3 +35,10 @@ export const AddUserAccess = async (data) => {
     const response = await instance.post("/User/AddUserAccess", data)
     return response.data
 }
+
+export const CommentManagment = async() => {
+    const response = await instance.get("/Course/CommentManagment",{
+        params
+    })
+    return response.data
+}
