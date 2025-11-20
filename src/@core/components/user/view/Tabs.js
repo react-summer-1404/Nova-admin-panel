@@ -13,6 +13,7 @@ import Connections from './Connections'
 import UserProjectsList from './UserProjectsList'
 import UserCourseReserv from './UserCourseReserv'
 import { CommentManagment } from '../../../../core/Services/api/GetUserList'
+import CommentTable from '../../UserCommentManag/CommentTable'
 
 const UserTabs = ({ active, toggleTab, UserId, selectedUser }) => {
   return (
@@ -51,7 +52,7 @@ const UserTabs = ({ active, toggleTab, UserId, selectedUser }) => {
           <UserCourseReserv data ={selectedUser?.courseReserve} />
         </TabPane>       
         <TabPane tabId='3'>
-          <CommentManagment/>
+          <CommentTable/>
         </TabPane>
         <TabPane tabId='4'>
           <Connections data={selectedUser}/>

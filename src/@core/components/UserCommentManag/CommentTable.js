@@ -4,14 +4,18 @@ import { CommentManagment } from '../../../core/Services/api/GetUserList'
 import { Badge } from 'reactstrap'
 import DataTable from 'react-data-table-component'
 
-const {data} = useQuery({
-    queryKey : ["commentManag"],
-    queryFn : () => CommentManagment({
-        PageNumber : 1,
-        RowsOfPage: 10,
-    })
-})
 
+
+
+const CommentTable = () => {
+
+    const {data} = useQuery({
+        queryKey : ["commentManag"],
+        queryFn : () => CommentManagment({
+            PageNumber : 1,
+            RowsOfPage: 10,
+        })
+    })
 const columns = [
     {
         name : "عنوان",
@@ -39,3 +43,6 @@ return (
         pagination
     />
 )
+}
+
+export default CommentTable
