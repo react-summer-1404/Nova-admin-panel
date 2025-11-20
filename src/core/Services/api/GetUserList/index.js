@@ -22,7 +22,7 @@ export const UpdateUser = async (data) => {
     return response.data
 }
 export const DeleteUser = async(id) => {
-    const response = await instance.delete(`/User/DeleteUser${id}`)
+    const response = await instance.delete(`/User/DeleteUser`, {data: id})
     return response.data
 }
 

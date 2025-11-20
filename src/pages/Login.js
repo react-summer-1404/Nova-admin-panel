@@ -30,6 +30,8 @@ import "@styles/react/pages/page-authentication.scss";
 const Login = () => {
   const { skin } = useSkin();
 
+  
+
   const source = skin === "dark" ? illustrationsDark : illustrationsLight;
 
   return (

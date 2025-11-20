@@ -15,8 +15,11 @@ export const UseUpdateUser = (onSuccess) =>
 
 export const UseDeleteUser = (onSuccess) => 
     useMutation({
-        mutationFn : async (id) => await DeleteUser(id),
-        onSuccess
+        mutationFn : async (id) => {
+            const response = await DeleteUser(id)
+            console.log("delete user response ==>", response)
+        },
+        
     })
 
 export const UseReverseToActiveUser = (onSuccess) =>

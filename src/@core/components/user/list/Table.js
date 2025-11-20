@@ -217,8 +217,8 @@ const total = data?.totalCount || 0
     setSortColumn(column.sortField)
   }
 
-  const {mutate: deleteUser} = UseDeleteUser(() => {
-    toast.success("کاربر با موفقیت حذف شد در انتظار تایید توسط مدیران " )
+  const {mutate: deleteUser, onSuccess} = UseDeleteUser(() => {
+    onSuccess.toast.success("کاربر با موفقیت حذف شد در انتظار تایید توسط مدیران " )
     refetch()
   })
 

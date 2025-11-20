@@ -8,8 +8,6 @@ import Sidebar from '../../sidebar'
 import { selectThemeColors } from '@utils'
 
 // ** Third Party Components
-import Select from 'react-select'
-import classnames from 'classnames'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Reactstrap Imports
@@ -27,7 +25,7 @@ const defaultValues = {
 }
 
 const checkIsValid = data => {
-  return Object.values(data).every(field => (typeof field === 'object' ? field !== null : field.length > 0))
+  return Object.values(data).every(field => (typeof field === 'object' ?field.length > 0: field == null ))
 }
 
 const SidebarNewUsers = ({ open, toggleSidebar }) => {
@@ -80,7 +78,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
     for (const key in defaultValues) {
       setValue(key, '')
     }
-    setRole('subscriber')
+    setRole('student')
   }
 
   return (
@@ -94,11 +92,12 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
       onClosed={handleSidebarClosed}
     >
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <div className='mb-1'>
+        {/* <div className='mb-1'>
           <Label className='form-label' for='firstName'>
             نام  <span className='text-danger'>*</span>
           </Label>
           <Controller
+          
             name='firstName'
             control={control}
             render={({ field }) => (
@@ -143,14 +142,20 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
             شماره تلفن <span className='text-danger'>*</span>
           </Label>
           <Controller
+            rules={""}  
+          defaultValue=''
             name='phoneNumber'
+            type = "number"
             control={control}
-            render={({ field }) => (
+            render={({ field }) => {
+              console.log("phoneNumber field ==>", field)
+              return (
               <Input id='phoneNumber' placeholder='شماره را وارد کنید' invalid={errors.phoneNumber && true} {...field} />
-            )}
+              )
+            }}
           />
         </div>
-        
+    
         <div className='mb-1'>
           <Label className='form-label' for='password'>
             رمز  <span className='text-danger'>*</span>
@@ -162,9 +167,9 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
               <Input id='password' type='password' placeholder=' رمز را وارد کنید' invalid={errors.password && true} {...field} />
             )}
           />
-        </div>
+        </div> */}
 
-        <div className='mb-1'>
+        {/* <div className='mb-1'>
           <Label className='form-label' for='user-role'>
             نقش
           </Label>
@@ -172,8 +177,8 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
             <option value='student'>دانش اموز</option>
             <option value='teacher'>معلم</option>
           </Input>
-        </div>
-        <Button type='submit' className='me-1' color='primary'>
+        </div> */}
+        <Button type='submit' className='me-1' color='primary' onClick={() => handleCreate(data)}>
           افزودن کاربر
         </Button>
         <Button type='reset' color='secondary' outline onClick={toggleSidebar}>
