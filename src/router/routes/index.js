@@ -53,12 +53,8 @@ const Routes = [
     path: '/list'
   },
   {
-    path: '/user/view',
-    element: <Navigate to='/apps/user/view/1' />
-  },
-  {
     element: <UserView />,
-    path: '/user/view/:id'
+    path: '/list/:id'
   },
   {
     path: "/sample",

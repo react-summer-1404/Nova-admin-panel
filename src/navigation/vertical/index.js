@@ -11,20 +11,19 @@ export default [
     id: "users",
     title: "مدیریت کاربران",
     icon: <User size={20} />,
-    // navLink: "/user/list",
     navLink: "/list",
     // children: [
-    //   {
-    //     id: "list",
-    //     title: "لیست",
-    //     icon: <Circle size={12} />,
-    //     navLink: "/user/list",
-    //   },
+    //   // {
+    //   //   id: "list",
+    //   //   title: "لیست",
+    //   //   icon: <Circle size={12} />,
+    //   //   navLink: "/user/list",
+    //   // },
     //   // {
     //   //   id: "view",
     //   //   title: "View",
     //   //   icon: <Circle size={12} />,
-    //   //   navLink: "/user/view",
+    //   //   navLink: "/view",
     //   // },
     // ],
   },

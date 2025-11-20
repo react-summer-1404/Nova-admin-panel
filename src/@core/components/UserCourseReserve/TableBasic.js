@@ -1,32 +1,46 @@
+// ** Custom Components
+import AvatarGroup from '@components/avatar-group'
+
+// ** Images
+
 // ** Icons Imports
-// import { useQuery } from '@tanstack/react-query';
 import { MoreVertical, Edit, Trash } from 'react-feather'
 
 // ** Reactstrap Imports
-import { Table, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
-// import { getReport } from '../../../core/Services/api/Dashbord/DashboardReport';
+import { Table, Badge, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
+const statusColors = {
+  true: 'light-success',
+  false: 'light-secondary'
+}
 
-const TableStriped = ({data}) => {
-  
+const statusOptions = [
+  { value: true, label: 'فعال' },
+  { value: false, label: 'غیر فعال' },
+]
+const TableBasic = ({data}) => {
   return (
-    <Table striped responsive>
+    <Table responsive>
       <thead>
         <tr>
           <th>نام دوره</th>
-          <th>تعداد دفعات استفاده</th>
-          <th>اقدام </th>
+          <th>وضعیت</th>
+          <th>تاریخ رزرو</th>
+          <th>اقدام</th>
         </tr>
       </thead>
       <tbody>
-        {data?.map((item) => (
+        {data?.map((item) =>(
           <tr key={item.id}>
           <td>
-            <span className='align-middle fw-bold'>{item.techName}</span>
+            <span className='align-middle fw-bold'>{item.courseName}</span>
           </td>
           <td>
-          <span className='align-middle fw-bold '>{item.countUsed}</span>
+            <Badge className ='text-capitalize' color={statusObj[item.active]}>
+              {item.active == true ? "فعال" : "غیرفعال"}
+            </Badge>
           </td>
+          <td> {item.reserverDate.slice(0,10)}</td>                    
           <td>
             <UncontrolledDropdown>
               <DropdownToggle className='icon-btn hide-arrow' color='transparent' size='sm' caret>
@@ -42,7 +56,7 @@ const TableStriped = ({data}) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </td>
-        </tr>
+        </tr> 
         ))}
         
       </tbody>
@@ -50,4 +64,4 @@ const TableStriped = ({data}) => {
   )
 }
 
-export default TableStriped
+export default TableBasic

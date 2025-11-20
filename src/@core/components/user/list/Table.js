@@ -62,8 +62,7 @@ const CustomHeader = ({toggleSidebar, handlePerPage, rowsPerPage, handleFilter, 
               <option value='10'>10</option>
               <option value='25'>25</option>
               <option value='50'>50</option>
-            </Input>
-            <label htmlFor='rows-per-page'>Entries</label>
+            </Input>            
           </div>
         </Col>
         <Col
@@ -219,7 +218,7 @@ const total = data?.totalCount || 0
   }
 
   const {mutate: deleteUser} = UseDeleteUser(() => {
-    toast.success("کاربر با موفقیت حذف شد")
+    toast.success("کاربر با موفقیت حذف شد در انتظار تایید توسط مدیران " )
     refetch()
   })
 

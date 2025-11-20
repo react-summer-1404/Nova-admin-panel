@@ -12,7 +12,7 @@ import { useForm, Controller } from 'react-hook-form'
 import withReactContent from 'sweetalert2-react-content'
 
 // ** Custom Components
-import Avatar from '@components/avatar'
+import Avatar from '../../../components/avatar'
 
 // ** Utils
 import { selectThemeColors } from '@utils'
@@ -21,39 +21,25 @@ import { selectThemeColors } from '@utils'
 import '@styles/react/libs/react-select/_react-select.scss'
 
 const roleColors = {
-  editor: 'light-info',
+  SuperAdmin: 'light-info',
   admin: 'light-danger',
-  author: 'light-warning',
-  maintainer: 'light-success',
-  subscriber: 'light-primary'
+  teacher: 'light-warning',
+  student: 'light-success',
 }
 
 const statusColors = {
-  active: 'light-success',
-  pending: 'light-warning',
-  inactive: 'light-secondary'
+  true: 'light-success',
+  false: 'light-secondary'
 }
 
 const statusOptions = [
-  { value: 'active', label: 'Active' },
-  { value: 'inactive', label: 'Inactive' },
-  { value: 'suspended', label: 'Suspended' }
+  { value: true, label: 'فعال' },
+  { value: false, label: 'غیر فعال' },
 ]
 
-const countryOptions = [
-  { value: 'uk', label: 'UK' },
-  { value: 'usa', label: 'USA' },
-  { value: 'france', label: 'France' },
-  { value: 'russia', label: 'Russia' },
-  { value: 'canada', label: 'Canada' }
-]
-
-const languageOptions = [
-  { value: 'english', label: 'English' },
-  { value: 'spanish', label: 'Spanish' },
-  { value: 'french', label: 'French' },
-  { value: 'german', label: 'German' },
-  { value: 'dutch', label: 'Dutch' }
+const genderOptions = [
+  { value: true, label: 'مرد' },
+  { value: false, label: 'زن' },
 ]
 
 const MySwal = withReactContent(Swal)
@@ -69,23 +55,24 @@ const UserInfoCard = ({ selectedUser }) => {
     setError,
     handleSubmit,
     formState: { errors }
-  } = useForm({
-    defaultValues: {
-      username: selectedUser.username,
-      lastName: selectedUser.fullName.split(' ')[1],
-      firstName: selectedUser.fullName.split(' ')[0]
-    }
-  })
+  } = useForm({defaultValues})
+  
+
+  const defaultValues = {
+    username: selectedUser.userName || "",
+    lastName: selectedUser.lName.split(' ')[1] || "",
+    firstName: selectedUser.fName.split(' ')[0] || ""
+  }
 
   // ** render user img
   const renderUserImg = () => {
-    if (selectedUser !== null && selectedUser.avatar.length) {
+    if (selectedUser !== null && selectedUser.currentPictureAddress.length) {
       return (
         <img
           height='110'
           width='110'
           alt='user-avatar'
-          src={selectedUser.avatar}
+          src={selectedUser.currentPictureAddress}
           className='img-fluid rounded mt-3 mb-2'
         />
       )
@@ -95,7 +82,7 @@ const UserInfoCard = ({ selectedUser }) => {
           initials
           color={selectedUser.avatarColor || 'light-primary'}
           className='rounded mt-3 mb-2'
-          content={selectedUser.fullName}
+          content={selectedUser.fName}
           contentStyles={{
             borderRadius: 0,
             fontSize: 'calc(48px)',
@@ -127,9 +114,9 @@ const UserInfoCard = ({ selectedUser }) => {
 
   const handleReset = () => {
     reset({
-      username: selectedUser.username,
-      lastName: selectedUser.fullName.split(' ')[1],
-      firstName: selectedUser.fullName.split(' ')[0]
+      username: selectedUser.userName,
+      lastName: selectedUser.lName.split(' ')[1],
+      firstName: selectedUser.fName.split(' ')[0]
     })
   }
 
@@ -177,10 +164,10 @@ const UserInfoCard = ({ selectedUser }) => {
               {renderUserImg()}
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
-                  <h4>{selectedUser !== null ? selectedUser.fullName : 'Eleanor Aguilar'}</h4>
+                  <h4>{selectedUser !== null ? selectedUser.fName : ' نام کاربر'}</h4>
                   {selectedUser !== null ? (
-                    <Badge color={roleColors[selectedUser.role]} className='text-capitalize'>
-                      {selectedUser.role}
+                    <Badge color={roleColors[selectedUser?.roles]} className='text-capitalize'>
+                      {selectedUser.roles}
                     </Badge>
                   ) : null}
                 </div>
@@ -193,8 +180,8 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Check className='font-medium-2' />
               </Badge>
               <div className='ms-75'>
-                <h4 className='mb-0'>1.23k</h4>
-                <small>Tasks Done</small>
+                <h4 className='mb-0'>{selectedUser?.courseStudent.length || 0}</h4>
+                <small>دوره های ثبت شده</small>
               </div>
             </div>
             <div className='d-flex align-items-start'>
@@ -202,58 +189,51 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Briefcase className='font-medium-2' />
               </Badge>
               <div className='ms-75'>
-                <h4 className='mb-0'>568</h4>
-                <small>Projects Done</small>
+                <h4 className='mb-0'>{selectedUser?.courseReserve.length || 0}</h4>
+                <small>دوره های رزرو شده</small>
               </div>
             </div>
           </div>
-          <h4 className='fw-bolder border-bottom pb-50 mb-1'>Details</h4>
+          <h4 className='fw-bolder border-bottom pb-50 mb-1'>جزئیات</h4>
           <div className='info-container'>
             {selectedUser !== null ? (
               <ul className='list-unstyled'>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Username:</span>
-                  <span>{selectedUser.username}</span>
+                  <span className='fw-bolder me-25'>نام کاربری:</span>
+                  <span>{selectedUser.userName}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Billing Email:</span>
-                  <span>{selectedUser.email}</span>
+                  <span className='fw-bolder me-25'>ایمیل:</span>
+                  <span>{selectedUser.gmail}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Status:</span>
-                  <Badge className='text-capitalize' color={statusColors[selectedUser.status]}>
-                    {selectedUser.status}
+                  <span className='fw-bolder me-25'>وضعیت:</span>
+                  <Badge className='text-capitalize' color={statusColors[selectedUser?.active]}>
+                    {statusOptions.find(act => act.value === selectedUser?.active)?.label }
                   </Badge>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Role:</span>
-                  <span className='text-capitalize'>{selectedUser.role}</span>
+                  <span className='fw-bolder me-25'>نقش:</span>
+                  <span className='text-capitalize'>{selectedUser.roles}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Tax ID:</span>
-                  <span>Tax-{selectedUser.contact.substr(selectedUser.contact.length - 4)}</span>
+                  <span className='fw-bolder me-25'> جنسیت:</span>
+                  <span>{selectedUser.gender}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Contact:</span>
-                  <span>{selectedUser.contact}</span>
+                  <span className='fw-bolder me-25'>شماره موبایل:</span>
+                  <span>{selectedUser.phoneNumber}</span>
                 </li>
-                <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Language:</span>
-                  <span>English</span>
-                </li>
-                <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Country:</span>
-                  <span>England</span>
-                </li>
+                
               </ul>
             ) : null}
           </div>
           <div className='d-flex justify-content-center pt-2'>
             <Button color='primary' onClick={() => setShow(true)}>
-              Edit
+              ویرایش
             </Button>
             <Button className='ms-1' color='danger' outline onClick={handleSuspendedClick}>
-              Suspended
+              غیر فعال کردن
             </Button>
           </div>
         </CardBody>
@@ -262,67 +242,66 @@ const UserInfoCard = ({ selectedUser }) => {
         <ModalHeader className='bg-transparent' toggle={() => setShow(!show)}></ModalHeader>
         <ModalBody className='px-sm-5 pt-50 pb-5'>
           <div className='text-center mb-2'>
-            <h1 className='mb-1'>Edit User Information</h1>
-            <p>Updating user details will receive a privacy audit.</p>
+            <h1 className='mb-1'>ویرایش اطلاعات کاربر</h1>
           </div>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row className='gy-1 pt-75'>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='firstName'>
-                  First Name
+                  نام
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='firstName'
-                  name='firstName'
+                  name='fName'
                   render={({ field }) => (
-                    <Input {...field} id='firstName' placeholder='John' invalid={errors.firstName && true} />
+                    <Input {...field} id='firstName' placeholder='نام را وارد کنید' invalid={errors.fName && true} />
                   )}
                 />
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='lastName'>
-                  Last Name
+                  نام خانوادگی
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='lastName'
-                  name='lastName'
+                  name='lName'
                   render={({ field }) => (
-                    <Input {...field} id='lastName' placeholder='Doe' invalid={errors.lastName && true} />
+                    <Input {...field} id='lastName' placeholder='نام خانوادگی را وارد کنید' invalid={errors.lName && true} />
                   )}
                 />
               </Col>
               <Col xs={12}>
                 <Label className='form-label' for='username'>
-                  Username
+                  نام کاربری
                 </Label>
                 <Controller
                   defaultValue=''
                   control={control}
                   id='username'
-                  name='username'
+                  name='userName'
                   render={({ field }) => (
-                    <Input {...field} id='username' placeholder='john.doe.007' invalid={errors.username && true} />
+                    <Input {...field} id='username' placeholder='نام کاربری را وارد کنید' invalid={errors.userName && true} />
                   )}
                 />
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='billing-email'>
-                  Billing Email
+                  ایمیل
                 </Label>
                 <Input
                   type='email'
-                  id='billing-email'
-                  defaultValue={selectedUser.email}
-                  placeholder='example@domain.com'
+                  id='gmail'
+                  defaultValue={selectedUser.gmail}
+                  placeholder='ایمیل را وارد کنید'
                 />
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='status'>
-                  Status:
+                  وضعیت:
                 </Label>
                 <Select
                   id='status'
@@ -331,74 +310,33 @@ const UserInfoCard = ({ selectedUser }) => {
                   classNamePrefix='select'
                   options={statusOptions}
                   theme={selectThemeColors}
-                  defaultValue={statusOptions[statusOptions.findIndex(i => i.value === selectedUser.status)]}
+                  defaultValue={statusOptions[statusOptions.findIndex(i => i.value === selectedUser.active)]}
                 />
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='tax-id'>
-                  Tax ID
+                  جنسیت:
                 </Label>
-                <Input
-                  id='tax-id'
-                  placeholder='Tax-1234'
-                  defaultValue={selectedUser.contact.substr(selectedUser.contact.length - 4)}
+                <Select
+                  id='gender'
+                  isClearable={false}
+                  className='react-select'
+                  classNamePrefix='select'
+                  options={genderOptions}
+                  theme={selectThemeColors}
+                  defaultValue={genderOptions[genderOptions.findIndex(i => i.value === selectedUser.gender)]}
                 />
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='contact'>
-                  Contact
+                  شماره تلفن:
                 </Label>
-                <Input id='contact' defaultValue={selectedUser.contact} placeholder='+1 609 933 4422' />
+                <Input id='contact' defaultValue={selectedUser.phoneNumber} placeholder='شماره تلفن را وارد کنید' />
               </Col>
-              <Col md={6} xs={12}>
-                <Label className='form-label' for='language'>
-                  language
-                </Label>
-                <Select
-                  id='language'
-                  isClearable={false}
-                  className='react-select'
-                  classNamePrefix='select'
-                  options={languageOptions}
-                  theme={selectThemeColors}
-                  defaultValue={languageOptions[0]}
-                />
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className='form-label' for='country'>
-                  Country
-                </Label>
-                <Select
-                  id='country'
-                  isClearable={false}
-                  className='react-select'
-                  classNamePrefix='select'
-                  options={countryOptions}
-                  theme={selectThemeColors}
-                  defaultValue={countryOptions[0]}
-                />
-              </Col>
-              <Col xs={12}>
-                <div className='d-flex align-items-center mt-1'>
-                  <div className='form-switch'>
-                    <Input type='switch' defaultChecked id='billing-switch' name='billing-switch' />
-                    <Label className='form-check-label' htmlFor='billing-switch'>
-                      <span className='switch-icon-left'>
-                        <Check size={14} />
-                      </span>
-                      <span className='switch-icon-right'>
-                        <X size={14} />
-                      </span>
-                    </Label>
-                  </div>
-                  <Label className='form-check-label fw-bolder' for='billing-switch'>
-                    Use as a billing address?
-                  </Label>
-                </div>
-              </Col>
+              
               <Col xs={12} className='text-center mt-2 pt-50'>
                 <Button type='submit' className='me-1' color='primary'>
-                  Submit
+                  تایید و ارسال
                 </Button>
                 <Button
                   type='reset'
@@ -409,7 +347,7 @@ const UserInfoCard = ({ selectedUser }) => {
                     setShow(false)
                   }}
                 >
-                  Discard
+                  صرف نظر کردن
                 </Button>
               </Col>
             </Row>
