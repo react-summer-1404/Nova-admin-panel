@@ -58,7 +58,7 @@ const ProductCards = (props) => {
             </div>
             <CardBody>
              
-              {/* <Badge color="light-success">Free Shipping</Badge> */}
+            
               
               <h4 className="item-name">
                 <Link
@@ -95,7 +95,7 @@ const ProductCards = (props) => {
               <div className="item-wrapper">
                   <h6 className="item-wrapper" style={{display:"flex",gap:2}}>
                     <h6 style={{fontWeight:550,fontSize:16}}>اخرین اپدیت:</h6>
-                    <span style={{color:"gray"}}>{item.lastUpdate.slice(0,10)}</span>
+                    <span style={{color:"gray"}}>{item.lastUpdate}</span>
                   </h6>
 
                 <div className="item-cost text-right item-wrapper">

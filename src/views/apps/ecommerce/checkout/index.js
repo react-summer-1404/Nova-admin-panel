@@ -2,7 +2,7 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 
 // ** Custom Components
-import Wizard from '@components/wizard'
+import Wizard from '../../components/wizard/createCourseSteps/WizardModernVerticalCourse'
 import BreadCrumbs from '@components/breadcrumbs'
 
 // ** Steps
@@ -70,7 +70,7 @@ const Checkout = () => {
 
   return (
     <Fragment>
-      <BreadCrumbs title='Checkout' data={[{ title: 'eCommerce' }, { title: 'Checkout' }]} />
+      <BreadCrumbs title='ساخت دوره' data={[{ title: 'مدیریت دوره ها' }, { title: 'ساخت دوره' }]} />
       <Wizard
         ref={ref}
         steps={steps}

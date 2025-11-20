@@ -67,7 +67,7 @@ const Sidebar = (props) => {
       brand: course.fullName,
       slug: course.courseId,
       description: course.describe,
-      rating: course.active
+      active: course.active
     }))
     total = response.data.totalCount
   }
@@ -93,7 +93,8 @@ const Sidebar = (props) => {
       image: item.image,
       // price: item.cost,
       brand: item.teacher,
-      slug: item.courseId
+      slug: item.courseId,
+     
     }))
     total = mappedData.length
   }
@@ -118,7 +119,8 @@ const Sidebar = (props) => {
         price: payment.Paid,
         brand: course?.fullName ,
         slug: payment.courseId,
-        paymentDate: payment.PeymentDate
+        paymentDate: payment.PeymentDate,
+        active :course.active?"act":"deact"
       };
     });
   

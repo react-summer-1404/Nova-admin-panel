@@ -127,7 +127,7 @@ const Cart = props => {
     <div className='list-view product-checkout'>
       <div className='checkout-items'>{products.length ? renderCart() : <h4>Your cart is empty</h4>}</div>
       <div className='checkout-options'>
-        <Card>
+        {/* <Card>
           <CardBody>
             <label className='section-label mb-1'>Options</label>
             <InputGroup className='input-group-merge coupons'>
@@ -179,7 +179,7 @@ const Cart = props => {
               </Button>
             </div>
           </CardBody>
-        </Card>
+        </Card> */}
       </div>
     </div>
   )
