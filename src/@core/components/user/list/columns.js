@@ -76,7 +76,7 @@ export const columns = ({handleDelete}) => [
         {renderClient(row)}
         <div className ='d-flex flex-column'>
           <Link
-            to={`/list/view${row.id}`}
+            to={`/list/${row.id}`}
             className ='user_name text-truncate text-body'
           >
             <span className ='fw-bolder'>{row.fName}</span>

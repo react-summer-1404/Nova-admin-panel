@@ -35,13 +35,12 @@ const UserView = () => {
       <div className='text-center'>
         <h4 className='mb-1'>کاربر یافت نشد</h4>
         <p className='mb-1'>
-          <h4>کاربری با این شناسه وجود ندارد لیست کامل کاربران را ببینید :</h4>
+          <h4>کاربری با این شناسه وجود ندارد لیست کامل کاربران را ببینید : {}</h4>
           <Link to={'/list'}>لیست کاربران </Link>
         </p>
       </div>
     )
   }
-
   return (
     <div className='app-user-view'>
       <Row>
