@@ -54,7 +54,7 @@ const UserTabs = ({ active, toggleTab, UserId, selectedUser }) => {
           <CommentTable/>
         </TabPane>
         <TabPane tabId='4'>
-          <Connections data={selectedUser}/>
+          <Connections selectedUser={selectedUser}/>
         </TabPane>
       </TabContent>
     </Fragment>
