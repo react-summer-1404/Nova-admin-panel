@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 // ** Third Party Components
-import Select from "react-select";
+
 import { useForm, Controller } from "react-hook-form";
 import { ArrowLeft, ArrowRight } from "react-feather";
 
