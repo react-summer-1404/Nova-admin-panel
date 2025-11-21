@@ -5,14 +5,13 @@ import { Fragment } from 'react'
 import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap'
 
 // ** Icons Imports
-import { User, Lock, Bookmark, Bell, Link } from 'react-feather'
+import { User, BookOpen, Bell, Link } from 'react-feather'
 
 // ** User Components
 
 import Connections from './Connections'
 import UserProjectsList from './UserProjectsList'
 import UserCourseReserv from './UserCourseReserv'
-import { CommentManagment } from '../../../../core/Services/api/GetUserList'
 import CommentTable from '../../UserCommentManag/CommentTable'
 
 const UserTabs = ({ active, toggleTab, UserId, selectedUser }) => {

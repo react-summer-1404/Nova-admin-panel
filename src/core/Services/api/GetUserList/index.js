@@ -8,10 +8,11 @@ export const GetUserList = async (apiParams) => {
 }
 
 export const GetUserDetail = async (UserId) => {
-    console.log("response.data",response.data)
+    
 
     const response = await instance.get(`/User/UserDetails/${UserId}`)
     return response.data;
+    console.log("response.data",response.data)
 }
 
 export const CreateUser = async(data) => {

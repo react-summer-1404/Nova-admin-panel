@@ -1,8 +1,3 @@
-// ** Custom Components
-import AvatarGroup from '@components/avatar-group'
-
-// ** Images
-
 // ** Icons Imports
 import { MoreVertical, Edit, Trash } from 'react-feather'
 
@@ -36,7 +31,7 @@ const TableBasic = ({data}) => {
             <span className='align-middle fw-bold'>{item.courseName}</span>
           </td>
           <td>
-            <Badge className ='text-capitalize' color={statusObj[item.active]}>
+            <Badge className ='text-capitalize' color={statusOptions[item.active]}>
               {item.active == true ? "فعال" : "غیرفعال"}
             </Badge>
           </td>

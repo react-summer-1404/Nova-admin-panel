@@ -54,7 +54,7 @@ const Routes = [
   },
   {
     element: <UserView />,
-    path: '/list/:id'
+    path: '/list/view/:id'
   },
   {
     path: "/sample",

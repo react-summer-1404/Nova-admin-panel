@@ -25,22 +25,23 @@ const UserView = () => {
   }
 
   const {data : selectedUser, isLoading, error } = useUserDetails(id)
+  console.log("data:",selectedUser)
 
   if(isLoading){
     <Alert color='info'>...درحال بارگذاری اطلاعات کاربر </Alert>
   }
 
-  if(error || !selectedUser){
-    return (
-      <div className='text-center'>
-        <h4 className='mb-1'>کاربر یافت نشد</h4>
-        <p className='mb-1'>
-          <h4>کاربری با این شناسه وجود ندارد لیست کامل کاربران را ببینید : {}</h4>
-          <Link to={'/list'}>لیست کاربران </Link>
-        </p>
-      </div>
-    )
-  }
+  // if(error || !selectedUser){
+  //   return (
+  //     <div className='text-center'>
+  //       <h4 className='mb-1'>کاربر یافت نشد</h4>
+  //       <p className='mb-1'>
+  //         <h4>کاربری با این شناسه وجود ندارد لیست کامل کاربران را ببینید : {id}</h4>
+  //         <Link to={'/list'}>لیست کاربران </Link>
+  //       </p>
+  //     </div>
+  //   )
+  // }
   return (
     <div className='app-user-view'>
       <Row>

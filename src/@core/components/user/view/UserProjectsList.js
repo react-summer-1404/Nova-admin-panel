@@ -14,7 +14,7 @@ import '@styles/react/libs/tables/react-dataTable-component.scss'
 
 
 
-const UserProjectsList = ({data}) => {
+const UserProjectsList = ({selectedUser}) => {
 
   const columns = [
     {
@@ -58,7 +58,7 @@ const UserProjectsList = ({data}) => {
           noHeader
           responsive
           columns={columns}
-          data={data.courseStudent}
+          data={selectedUser?.courseStudent}
           className='react-dataTable'
           sortIcon={<ChevronDown size={10} />}
         />

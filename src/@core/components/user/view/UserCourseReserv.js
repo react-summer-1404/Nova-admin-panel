@@ -10,7 +10,7 @@ const UserCourseReserv = ({data}) => {
     return (
         <>
             <Row>
-                <Col className='mb-2' md ={6}>
+                <Col md ={12}>
                     <TableBasic data={data}/>
                 </Col>
             </Row>

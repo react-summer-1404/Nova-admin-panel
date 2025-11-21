@@ -48,6 +48,12 @@ const UserInfoCard = ({ selectedUser }) => {
   // ** State
   const [show, setShow] = useState(false)
 
+  const defaultValues = {
+    username: selectedUser?.userName || "",
+    lastName: selectedUser?.lName.split(' ')[1] || "",
+    firstName: selectedUser?.fName.split(' ')[0] || ""
+  }
+
   // ** Hook
   const {
     reset,
@@ -58,21 +64,17 @@ const UserInfoCard = ({ selectedUser }) => {
   } = useForm({defaultValues})
   
 
-  const defaultValues = {
-    username: selectedUser.userName || "",
-    lastName: selectedUser.lName.split(' ')[1] || "",
-    firstName: selectedUser.fName.split(' ')[0] || ""
-  }
+  
 
   // ** render user img
   const renderUserImg = () => {
-    if (selectedUser !== null && selectedUser.currentPictureAddress.length) {
+    if (selectedUser !== null && selectedUser?.currentPictureAddress.length) {
       return (
         <img
           height='110'
           width='110'
           alt='user-avatar'
-          src={selectedUser.currentPictureAddress}
+          src={selectedUser?.currentPictureAddress}
           className='img-fluid rounded mt-3 mb-2'
         />
       )
@@ -80,9 +82,9 @@ const UserInfoCard = ({ selectedUser }) => {
       return (
         <Avatar
           initials
-          color={selectedUser.avatarColor || 'light-primary'}
+          color={selectedUser?.avatarColor || 'light-primary'}
           className='rounded mt-3 mb-2'
-          content={selectedUser.fName}
+          content={selectedUser?.fName}
           contentStyles={{
             borderRadius: 0,
             fontSize: 'calc(48px)',
@@ -114,9 +116,9 @@ const UserInfoCard = ({ selectedUser }) => {
 
   const handleReset = () => {
     reset({
-      username: selectedUser.userName,
-      lastName: selectedUser.lName.split(' ')[1],
-      firstName: selectedUser.fName.split(' ')[0]
+      username: selectedUser?.userName,
+      lastName: selectedUser?.lName.split(' ')[1],
+      firstName: selectedUser?.fName.split(' ')[0]
     })
   }
 
@@ -164,13 +166,16 @@ const UserInfoCard = ({ selectedUser }) => {
               {renderUserImg()}
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
-                  <h4>{selectedUser !== null ? selectedUser.fName : ' نام کاربر'}</h4>
-                  {selectedUser !== null ? (
-                    <Badge color={roleColors[selectedUser?.roles]} className='text-capitalize'>
-                      {selectedUser.roles}
-                    </Badge>
-                  ) : null}
+                  <h4>{selectedUser !== null ? selectedUser?.fName : ' نام کاربر'}</h4>
+                  {selectedUser?.roles?.map((role, index) => (
+                    <Badge color={roleColors[role]} className='text-capitalize me-50'>
+                      {role.roleName}
+                    </Badge>,
+                    console.log("role",selectedUser?.roles )
+                  ))}
+                  
                 </div>
+                
               </div>
             </div>
           </div>
@@ -200,11 +205,11 @@ const UserInfoCard = ({ selectedUser }) => {
               <ul className='list-unstyled'>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>نام کاربری:</span>
-                  <span>{selectedUser.userName}</span>
+                  <span>{selectedUser?.userName}</span>
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>ایمیل:</span>
-                  <span>{selectedUser.gmail}</span>
+                  <span>{selectedUser?.gmail}</span>
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>وضعیت:</span>
@@ -214,15 +219,15 @@ const UserInfoCard = ({ selectedUser }) => {
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>نقش:</span>
-                  <span className='text-capitalize'>{selectedUser.roles}</span>
+                  <span className='text-capitalize'>{selectedUser?.roles?.join(', ')}</span>
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'> جنسیت:</span>
-                  <span>{selectedUser.gender}</span>
+                  <span>{genderOptions.find(gen => gen.value === selectedUser?.gender)?.label}</span>
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>شماره موبایل:</span>
-                  <span>{selectedUser.phoneNumber}</span>
+                  <span>{selectedUser?.phoneNumber}</span>
                 </li>
                 
               </ul>
@@ -295,7 +300,7 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Input
                   type='email'
                   id='gmail'
-                  defaultValue={selectedUser.gmail}
+                  defaultValue={selectedUser?.gmail}
                   placeholder='ایمیل را وارد کنید'
                 />
               </Col>
@@ -310,7 +315,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   classNamePrefix='select'
                   options={statusOptions}
                   theme={selectThemeColors}
-                  defaultValue={statusOptions[statusOptions.findIndex(i => i.value === selectedUser.active)]}
+                  defaultValue={statusOptions[statusOptions.findIndex(i => i.value === selectedUser?.active)]}
                 />
               </Col>
               <Col md={6} xs={12}>
@@ -324,14 +329,14 @@ const UserInfoCard = ({ selectedUser }) => {
                   classNamePrefix='select'
                   options={genderOptions}
                   theme={selectThemeColors}
-                  defaultValue={genderOptions[genderOptions.findIndex(i => i.value === selectedUser.gender)]}
+                  defaultValue={genderOptions[genderOptions.findIndex(i => i.value === selectedUser?.gender)]}
                 />
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='contact'>
                   شماره تلفن:
                 </Label>
-                <Input id='contact' defaultValue={selectedUser.phoneNumber} placeholder='شماره تلفن را وارد کنید' />
+                <Input id='contact' defaultValue={selectedUser?.phoneNumber} placeholder='شماره تلفن را وارد کنید' />
               </Col>
               
               <Col xs={12} className='text-center mt-2 pt-50'>

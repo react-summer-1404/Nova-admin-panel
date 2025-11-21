@@ -14,4 +14,6 @@ export const useUserDetails = (UserId) =>
         queryKey:["UserDetail", UserId],
         queryFn: () => GetUserDetail(UserId),
         enabled : !!UserId
+        
     })
+    
