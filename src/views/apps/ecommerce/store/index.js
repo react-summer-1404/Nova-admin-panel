@@ -10,11 +10,11 @@ export const getProducts = createAsyncThunk('courses/getList', async params => {
   return { params, data: response.data }
 })
 
-export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, { dispatch, getState }) => {
-  const response = await axios.post('/apps/ecommerce/cart', { productId: id })
-  await dispatch(getProducts(getState().ecommerce.params))
-  return response.data
-})
+// export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, { dispatch, getState }) => {
+//   const response = await axios.post('/apps/ecommerce/cart', { productId: id })
+//   await dispatch(getProducts(getState().ecommerce.params))
+//   return response.data
+// })
 
 // export const getWishlistItems = createAsyncThunk('appEcommerce/getWishlistItems', async () => {
 //   const response = await axios.get('/apps/ecommerce/wishlist')
@@ -34,10 +34,10 @@ export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, {
 //   return response.data
 // })
 
-export const getCartItems = createAsyncThunk('appEcommerce/getCartItems', async () => {
-  const response = await axios.get('/apps/ecommerce/cart')
-  return response.data
-})
+// export const getCartItems = createAsyncThunk('appEcommerce/getCartItems', async () => {
+//   const response = await axios.get('/apps/ecommerce/cart')
+//   return response.data
+// })
 
 export const getProduct = createAsyncThunk(
   'appCourses/getProduct',
@@ -52,11 +52,11 @@ export const getProduct = createAsyncThunk(
 //   return id
 // })
 
-export const deleteCartItem = createAsyncThunk('appEcommerce/deleteCartItem', async (id, { dispatch }) => {
-  await axios.delete(`/apps/ecommerce/cart/${id}`)
-  dispatch(getCartItems())
-  return id
-})
+// export const deleteCartItem = createAsyncThunk('appEcommerce/deleteCartItem', async (id, { dispatch }) => {
+//   await axios.delete(`/apps/ecommerce/cart/${id}`)
+//   dispatch(getCartItems())
+//   return id
+// })
 
 export const appEcommerceSlice = createSlice({
   name: 'appEcommerce',
@@ -113,9 +113,9 @@ state.totalProducts = action.payload.data.totalCount
     // .addCase(getWishlistItems.fulfilled, (state, action) => {
     //     state.wishlist = action.payload.favoriteCourseDto
     // })
-    .addCase(getCartItems.fulfilled, (state, action) => {
-        state.cart = action.payload.products
-    })
+    // .addCase(getCartItems.fulfilled, (state, action) => {
+    //     state.cart = action.payload.products
+    // })
     .addCase(getProduct.fulfilled, (state, action) => {
       const courseDetail = action.payload; 
       state.productDetail = {

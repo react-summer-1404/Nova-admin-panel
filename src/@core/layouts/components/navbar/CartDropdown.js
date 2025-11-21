@@ -20,7 +20,7 @@ import {
 // ** Store & Actions
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getCartItems,
+  // getCartItems,
   deleteCartItem,
   getProduct,
 } from "@src/pages/apps/ecommerce/store";
@@ -37,9 +37,9 @@ const CartDropdown = () => {
   const store = useSelector((state) => state.ecommerce);
 
   // ** ComponentDidMount
-  useEffect(() => {
-    dispatch(getCartItems());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getCartItems());
+  // }, []);
 
   // ** Function to toggle Dropdown
   const toggle = () => setDropdownOpen((prevState) => !prevState);
@@ -75,11 +75,11 @@ const CartDropdown = () => {
                     width="62"
                   />
                   <div className="list-item-body flex-grow-1">
-                    <X
+                    {/* <X
                       size={14}
                       className="cart-item-remove"
                       onClick={() => dispatch(deleteCartItem(item.id))}
-                    />
+                    /> */}
                     <div className="media-heading">
                       <h6 className="cart-item-title">
                         <Link

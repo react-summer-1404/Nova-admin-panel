@@ -1,6 +1,6 @@
 // ** React Imports
 import { Fragment } from 'react'
-
+import { Formik } from 'formik'; 
 // ** Third Party Components
 import Select from 'react-select'
 import { useForm, Controller } from 'react-hook-form'
@@ -17,7 +17,9 @@ import '@styles/react/libs/react-select/_react-select.scss'
 
 const defaultValues = {
   Title: '',
-  MiniDescribe: ''
+  GoogleTitle: '',
+  Capacity:'',
+  Cost:'',
 }
 
 const FirstStep = ({ stepper }) => {
@@ -67,6 +69,7 @@ const FirstStep = ({ stepper }) => {
         <h5 className='mb-0'>مرحله اول </h5>
         <small>لطفا اطلاعات خواسته شده را وارد کنید</small>
       </div>
+      <Formik>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col md='6' className='mb-1'>
@@ -82,16 +85,16 @@ const FirstStep = ({ stepper }) => {
             {errors.Title && <FormFeedback>{errors.Title.message}</FormFeedback>}
           </Col>
           <Col md='6' className='mb-1'>
-            <Label className='form-label' for='MiniDescribe'>
-              توضیحات کوتاه
+            <Label className='form-label' for='GoogleTitle'>
+               عنوان گوگل
             </Label>
             <Controller
-              id='MiniDescribe'
-              name='MiniDescribe'
+              id='GoogleTitle'
+              name='GoogleTitle'
               control={control}
-              render={({ field }) => <Input placeholder='دوره را توصیف کنید' invalid={errors.MiniDescribe && true} {...field} />}
+              render={({ field }) => <Input placeholder='عنوان گوگل' invalid={errors.GoogleTitle && true} {...field} />}
             />
-            {errors.MiniDescribe && <FormFeedback>{errors.MiniDescribe.message}</FormFeedback>}
+            {errors.GoogleTitle && <FormFeedback>{errors.GoogleTitle.message}</FormFeedback>}
           </Col>
         </Row>
         <Row>
@@ -112,15 +115,7 @@ const FirstStep = ({ stepper }) => {
             <Label className='form-label' for='Cost'>
              قیمت دوره
             </Label>
-            {/* <Select
-              isMulti
-              isClearable={false}
-              theme={selectThemeColors}
-              id={`language`}
-              options={languageOptions}
-              className='react-select'
-              classNamePrefix='select'
-            /> */}
+            
              <Controller
               id='Cost'
               name='Cost'
@@ -141,6 +136,7 @@ const FirstStep = ({ stepper }) => {
           </Button>
         </div>
       </Form>
+      </Formik>
     </Fragment>
   )
 }

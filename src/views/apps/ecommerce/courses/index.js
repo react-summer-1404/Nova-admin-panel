@@ -10,7 +10,7 @@ import Breadcrumbs from '@components/breadcrumbs'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart, getProducts, getCartItems,  deleteCartItem } from '../store'
+import { addToCart, getProducts,   } from '../store'
 
 // ** Styles
 import '@styles/react/apps/app-ecommerce.scss'
@@ -46,11 +46,11 @@ const Shop = () => {
         activeView={activeView}
         getProducts={getProducts}
         sidebarOpen={sidebarOpen}
-        getCartItems={getCartItems}
+        // getCartItems={getCartItems}
         setActiveView={setActiveView}
         // addToWishlist={addToWishlist}
         setSidebarOpen={setSidebarOpen}
-        deleteCartItem={deleteCartItem}
+        // deleteCartItem={deleteCartItem}
         // deleteWishlistItem={deleteWishlistItem}
       />
       <Sidebar sidebarOpen={sidebarOpen} />

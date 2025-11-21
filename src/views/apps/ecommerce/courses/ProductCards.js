@@ -18,7 +18,7 @@ const ProductCards = (props) => {
     addToCart,
     activeView,
     getProducts,
-    getCartItems,
+    // getCartItems,
     addToWishlist,
   } = props;
 

@@ -14,7 +14,7 @@ import '@styles/react/libs/input-number/input-number.scss'
 
 const Cart = props => {
   // ** Props
-  const { products, stepper, deleteCartItem, dispatch, getCartItems } = props
+  const { products, stepper, dispatch, } = props
 
   // ** Function to convert Date
   const formatDate = (value, formatting = { month: 'short', day: 'numeric', year: 'numeric' }) => {
@@ -100,10 +100,10 @@ const Cart = props => {
                 ) : null}
               </div>
             </div>
-            <Button className='mt-1 remove-wishlist' color='light' onClick={() => dispatch(deleteCartItem(item.id))}>
+            {/* <Button className='mt-1 remove-wishlist' color='light' onClick={() => dispatch(deleteCartItem(item.id))}>
               <X size={14} className='me-25' />
               <span>Remove</span>
-            </Button>
+            </Button> */}
             <Button
               className='btn-cart'
               color='primary'

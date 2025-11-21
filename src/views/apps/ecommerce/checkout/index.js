@@ -15,7 +15,7 @@ import { ShoppingCart, Home, CreditCard } from 'react-feather'
 
 // ** Store & Actions
 import { useDispatch, useSelector } from 'react-redux'
-import { getCartItems, deleteCartItem } from '../store'
+// import {  deleteCartItem } from '../store'
 
 // ** Styles
 import '@styles/base/pages/app-ecommerce.scss'
@@ -30,9 +30,9 @@ const Checkout = () => {
   const store = useSelector(state => state.ecommerce)
 
   // ** Get Cart Items on mount
-  useEffect(() => {
-    dispatch(getCartItems())
-  }, [])
+  // useEffect(() => {
+  //   dispatch(getCartItems())
+  // }, [])
 
   const steps = [
     {
@@ -45,9 +45,9 @@ const Checkout = () => {
           stepper={stepper}
           dispatch={dispatch}
           products={store.cart}
-          getCartItems={getCartItems}
+          // getCartItems={getCartItems}
           // addToWishlist={addToWishlist}
-          deleteCartItem={deleteCartItem}
+          // deleteCartItem={deleteCartItem}
           // deleteWishlistItem={deleteWishlistItem}
         />
       )

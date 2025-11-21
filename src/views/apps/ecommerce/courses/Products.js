@@ -24,10 +24,10 @@ const ProductsPage = props => {
     activeView,
     sidebarOpen,
     getProducts,
-    getCartItems,
+    // getCartItems,
     addToWishlist,
     setActiveView,
-    deleteCartItem,
+    // deleteCartItem,
     setSidebarOpen,
     deleteWishlistItem
   } = props
@@ -96,9 +96,9 @@ return new Array(arrLength).fill().map((item, index) => {
               activeView={activeView}
               products={store.products}
               getProducts={getProducts}
-              getCartItems={getCartItems}
+              // getCartItems={getCartItems}
               // addToWishlist={addToWishlist}
-              deleteCartItem={deleteCartItem}
+              // deleteCartItem={deleteCartItem}
               // deleteWishlistItem={deleteWishlistItem}
             />
             <Pagination className='d-flex justify-content-center ecommerce-shop-pagination mt-2'>
