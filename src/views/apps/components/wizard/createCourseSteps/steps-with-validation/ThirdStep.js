@@ -15,7 +15,7 @@ const defaultValues = {
 };
 const schema = yup.object().shape({
   MiniDescribe: yup.string().required("توضیحات کوتاه الزامی است"),
-  Describe: yup.string().required("توضیحات دوره الزامی است"),
+  // Describe: yup.string().required("توضیحات دوره الزامی است"),
   
 });
 const ThirdStep = ({ stepper }) => {

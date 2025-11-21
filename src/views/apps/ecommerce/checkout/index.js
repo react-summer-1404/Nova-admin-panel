@@ -26,47 +26,15 @@ const Checkout = () => {
   const [stepper, setStepper] = useState(null)
 
   // ** Store Vars
-  const dispatch = useDispatch()
-  const store = useSelector(state => state.ecommerce)
+  // const dispatch = useDispatch()
+  // const store = useSelector(state => state.ecommerce)
 
   // ** Get Cart Items on mount
   // useEffect(() => {
   //   dispatch(getCartItems())
   // }, [])
 
-  const steps = [
-    {
-      id: 'cart',
-      title: 'Cart',
-      subtitle: 'Your Cart Items',
-      icon: <ShoppingCart size={18} />,
-      content: (
-        <Cart
-          stepper={stepper}
-          dispatch={dispatch}
-          products={store.cart}
-          // getCartItems={getCartItems}
-          // addToWishlist={addToWishlist}
-          // deleteCartItem={deleteCartItem}
-          // deleteWishlistItem={deleteWishlistItem}
-        />
-      )
-    },
-    {
-      id: 'Address',
-      title: 'Address',
-      subtitle: 'Enter Your Address',
-      icon: <Home size={18} />,
-      content: <Address stepper={stepper} />
-    },
-    {
-      id: 'payment',
-      title: 'Payment',
-      subtitle: 'Select Payment Method',
-      icon: <CreditCard size={18} />,
-      content: <Payment stepper={stepper} />
-    }
-  ]
+  const steps = []
 
   return (
     <Fragment>

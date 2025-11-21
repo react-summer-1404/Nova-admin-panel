@@ -6,7 +6,7 @@ import Wizard from '@components/wizard'
 
 // ** Steps
 import ThirdStep from './steps-with-validation/ThirdStep'
-import SocialLinks from './steps-with-validation/SocialLinks'
+import FourthStep from './steps-with-validation/FourthStep'
 import SecondStep from './steps-with-validation/SecondStep'
 import FirstStep from './steps-with-validation/FirstStep'
 
@@ -48,7 +48,7 @@ const WizardModernVertical = () => {
       title: 'Social Links',
       subtitle: 'Add Social Links',
       icon: <Link size={18} />,
-      content: <SocialLinks stepper={stepper} type='modern-vertical' />
+      content: <FourthStep stepper={stepper} type='modern-vertical' />
     }
   ]
 
