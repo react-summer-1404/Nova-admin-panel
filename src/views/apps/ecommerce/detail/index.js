@@ -15,7 +15,7 @@ import { Card, CardBody, Col } from "reactstrap";
 
 // ** Store & Actions
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct, addToCart } from "../store";
+import { getProduct } from "../store";
 
 import "@styles/base/pages/app-ecommerce-details.scss";
 import TabsIcons from "../../components/tabs/TabsIconsCourses";
@@ -47,7 +47,7 @@ const Details = () => {
             <CardBody>
               <ProductDetails
                 dispatch={dispatch}
-                addToCart={addToCart}
+                // addToCart={addToCart}
                 productId={productId}
                 getProduct={getProduct}
                 data={store.productDetail}

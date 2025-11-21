@@ -7,7 +7,7 @@ import Wizard from '@components/wizard'
 // ** Steps
 import Address from './steps-with-validation/Address'
 import SocialLinks from './steps-with-validation/SocialLinks'
-import PersonalInfo from './steps-with-validation/PersonalInfo'
+import SecondStep from './steps-with-validation/SecondStep'
 import FirstStep from './steps-with-validation/FirstStep'
 
 // ** Icons Imports
@@ -30,11 +30,11 @@ const WizardModernVertical = () => {
       content: <FirstStep stepper={stepper} type='modern-vertical' />
     },
     {
-      id: 'personal-info',
-      title: 'Personal Info',
-      subtitle: 'Add Personal Info',
+      id: 'second-info',
+      title: 'مرحله دوم',
+      subtitle: 'اطلاعات  دیگر دوره',
       icon: <User size={18} />,
-      content: <PersonalInfo stepper={stepper} type='modern-vertical' />
+      content: <SecondStep stepper={stepper} type='modern-vertical' />
     },
     {
       id: 'step-address',

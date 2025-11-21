@@ -31,7 +31,7 @@ import {
 
 const Product = (props) => {
   // ** Props
-  const { data, dispatch, getProduct, productId, addToCart } = props;
+  const { data, dispatch, getProduct, productId } = props;
 
   // ** State
   const [selectedColor, setSelectedColor] = useState("primary");
@@ -69,12 +69,12 @@ const Product = (props) => {
   // }
 
   // ** Handle Move/Add to cart
-  const handleCartBtn = (id, val) => {
-    if (val === false) {
-      dispatch(addToCart(id));
-    }
-    dispatch(getProduct(productId));
-  };
+  // const handleCartBtn = (id, val) => {
+  //   if (val === false) {
+  //     dispatch(addToCart(id));
+  //   }
+  //   dispatch(getProduct(productId));
+  // };
 
   // ** Condition btn tag
   const CartBtnTag = data.isInCart ? Link : "button";

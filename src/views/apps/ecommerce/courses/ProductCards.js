@@ -15,7 +15,7 @@ const ProductCards = (props) => {
     store,
     products,
     dispatch,
-    addToCart,
+    // addToCart,
     activeView,
     getProducts,
     // getCartItems,

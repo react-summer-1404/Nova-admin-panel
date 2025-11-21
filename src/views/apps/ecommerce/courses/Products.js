@@ -20,7 +20,7 @@ const ProductsPage = props => {
   const store = useSelector(state => state.ecommerce)
 
   const {
-    addToCart,
+    // addToCart,
     activeView,
     sidebarOpen,
     getProducts,
@@ -92,7 +92,7 @@ return new Array(arrLength).fill().map((item, index) => {
             <ProductCards
               store={store}
               dispatch={dispatch}
-              addToCart={addToCart}
+              // addToCart={addToCart}
               activeView={activeView}
               products={store.products}
               getProducts={getProducts}
