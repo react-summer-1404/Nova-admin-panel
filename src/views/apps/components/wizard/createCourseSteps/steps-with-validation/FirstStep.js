@@ -52,7 +52,7 @@ const schema = yup.object().shape({
     .min(yup.ref("StartTime"), "تاریخ پایان باید بعد از تاریخ شروع باشد"),
 });
 
-const FirstStep = ({ stepper }) => {
+const FirstStep = ({ stepper ,updateStepData}) => {
   // ** Hooks
   const {
     control,
@@ -63,6 +63,7 @@ const FirstStep = ({ stepper }) => {
     defaultValues,
   });
   const onSubmit = (data) => {
+    updateStepData("step1",data)
     stepper.next();
   };
 

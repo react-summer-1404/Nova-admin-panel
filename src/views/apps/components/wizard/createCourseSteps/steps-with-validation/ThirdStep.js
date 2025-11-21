@@ -18,7 +18,7 @@ const schema = yup.object().shape({
   // Describe: yup.string().required("توضیحات دوره الزامی است"),
   
 });
-const ThirdStep = ({ stepper }) => {
+const ThirdStep = ({ stepper ,updateStepData}) => {
   // ** Hooks
   const {
     control,
@@ -29,6 +29,7 @@ const ThirdStep = ({ stepper }) => {
     defaultValues,
   });
   const onSubmit = (data) => {
+    updateStepData("step3",data)
     stepper.next();
   };
 

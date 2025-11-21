@@ -19,7 +19,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getCreateCourse } from "../../../../../../core/Services/api/CreateCourse";
 
 const schema = yup.object().shape({
- 
   CourseLvlId: yup
     .number()
     .required("انتخاب سطح دوره الزامی است")
@@ -28,7 +27,7 @@ const schema = yup.object().shape({
     .number()
     .required("انتخاب ترم دوره الزامی است")
     .typeError("انتخاب ترم دوره الزامی است"),
-    ClassId: yup
+  ClassId: yup
     .number()
     .required("انتخاب کلاس دوره الزامی است")
     .typeError("انتخاب کلاس دوره الزامی است"),
@@ -37,27 +36,13 @@ const schema = yup.object().shape({
     .typeError("تعداد جلسات باید عدد باشد")
     .positive("عدد باید مثبت باشد")
     .required("ظرفیت الزامی است"),
-    TeacherId : yup
+  TeacherId: yup
     .number()
     .typeError("وارد کردن استاد الزامی است")
-    .required("نام استاد الزامی است"),
-  // Cost: yup
-  //   .number()
-  //   .typeError("قیمت باید عدد باشد")
-  //   .positive("عدد باید مثبت باشد")
-  //   .required("قیمت الزامی است"),
-  // StartTime: yup
-  //   .date()
-  //   .typeError("تاریخ شروع معتبر نیست")
-  //   .required("تاریخ شروع الزامی است"),
-  // EndTime: yup
-  //   .date()
-  //   .typeError("تاریخ پایان معتبر نیست")
-  //   .required("تاریخ پایان الزامی است")
-  //   .min(yup.ref("StartTime"), "تاریخ پایان باید بعد از تاریخ شروع باشد"),
+    // .required("نام استاد الزامی است"),
 });
 
-const SecondStep = ({ stepper }) => {
+const SecondStep = ({ stepper, updateStepData }) => {
   const { data: courseInfo } = useQuery({
     queryKey: ["getSomeInfo"],
     queryFn: getCreateCourse,
@@ -89,16 +74,16 @@ const SecondStep = ({ stepper }) => {
       value: teacher.id,
       label: teacher.fullName,
     })) || [];
- 
 
   const defaultValues = {
     CourseLvlId: levelList[0]?.value || "",
     CourseTypeId: courseType[0]?.value || "",
-    TremId: TeacherList[0]?.value || "",
+    TremId: termList[0]?.value || "",
+    TeacherId: TeacherList[0]?.value || "",
     ClassId: classRoomList[0]?.value || "",
     SessionNumber: "",
-    UniqeUrlString:"",
-    ShortLink:""
+    UniqeUrlString: "",
+    ShortLink: "",
   };
 
   // ** Hooks
@@ -111,6 +96,7 @@ const SecondStep = ({ stepper }) => {
     defaultValues,
   });
   const onSubmit = (data) => {
+    updateStepData("step2", data);
     stepper.next();
   };
 
@@ -130,7 +116,6 @@ const SecondStep = ({ stepper }) => {
             <Controller
               name="CourseTypeId"
               control={control}
-              defaultValue={courseType[0] || null}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -183,7 +168,6 @@ const SecondStep = ({ stepper }) => {
             <Controller
               name="CourseLvlId"
               control={control}
-              defaultValue={levelList[0] || null}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -212,7 +196,6 @@ const SecondStep = ({ stepper }) => {
             <Controller
               name="TremId"
               control={control}
-              defaultValue={termList[0] || null}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -241,7 +224,6 @@ const SecondStep = ({ stepper }) => {
             <Controller
               name="ClassId"
               control={control}
-              defaultValue={classRoomList[0] || null}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -270,7 +252,6 @@ const SecondStep = ({ stepper }) => {
             <Controller
               name="TeacherId"
               control={control}
-              defaultValue={TeacherList[0] || null}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -294,7 +275,7 @@ const SecondStep = ({ stepper }) => {
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="UniqeUrlString">
-               شناسه دوره
+              شناسه دوره
             </Label>
 
             <Controller
@@ -315,7 +296,7 @@ const SecondStep = ({ stepper }) => {
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="ShortLink">
-               لینک دوره
+              لینک دوره
             </Label>
 
             <Controller

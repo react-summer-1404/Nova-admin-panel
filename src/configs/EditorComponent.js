@@ -1,44 +1,45 @@
-import React, { useEffect, useRef } from "react";
-import EditorJS from "@editorjs/editorjs";
+import React, { useEffect, useRef } from 'react';
+import EditorJS from '@editorjs/editorjs';
+import Header from '@editorjs/header';
 import List from '@editorjs/list';
-export const EditorComponent = ({ value, onChange }) => {
-  const ejInstance = useRef(null);
+import Paragraph from '@editorjs/paragraph';
 
-  useEffect(() => {
-    if (!ejInstance.current) {
-      const editor = new EditorJS({
-        holder: "editorjs",
-        autofocus: true,
-        data: value,
-        tools: {
-            list: {
-              class: List,
-              inlineToolbar: true,
-              config: {
-                defaultStyle: "unordered"
-              }
-            }
-          },
-        onReady: () => {
-          ejInstance.current = editor;
-        },
-        onChange: async () => {
-          const content = await editor.saver.save();
-          onChange(content); 
-        },
-      });
-    }
+export const EditorComponent = ({ data, onChange }) => {
+    const ejInstance = useRef(null);
+    const editorContainer = useRef(null);
 
-    return () => {
-      ejInstance.current?.destroy();
-      ejInstance.current = null;
+    const defaultData = {
+        time: new Date().getTime(),
+        blocks: [],
+        version: "2.22.2"
     };
-  }, []);
 
-  return (
-    <div
-      id="editorjs"
-      style={{ border: "1px solid #ccc", borderRadius: 8, padding: 10 }}
-    ></div>
-  );
+    useEffect(() => {
+        if (!ejInstance.current) {
+            const sanitizedData = (data && data.blocks) ? data : defaultData;
+
+            ejInstance.current = new EditorJS({
+                holder: editorContainer.current,
+                tools: {
+                    header: Header,
+                    list: List,
+                    paragraph: { class: Paragraph, inlineToolbar: true },
+                },
+                data: sanitizedData,
+                onChange: async () => {
+                    const content = await ejInstance.current.save();
+                    onChange(content);
+                },
+            });
+        }
+
+        return () => {
+            if (ejInstance.current?.destroy) {
+                ejInstance.current.destroy();
+                ejInstance.current = null;
+            }
+        };
+    }, []);
+
+    return <div ref={editorContainer} style={{ border: "1px solid #ccc", borderRadius: 8, padding: 10 }}></div>;
 };

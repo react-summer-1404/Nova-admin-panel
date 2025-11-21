@@ -17,15 +17,6 @@ const Wizard = () => {
   return (
     <Fragment>
       <Row>
-        {/* <Col sm='12'>
-          <WizardHorizontal />
-        </Col>
-        <Col sm='12'>
-          <WizardVertical />
-        </Col>
-        <Col sm='12'>
-          <WizardModern />
-        </Col> */}
         <Col sm='12'>
           <WizardModernVertical />
         </Col>
