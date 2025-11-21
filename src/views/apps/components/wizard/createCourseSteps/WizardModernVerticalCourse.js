@@ -5,7 +5,7 @@ import { useRef, useState } from 'react'
 import Wizard from '@components/wizard'
 
 // ** Steps
-import Address from './steps-with-validation/Address'
+import ThirdStep from './steps-with-validation/ThirdStep'
 import SocialLinks from './steps-with-validation/SocialLinks'
 import SecondStep from './steps-with-validation/SecondStep'
 import FirstStep from './steps-with-validation/FirstStep'
@@ -37,11 +37,11 @@ const WizardModernVertical = () => {
       content: <SecondStep stepper={stepper} type='modern-vertical' />
     },
     {
-      id: 'step-address',
-      title: 'Address',
-      subtitle: 'Add Address',
+      id: 'third-info',
+      title: 'مرحله سوم',
+      subtitle: 'توضیحات دوره',
       icon: <MapPin size={18} />,
-      content: <Address stepper={stepper} type='modern-vertical' />
+      content: <ThirdStep stepper={stepper} type='modern-vertical' />
     },
     {
       id: 'social-links',

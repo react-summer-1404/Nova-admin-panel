@@ -99,7 +99,7 @@ const ProductCards = (props) => {
                   </h6>
 
                 <div className="item-cost text-right item-wrapper">
-                {item.isExpire?<Badge  color="light-success" >فعال</Badge> : <Badge color="light-danger">غیر فعال</Badge>}
+                {item.isExpire?<Badge  color="light-danger" >نا معتبر</Badge> : <Badge color="light-success">معتبر</Badge>}
 
                 </div>
       
