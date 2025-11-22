@@ -46,8 +46,9 @@ const WizardModernVertical = () => {
       toast.error("خطایی در درست کردن دوره رخ داد");
     },
   });
-  const handleSubmitData = () => {
+  const handleSubmitData = (step4Data) => {
     const formData = new FormData();
+  
     // step 1
     formData.append("Title", allData.step1.Title);
     formData.append("GoogleTitle", allData.step1.GoogleTitle);
@@ -55,9 +56,8 @@ const WizardModernVertical = () => {
     formData.append("Cost", allData.step1.Cost);
     formData.append("StartTime", allData.step1.StartTime);
     formData.append("EndTime", allData.step1.EndTime);
-
+  
     // step 2
-    formData.append("CourseTypeId", allData.step2.CourseTypeId);
     formData.append("SessionNumber", allData.step2.SessionNumber);
     formData.append("CourseLvlId", allData.step2.CourseLvlId);
     formData.append("TremId", allData.step2.TremId);
@@ -65,18 +65,19 @@ const WizardModernVertical = () => {
     formData.append("TeacherId", allData.step2.TeacherId);
     formData.append("UniqeUrlString", allData.step2.UniqeUrlString);
     formData.append("ShortLink", allData.step2.ShortLink);
-
+  
     // step 3
     formData.append("MiniDescribe", allData.step3.MiniDescribe);
     formData.append("Describe", JSON.stringify(allData.step3.Describe));
-
-    // step 4
-    formData.append("ImageAddress", allData.step4.ImageAddress);
-    formData.append("Image", allData.step4.Image);
-createMutation.mutate(formData)
-console.log("formatDate",formData)
-   
+  
+    // step 4 (مهم)
+    if (step4Data.ImageAddress) formData.append("ImageAddress", step4Data.ImageAddress);
+    if (step4Data.Image) formData.append("Image", step4Data.Image);
+  
+    console.log("formData", formData);
+    createMutation.mutate(formData);
   };
+  
   const steps = [
     {
       id: "first-info",

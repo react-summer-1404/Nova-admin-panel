@@ -4,7 +4,7 @@ import Header from '@editorjs/header';
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
 
-export const EditorComponent = ({ data, onChange }) => {
+export const EditorComponent = ({ value, onChange }) => {
     const ejInstance = useRef(null);
     const editorContainer = useRef(null);
 
@@ -16,7 +16,7 @@ export const EditorComponent = ({ data, onChange }) => {
 
     useEffect(() => {
         if (!ejInstance.current) {
-            const sanitizedData = (data && data.blocks) ? data : defaultData;
+            const sanitizedData = (value && value.blocks) ? value : defaultData;
 
             ejInstance.current = new EditorJS({
                 holder: editorContainer.current,
@@ -28,7 +28,7 @@ export const EditorComponent = ({ data, onChange }) => {
                 data: sanitizedData,
                 onChange: async () => {
                     const content = await ejInstance.current.save();
-                    onChange(content);
+                    onChange(content); // اینجا درست ذخیره میشه
                 },
             });
         }

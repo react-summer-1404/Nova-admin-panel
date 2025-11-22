@@ -71,7 +71,7 @@ const SecondStep = ({ stepper, updateStepData }) => {
     })) || [];
   const TeacherList =
     courseInfo?.teachers?.map((teacher) => ({
-      value: teacher.id,
+      value: teacher.teacherId,
       label: teacher.fullName,
     })) || [];
 

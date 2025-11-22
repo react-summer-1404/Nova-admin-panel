@@ -12,7 +12,6 @@ import { formatDate } from "@fullcalendar/core";
 const defaultValues = {
   Image: "",
   ImageAddress: "",
-  TumbImageAddress: "",
 };
 
 const FourthStep = ({ stepper ,updateStepData,handleSubmitData}) => {
@@ -26,8 +25,9 @@ const FourthStep = ({ stepper ,updateStepData,handleSubmitData}) => {
   } = useForm({ defaultValues });
 
   const onSubmit = (data) => {
-    updateStepData("step4", { Image: data.Image });
-    stepper.next();
+    updateStepData("step4", data); // state رو هم آپدیت کن
+    handleSubmitData(data); // ولی مستقیم داده‌های جدید رو بفرست
+    console.log("STEP 4 DATA", data);
   };
   
 
@@ -44,7 +44,6 @@ const FourthStep = ({ stepper ,updateStepData,handleSubmitData}) => {
               لینک عکس
             </Label>
             <Controller
-              id="ImageAddress"
               name="ImageAddress"
               control={control}
               render={({ field }) => (
@@ -65,43 +64,39 @@ const FourthStep = ({ stepper ,updateStepData,handleSubmitData}) => {
               عکس دوره
             </Label>
             <Controller
-              name="Image"
-              control={control}
-              render={({ field }) => (
-                <>
-                  <div
-                    style={{
-                      height: 200,
-                      width: "80%",
-                      border: "1px solid purple",
-                      borderRadius: 8,
-                      padding:5
-                    }}
-                  >
-                    <img
-                      src={preview ? preview : null}
-                      alt="img"
-                      style={{ width:"100%",height:"100%",borderRadius: 8, }}
-                    />
-                  </div>
-                  <Input
-                    style={{ width:200, height: 50, marginTop: 10 }}
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      field.onChange(e.target.files[0]);
-                      if (e.target.files[0]) {
-                        setPreview(URL.createObjectURL(e.target.files[0]));
-                      }
-                    }}
-                  />
+  name="Image"
+  control={control}
+  render={({ field }) => (
+    <>
+      <div
+        style={{
+          height: 200,
+          width: "80%",
+          border: "1px solid purple",
+          borderRadius: 8,
+          padding:5
+        }}
+      >
+        <img
+          src={preview || (field.value ? URL.createObjectURL(field.value) : null)}
+          alt="img"
+          style={{ width:"100%", height:"100%", borderRadius: 8 }}
+        />
+      </div>
+      <Input
+        style={{ width:200, height: 50, marginTop: 10 }}
+        type="file"
+        accept="image/*"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          field.onChange(file);
+          setPreview(file ? URL.createObjectURL(file) : null);
+        }}
+      />
+    </>
+  )}
+/>
 
-                  {errors.Image && (
-                    <FormFeedback>{errors.Image.message}</FormFeedback>
-                  )}
-                </>
-              )}
-            />
           </Col>
         </Row>
 
@@ -119,10 +114,10 @@ const FourthStep = ({ stepper ,updateStepData,handleSubmitData}) => {
               Previous
             </span>
           </Button>
-          <Button type="button" color="success" className="btn-submit" onClick={()=>{handleSubmitData()
-          }}>
-            Submit
-          </Button>
+          <Button type="submit" color="success" className="btn-submit">
+  Submit
+</Button>
+
         </div>
       </Form>
     </Fragment>
