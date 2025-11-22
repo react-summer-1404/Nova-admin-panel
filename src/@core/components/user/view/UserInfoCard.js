@@ -38,8 +38,8 @@ const statusOptions = [
 ]
 
 const genderOptions = [
-  { value: true, label: 'مرد' },
-  { value: false, label: 'زن' },
+  { value: true, label: 'زن' },
+  { value: false, label: 'مرد' },
 ]
 
 const MySwal = withReactContent(Swal)
@@ -62,9 +62,6 @@ const UserInfoCard = ({ selectedUser }) => {
     handleSubmit,
     formState: { errors }
   } = useForm({defaultValues})
-  
-
-  
 
   // ** render user img
   const renderUserImg = () => {
@@ -124,11 +121,11 @@ const UserInfoCard = ({ selectedUser }) => {
 
   const handleSuspendedClick = () => {
     return MySwal.fire({
-      title: 'Are you sure?',
-      text: "You won't be able to revert user!",
+      title: 'ایا مطمئن هستید؟',
+      text: "شما قادر به بازگرداندن کاربر نخواهید بود!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, Suspend user!',
+      confirmButtonText: 'بله, غیر فعال کردن کاربر!',
       customClass: {
         confirmButton: 'btn btn-primary',
         cancelButton: 'btn btn-outline-danger ms-1'
@@ -138,16 +135,16 @@ const UserInfoCard = ({ selectedUser }) => {
       if (result.value) {
         MySwal.fire({
           icon: 'success',
-          title: 'Suspended!',
-          text: 'User has been suspended.',
+          title: 'غیر فعال!',
+          text: 'کاربر غیر فعال شد.',
           customClass: {
             confirmButton: 'btn btn-success'
           }
         })
       } else if (result.dismiss === MySwal.DismissReason.cancel) {
         MySwal.fire({
-          title: 'Cancelled',
-          text: 'Cancelled Suspension :)',
+          title: 'لغو',
+          text: ' لغو غیر فعال کردن :)',
           icon: 'error',
           customClass: {
             confirmButton: 'btn btn-success'

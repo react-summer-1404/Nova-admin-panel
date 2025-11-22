@@ -7,7 +7,7 @@ import DataTable from 'react-data-table-component'
 
 
 
-const CommentTable = () => {
+const CommentTable = ({UserId}) => {
 
     const {data} = useQuery({
         queryKey : ["commentManag"],

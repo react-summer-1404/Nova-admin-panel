@@ -45,13 +45,13 @@ const UserTabs = ({ active, toggleTab, UserId, selectedUser }) => {
       </Nav>
       <TabContent activeTab={active}>
         <TabPane tabId='1'>
-          <UserProjectsList UserId={UserId} />
+          <UserProjectsList data={selectedUser?.courseStudent} />
         </TabPane>
         <TabPane tabId='2'>
           <UserCourseReserv data ={selectedUser?.courseReserve} />
         </TabPane>       
         <TabPane tabId='3'>
-          <CommentTable/>
+          <CommentTable UserId={UserId}/>
         </TabPane>
         <TabPane tabId='4'>
           <Connections selectedUser={selectedUser}/>

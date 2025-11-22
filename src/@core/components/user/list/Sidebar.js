@@ -92,7 +92,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
       onClosed={handleSidebarClosed}
     >
       <Form onSubmit={handleSubmit(onSubmit)}>
-        {/* <div className='mb-1'>
+        <div className='mb-1'>
           <Label className='form-label' for='firstName'>
             نام  <span className='text-danger'>*</span>
           </Label>
@@ -167,9 +167,9 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
               <Input id='password' type='password' placeholder=' رمز را وارد کنید' invalid={errors.password && true} {...field} />
             )}
           />
-        </div> */}
+        </div>
 
-        {/* <div className='mb-1'>
+        <div className='mb-1'>
           <Label className='form-label' for='user-role'>
             نقش
           </Label>
@@ -177,7 +177,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
             <option value='student'>دانش اموز</option>
             <option value='teacher'>معلم</option>
           </Input>
-        </div> */}
+        </div>
         <Button type='submit' className='me-1' color='primary' onClick={() => handleCreate(data)}>
           افزودن کاربر
         </Button>
