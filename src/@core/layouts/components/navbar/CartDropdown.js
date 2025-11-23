@@ -90,7 +90,7 @@ const CartDropdown = () => {
                           {item.name}
                         </Link>
                       </h6>
-                      <small className="cart-item-by">by {item.brand}</small>
+                      <small className="cart-item-by">by {item.teacherName}</small>
                     </div>
                     <div className="cart-item-qty">
                       <InputNumber

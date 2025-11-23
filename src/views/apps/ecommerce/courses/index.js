@@ -42,16 +42,11 @@ const Shop = () => {
       <Products
         store={store}
         dispatch={dispatch}
-        // addToCart={addToCart}
         activeView={activeView}
         getProducts={getProducts}
         sidebarOpen={sidebarOpen}
-        // getCartItems={getCartItems}
         setActiveView={setActiveView}
-        // addToWishlist={addToWishlist}
         setSidebarOpen={setSidebarOpen}
-        // deleteCartItem={deleteCartItem}
-        // deleteWishlistItem={deleteWishlistItem}
       />
       <Sidebar sidebarOpen={sidebarOpen} />
     </Fragment>

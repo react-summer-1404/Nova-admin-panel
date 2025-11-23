@@ -32,7 +32,23 @@ const Details = () => {
   useEffect(() => {
     dispatch(getProduct(id));
   }, [id]);
+ const data=store?.productDetail
  
+  const selectedCourse =data?{
+    // currentRate : data.currentRate,
+    teacherName:data.teacherName,
+    statusName:data.statusName,
+    title:data.title,
+    describe:data.describe,
+    // courseTeches:data.courseTeches,
+    active:data.active,
+    price:data.price,
+    startTime:data.startTime,
+    endTime:data.endTime,
+    capacity:data.capacity,
+    image:data.image,
+
+  }:null
 
   return (
     <Fragment>
@@ -41,7 +57,7 @@ const Details = () => {
         data={[{ title: "مدیریت دوره ها" }, { title: "جزییات دوره" }]}
       />
       <div className="app-ecommerce-details">
-        {Object.keys(store.productDetail).length ? (
+        {selectedCourse ? (
           <Card>
             <CardBody>
               <ProductDetails
@@ -49,6 +65,7 @@ const Details = () => {
                 productId={id}
                 getProduct={getProduct}
                 data={store.productDetail}
+                selectedCourse={selectedCourse}
               />
             </CardBody>
             <ItemFeatures data={store.productDetail} />
