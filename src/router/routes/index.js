@@ -139,14 +139,14 @@ const Routes = [
     element: <DTAdvance6 />
   },
   {
-    path: '/apps/ecommerce/product-detail/:product',
+    path: '/apps/ecommerce/product-detail/:id',
     element: <EcommerceDetail />,
     meta: {
       className: 'ecommerce-application'
     }
   },
   {
-    path: '/apps/ecommerce/checkout',
+    path: '/apps/ecommerce/createCourse',
     element: <EcommerceCheckout />,
     meta: {
       className: 'ecommerce-application'

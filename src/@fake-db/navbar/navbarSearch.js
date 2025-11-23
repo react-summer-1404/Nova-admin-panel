@@ -126,7 +126,7 @@ export const searchArr = [
         isBookmarked: false,
         title: 'Checkout',
         icon: 'CreditCard',
-        link: '/apps/ecommerce/checkout'
+        link: '/apps/ecommerce/createCourse'
       },
       {
         id: 15,

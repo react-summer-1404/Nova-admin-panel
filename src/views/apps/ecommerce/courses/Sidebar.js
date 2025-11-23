@@ -1,5 +1,6 @@
 // ** Custom Hooks
 // import { useRTL } from "@hooks/useRTL";
+import defaultpPic from "../../../../assets/images/defalt.png";
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,7 +48,7 @@ const Sidebar = (props) => {
       params = {};
     }
      else if (id === "reserved") {
-      url = "/SharePanel/GetMyCoursesReserve";
+      url = "/CourseReserve";
       params = {};
     }
     const response = Object.keys(params).length>0 
@@ -64,9 +65,9 @@ const Sidebar = (props) => {
       name: course.title,
       image: course.imageAddress,
       price: course.cost,
-      brand: course.fullName,
+      fullName: course.fullName,
       slug: course.courseId,
-      description: course.describe,
+      miniDescribe: course.miniDescribe,
       active: course.active
     }))
     total = response.data.totalCount
@@ -78,7 +79,7 @@ const Sidebar = (props) => {
     //   name: item.title,
     //   image: item.imageAddress,
     //   price: item.cost,
-    //   brand: item.teacherName,
+    //   fullName: item.teacherName,
     //   slug: item.courseId,
     //   description: item.describe,
     //   rating: item.currentRate
@@ -87,45 +88,75 @@ const Sidebar = (props) => {
   }
   
   else if (id === "reserved") {
-    mappedData = response.data?.map(item => ({
-      id: item.courseId,
-      name: item.courseName,
-      image: item.image,
-      // price: item.cost,
-      brand: item.teacher,
-      slug: item.courseId,
+    // mappedData = response.data?.map(item => ({
+    //   id: item.courseId,
+    //   name: item.courseName,
+    //   image: item.image,
+    //   fullName: item.teacher,
+    //   slug: item.courseId,
+    //   miniDescribe: item.miniDescribe,
+
      
-    }))
-    total = mappedData.length
+    // }))
+    // total = mappedData.length
+    const reserves = response.data || [];
+
+    const coursesGet = await instance.get("/Course/CourseList", {
+      params: { PageNumber: 1, RowsOfPage: 1000 },
+    });
+    const courses = coursesGet.data.courseDtos || [];
+    
+    const reservedCourses = courses.filter(course =>
+      reserves.some(p => p.courseId === course.courseId)
+    );
+  
+  
+    mappedData = reservedCourses.map(course => ({
+      id: course.courseId,
+      name: course.title,
+      image: course.imageAddress || defaultpPic,
+      price: course.cost,
+      fullName: course.fullName,
+      slug: course.courseId,
+      miniDescribe: course.miniDescribe,
+      active: course.active
+    }));
+  
+    total = mappedData.length;
+  
+    console.log("دوره‌های پرداخت شده:", mappedData);
   }
   
   else if (id === "paidCourse") {
     const payments = response.data || [];
-  
+
     const coursesGet = await instance.get("/Course/CourseList", {
-      params: { PageNumber: 1, RowsOfPage: 10 }
+      params: { PageNumber: 1, RowsOfPage: 1000 },
     });
-  
     const courses = coursesGet.data.courseDtos || [];
+
+    const paidCourses = courses.filter(course =>
+      payments.some(p => p.courseId === course.courseId)
+    );
   
-    mappedData = payments.map(payment => {
-      const course = courses.find(item => item.courseId === payment.courseId);
-  console.log("course",course)
-  console.log("payments",payments)
-      return {
-        id: payment.courseId,
-        name: course?.title,
-        image: course?.imageAddress || null,
-        price: payment.Paid,
-        brand: course?.fullName ,
-        slug: payment.courseId,
-        paymentDate: payment.PeymentDate,
-        active :course.active?"act":"deact"
-      };
-    });
+  
+    mappedData = paidCourses.map(course => ({
+      id: course.courseId,
+      name: course.title,
+      image: course.imageAddress || defaultpPic,
+      price: course.cost,
+      fullName: course.fullName,
+      slug: course.courseId,
+      miniDescribe: course.miniDescribe,
+      active: course.active
+    }));
   
     total = mappedData.length;
+  
+    console.log("دوره‌های پرداخت شده:", mappedData);
   }
+  
+  
   
   
   dispatch(setCourseList({ 

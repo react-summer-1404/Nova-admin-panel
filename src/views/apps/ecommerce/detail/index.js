@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 // ** Product detail components
 import ItemFeatures from "./ItemFeatures";
 import ProductDetails from "./ProductDetails";
-import RelatedProducts from "./RelatedProducts";
 
 // ** Custom Components
 import BreadCrumbs from "@components/breadcrumbs";
@@ -22,8 +21,8 @@ import TabsIcons from "../../components/tabs/TabsIconsCourses";
 import tabsBasic from "../../components/tabs/TabsBasic";
 const Details = () => {
   // ** Vars
-  const params = useParams().product;
-  const productId = params.substring(params.lastIndexOf("-") + 1);
+  const {id} = useParams()
+  // const productId = params.substring(params.lastIndexOf("-") + 1);
 
   // ** Store Vars
   const dispatch = useDispatch();
@@ -31,8 +30,8 @@ const Details = () => {
 
   // ** ComponentDidMount : Get product
   useEffect(() => {
-    dispatch(getProduct(productId));
-  }, []);
+    dispatch(getProduct(id));
+  }, [id]);
  
 
   return (
@@ -47,12 +46,9 @@ const Details = () => {
             <CardBody>
               <ProductDetails
                 dispatch={dispatch}
-                // addToCart={addToCart}
-                productId={productId}
+                productId={id}
                 getProduct={getProduct}
                 data={store.productDetail}
-                // addToWishlist={addToWishlist}
-                // deleteWishlistItem={deleteWishlistItem}
               />
             </CardBody>
             <ItemFeatures data={store.productDetail} />

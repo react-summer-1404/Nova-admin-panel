@@ -10,35 +10,7 @@ export const getProducts = createAsyncThunk('courses/getList', async params => {
   return { params, data: response.data }
 })
 
-// export const addToCart = createAsyncThunk('appEcommerce/addToCart', async (id, { dispatch, getState }) => {
-//   const response = await axios.post('/apps/ecommerce/cart', { productId: id })
-//   await dispatch(getProducts(getState().ecommerce.params))
-//   return response.data
-// })
-
-// export const getWishlistItems = createAsyncThunk('appEcommerce/getWishlistItems', async () => {
-//   const response = await axios.get('/apps/ecommerce/wishlist')
-//   return response.data
-// })
-
-// export const deleteWishlistItem = createAsyncThunk('courses/deleteFavorites', async (id, { dispatch }) => {
-//   const formData = new FormData()
-//   formData.append('CourseFavoriteId', id)
-//   const response = await instance.delete('/Course/DeleteCourseFavorite', {
-//     data: formData,
-//     headers: {
-//       'Content-Type': 'multipart/form-data',
-//     },
-//   })
-//   dispatch(getWishlistItems())
-//   return response.data
-// })
-
-// export const getCartItems = createAsyncThunk('appEcommerce/getCartItems', async () => {
-//   const response = await axios.get('/apps/ecommerce/cart')
-//   return response.data
-// })
-
+// get product detail
 export const getProduct = createAsyncThunk(
   'appCourses/getProduct',
   async id => {
@@ -47,19 +19,10 @@ export const getProduct = createAsyncThunk(
   }
 )
 
-// export const addToWishlist = createAsyncThunk('courses/addFavorites', async id => {
-//   await instance.post('/Course/AddCourseFavorite', { courseId: id })
-//   return id
-// })
 
-// export const deleteCartItem = createAsyncThunk('appEcommerce/deleteCartItem', async (id, { dispatch }) => {
-//   await axios.delete(`/apps/ecommerce/cart/${id}`)
-//   dispatch(getCartItems())
-//   return id
-// })
 
 export const appEcommerceSlice = createSlice({
-  name: 'appEcommerce',
+  name: 'ecommerce',
   initialState: {
     cart: [],
     params: {},
@@ -93,15 +56,16 @@ state.totalProducts = action.payload.data.totalCount
     builder
     .addCase(getProducts.fulfilled, (state, action) => {
       state.params = action.payload.params
-  
+  // product card information
       state.products = action.payload.data.courseDtos?.map(course => ({
         id: course.courseId,
         name: course.title,
         image: course.imageAddress,
         price: course.cost,
-        brand: course.fullName,
         slug: course.courseId,
         description: course.describe,
+        miniDescribe : course.miniDescribe,
+        fullName : course.fullName,
         active: course.active,
         lastUpdate:course.lastUpdate?.slice(0,10),
         isExpire:course.isExpire
@@ -110,12 +74,7 @@ state.totalProducts = action.payload.data.totalCount
       state.totalProducts = action.payload.data.totalCount
   })
   
-    // .addCase(getWishlistItems.fulfilled, (state, action) => {
-    //     state.wishlist = action.payload.favoriteCourseDto
-    // })
-    // .addCase(getCartItems.fulfilled, (state, action) => {
-    //     state.cart = action.payload.products
-    // })
+  //  product detail information
     .addCase(getProduct.fulfilled, (state, action) => {
       const courseDetail = action.payload; 
       state.productDetail = {

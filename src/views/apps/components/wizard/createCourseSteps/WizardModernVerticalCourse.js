@@ -70,7 +70,7 @@ const WizardModernVertical = () => {
     formData.append("MiniDescribe", allData.step3.MiniDescribe);
     formData.append("Describe", JSON.stringify(allData.step3.Describe));
   
-    // step 4 (مهم)
+    // step 4
     if (step4Data.ImageAddress) formData.append("ImageAddress", step4Data.ImageAddress);
     if (step4Data.Image) formData.append("Image", step4Data.Image);
   

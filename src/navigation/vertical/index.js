@@ -57,9 +57,9 @@ export default [
       },
       {
         id: "checkout",
-        title: "Checkout",
+        title: "ساخت دوره",
         icon: <Circle size={12} />,
-        navLink: "/apps/ecommerce/checkout",
+        navLink: "/apps/ecommerce/createCourse",
       },
     ],
   },

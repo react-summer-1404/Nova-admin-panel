@@ -6,26 +6,13 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 import {
   Star,
-  ShoppingCart,
-  DollarSign,
-  Heart,
-  Share2,
-  Facebook,
-  Twitter,
-  Youtube,
-  Instagram,
 } from "react-feather";
 
 // ** Reactstrap Imports
 import {
   Row,
   Col,
-  Button,
   CardText,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledButtonDropdown,
 } from "reactstrap";
 
 
@@ -36,48 +23,6 @@ const Product = (props) => {
   // ** State
   const [selectedColor, setSelectedColor] = useState("primary");
 
-  // ** Renders color options
-  // const renderColorOptions = () => {
-  //   return data.colorOptions.map((color, index) => {
-  //     const isLastColor = data.colorOptions.length - 1 === index
-
-  //     return (
-  //       <li
-  //         key={color}
-  //         className={classnames('d-inline-block', {
-  //           'me-25': !isLastColor,
-  //           selected: selectedColor === color
-  //         })}
-  //         onClick={() => setSelectedColor(color)}
-  //       >
-  //         <div className={`color-option b-${color}`}>
-  //           <div className={`filloption bg-${color}`}></div>
-  //         </div>
-  //       </li>
-  //     )
-  //   })
-  // }
-
-  // ** Handle Wishlist item toggle
-  // const handleWishlist = val => {
-  //   if (val) {
-  //     dispatch(deleteWishlistItem(productId))
-  //   } else {
-  //     dispatch(addToWishlist(productId))
-  //   }
-  //   dispatch(getProduct(productId))
-  // }
-
-  // ** Handle Move/Add to cart
-  // const handleCartBtn = (id, val) => {
-  //   if (val === false) {
-  //     dispatch(addToCart(id));
-  //   }
-  //   dispatch(getProduct(productId));
-  // };
-
-  // ** Condition btn tag
-  const CartBtnTag = data.isInCart ? Link : "button";
 
   return (
     <Row className="my-2">
@@ -153,54 +98,7 @@ const Product = (props) => {
 
         </div>
         <div className="d-flex flex-column flex-sm-row pt-1">
-          {/* <Button
-            tag={CartBtnTag}
-            className="btn-cart me-0 me-sm-1 mb-1 mb-sm-0"
-            color="primary"
-            onClick={() => handleCartBtn(data.id, data.isInCart)}
-            {...(data.isInCart
-              ? {
-                  to: "/apps/ecommerce/checkout",
-                }
-              : {})}
-          >
-            <ShoppingCart className="me-50" size={14} />
-            {data.isInCart ? "View in cart" : "Move to cart"}
-          </Button> */}
-          
-          {/* <Button
-            className='btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0'
-            color='secondary'
-            outline
-            onClick={() => handleWishlist(data.isInWishlist)}
-          >
-            <Heart
-              size={14}
-              className={classnames('me-50', {
-                'text-danger': data.isInWishlist
-              })}
-            />
-            <span>Wishlist</span>
-          </Button> */}
-          {/* <UncontrolledButtonDropdown className='dropdown-icon-wrapper btn-share'>
-            <DropdownToggle className='btn-icon hide-arrow' color='secondary' caret outline>
-              <Share2 size={14} />
-            </DropdownToggle>
-            <DropdownMenu end>
-              <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-                <Facebook size={14} />
-              </DropdownItem>
-              <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-                <Twitter size={14} />
-              </DropdownItem>
-              <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-                <Youtube size={14} />
-              </DropdownItem>
-              <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-                <Instagram size={14} />
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledButtonDropdown> */}
+     
         </div>
 
       </Col>

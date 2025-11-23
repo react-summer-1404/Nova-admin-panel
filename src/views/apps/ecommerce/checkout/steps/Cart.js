@@ -38,14 +38,14 @@ const Cart = props => {
       return (
         <Card key={item.name} className='ecommerce-card'>
           <div className='item-img'>
-            <Link to={`/apps/ecommerce/product-detail/${item.slug}`}>
+            {/* <Link to={`/apps/ecommerce/product-detail/${item.slug}`}> */}
               <img className='img-fluid' src={item.image} alt={item.name} />
-            </Link>
+            {/* </Link> */}
           </div>
           <CardBody>
             <div className='item-name'>
               <h6 className='mb-0'>
-                <Link to={`/apps/ecommerce/product-detail/${item.slug}`}>{item.name}</Link>
+                {/* <Link to={`/apps/ecommerce/product-detail/${item.slug}`}>{item.name}</Link> */}
               </h6>
               <span className='item-company'>
                 By
