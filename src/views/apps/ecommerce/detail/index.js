@@ -10,7 +10,7 @@ import ProductDetails from "./ProductDetails";
 import BreadCrumbs from "@components/breadcrumbs";
 
 // ** Reactstrap Imports
-import { Card, CardBody, Col } from "reactstrap";
+import { Card, CardBody, Row, Col, } from "reactstrap";
 
 // ** Store & Actions
 import { useDispatch, useSelector } from "react-redux";
@@ -56,28 +56,28 @@ const Details = () => {
         title="جزییات دوره"
         data={[{ title: "مدیریت دوره ها" }, { title: "جزییات دوره" }]}
       />
-      <div className="app-ecommerce-details">
+      <div className="">
         {selectedCourse ? (
-          <Card>
-            <CardBody>
-              <ProductDetails
-                dispatch={dispatch}
-                productId={id}
-                getProduct={getProduct}
-                data={store.productDetail}
-                selectedCourse={selectedCourse}
-              />
-            </CardBody>
-            <ItemFeatures data={store.productDetail} />
-            <CardBody>
-            <Col xl='12' lg='12'>
-          <Card title='Tabs with icons' code={tabsBasic}>
-            <TabsIcons />
-          </Card>
+       
+        <Row>
+        <Col xl='4' lg='5' xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
+        <ProductDetails
+          dispatch={dispatch}
+          productId={id}
+          getProduct={getProduct}
+          data={store.productDetail}
+          selectedCourse={selectedCourse}
+        />
+          {/* <PlanCard /> */}
         </Col>
-            
-            </CardBody>
-          </Card>
+        <Col xl='8' lg='7' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
+        <TabsIcons />
+        </Col>
+        <Col xl='8' lg='7' xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
+        {/* <ItemFeatures data={store.productDetail} /> */}
+
+        </Col>
+      </Row>
         ) : null}
       </div>
     </Fragment>
