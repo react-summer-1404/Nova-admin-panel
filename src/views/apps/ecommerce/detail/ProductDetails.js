@@ -416,7 +416,7 @@ const Product = ({ selectedCourse }) => {
           </div>
         </CardBody>
       </Card>
-      {/* <Modal isOpen={show} toggle={() => setShow(!show)} className='modal-dialog-centered modal-lg'>
+      <Modal isOpen={show} toggle={() => setShow(!show)} className='modal-dialog-centered modal-lg'>
         <ModalHeader className='bg-transparent' toggle={() => setShow(!show)}></ModalHeader>
         <ModalBody className='px-sm-5 pt-50 pb-5'>
           <div className='text-center mb-2'>
@@ -482,7 +482,7 @@ const Product = ({ selectedCourse }) => {
                 <Label className='form-label' for='status'>
                   Status:
                 </Label>
-                <Select
+                {/* <Select
                   id='status'
                   isClearable={false}
                   className='react-select'
@@ -490,7 +490,7 @@ const Product = ({ selectedCourse }) => {
                   options={statusOptions}
                   theme={selectThemeColors}
                   defaultValue={statusOptions[statusOptions.findIndex(i => i.value === selectedCourse.status)]}
-                />
+                /> */}
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='tax-id'>
@@ -512,7 +512,7 @@ const Product = ({ selectedCourse }) => {
                 <Label className='form-label' for='language'>
                   language
                 </Label>
-                <Select
+                {/* <Select
                   id='language'
                   isClearable={false}
                   className='react-select'
@@ -520,13 +520,13 @@ const Product = ({ selectedCourse }) => {
                   options={languageOptions}
                   theme={selectThemeColors}
                   defaultValue={languageOptions[0]}
-                />
+                /> */}
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='country'>
                   Country
                 </Label>
-                <Select
+                {/* <Select
                   id='country'
                   isClearable={false}
                   className='react-select'
@@ -534,7 +534,7 @@ const Product = ({ selectedCourse }) => {
                   options={countryOptions}
                   theme={selectThemeColors}
                   defaultValue={countryOptions[0]}
-                />
+                /> */}
               </Col>
               <Col xs={12}>
                 <div className='d-flex align-items-center mt-1'>
@@ -573,7 +573,7 @@ const Product = ({ selectedCourse }) => {
             </Row>
           </Form>
         </ModalBody>
-      </Modal> */}
+      </Modal>
     </Fragment>
   )
 }
