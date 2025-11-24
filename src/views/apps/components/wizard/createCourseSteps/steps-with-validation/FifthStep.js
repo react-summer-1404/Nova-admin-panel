@@ -68,14 +68,14 @@ const FifthStep = ({ stepper, courseId }) => {
   return (
     <Fragment>
       <div className="content-header">
-        <h5 className="mb-0">مرحله دوم</h5>
+        <h5 className="mb-0">تکنولوژی دوره</h5>
         <small>لطفا تکنولوژی مورد نظر خود را انتخاب کنید</small>
       </div>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="techId">
-              تکنولوژِی دوره
+              شما تنها  مجاز به انتخاب دو تکنولوژی هستید
             </Label>
 
             <Controller

@@ -12,11 +12,10 @@ import FirstStep from "./steps-with-validation/FirstStep";
 import FifthStep from "./steps-with-validation/FifthStep";
 
 // ** Icons Imports
-import { FileText, Sliders, Info, Image } from "react-feather";
+import { FileText, Sliders, Info, Image,Cpu  } from "react-feather";
 import { useMutation } from "@tanstack/react-query";
 import { postCreateCourse } from "../../../../../core/Services/api/CreatCoursesApi";
 import toast from "react-hot-toast";
-import { postTech } from "../../../../../core/Services/api/AddTech";
 
 const WizardModernVertical = () => {
   // ** Ref
@@ -145,7 +144,7 @@ const WizardModernVertical = () => {
       id: "tech-info",
       title: "مرحله پنجم",
       subtitle: "انتخاب تکنولوژی دوره",
-      icon: <Image size={18} />,
+      icon: <Cpu  size={18} />,
       content: (
         <FifthStep
           stepper={stepper}
