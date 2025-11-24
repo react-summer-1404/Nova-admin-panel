@@ -1,35 +1,45 @@
-// ** React Imports
-import { Fragment } from "react";
-
-// ** Third Party Components
+import { Fragment, useState } from "react";
 import { ArrowLeft } from "react-feather";
 import { useForm, Controller } from "react-hook-form";
 
-// ** Reactstrap Imports
-import { Label, Row, Col, Button, Form, Input, FormFeedback } from "reactstrap";
-import { useState } from "react";
-import { formatDate } from "@fullcalendar/core";
+import {
+  Label,
+  Row,
+  Col,
+  Button,
+  Form,
+  Input,
+  FormFeedback,
+  TabContent,
+  TabPane,
+  Nav,
+  NavItem,
+  NavLink,
+} from "reactstrap";
+
 const defaultValues = {
   Image: "",
   ImageAddress: "",
 };
 
-const FourthStep = ({ stepper ,updateStepData,handleSubmitData}) => {
+const FourthStep = ({ stepper, updateStepData, handleSubmitData }) => {
   const [preview, setPreview] = useState(null);
-  // ** Hooks
+  const [active, setActive] = useState("1");
+
+  const toggle = (tab) => {
+    if (active !== tab) setActive(tab);
+  };
+
   const {
     control,
-    setError,
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues });
 
   const onSubmit = (data) => {
-    updateStepData("step4", data); // state رو هم آپدیت کن
-    handleSubmitData(data); // ولی مستقیم داده‌های جدید رو بفرست
-    console.log("STEP 4 DATA", data);
+    updateStepData("step4", data);
+    handleSubmitData(data);
   };
-  
 
   return (
     <Fragment>
@@ -37,89 +47,124 @@ const FourthStep = ({ stepper ,updateStepData,handleSubmitData}) => {
         <h5 className="mb-0">عکس دوره</h5>
         <small>لطفا برای دوره عکس انتخاب کنید</small>
       </div>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Row className="justify-content-center">
-          <Col md="8" className="mb-1">
-            <Label className="form-label" for="ImageAddress">
-              لینک عکس
-            </Label>
-            <Controller
-              name="ImageAddress"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  type="text"
-                  placeholder="لینک عکس مورد نظر خود را وارد کنید"
-                  invalid={errors.ImageAddress && true}
-                  {...field}
-                />
+
+      <Nav tabs justified>
+        <NavItem>
+          <NavLink active={active === "1"} onClick={() => toggle("1")}>
+            آپلود عکس
+          </NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink active={active === "2"} onClick={() => toggle("2")}>
+            لینک عکس
+          </NavLink>
+        </NavItem>
+      </Nav>
+
+      <TabContent activeTab={active} className="py-50">
+        <TabPane tabId="1">
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Col md="8" className="mb-3">
+              {/* <Label>آپلود عکس</Label> */}
+
+              <Controller
+                name="Image"
+                control={control}
+                render={({ field }) => (
+                  <>
+                     <Input
+                      style={{ width: 200, height: 50, marginTop: 10 }}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        field.onChange(file);
+                        setPreview(file ? URL.createObjectURL(file) : null);
+                      }}
+                    />
+                    <div
+                      style={{
+                        height: 300,
+                        width: "150%",
+                        border: "2px dotted #7367f0",
+                        borderRadius: 8,
+                        padding: 5,
+                        marginTop:20,
+                        display:"flex",
+                        justifyContent:"center",
+                        alignItems:"center"
+                      }}
+                    >
+                      <img
+                        src={
+                          preview ||
+                          (field.value
+                            ? URL.createObjectURL(field.value)
+                            : null)
+                        }
+                        alt="upload your image"
+                        style={{
+                          width: "300px",
+                          height: "60%",
+                          borderRadius: 8,
+                        }}
+                      />
+                    </div>
+
+                 
+                  </>
+                )}
+              />
+            </Col>
+
+           
+          </Form>
+        </TabPane>
+
+        <TabPane tabId="2">
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Col md="8" className="mb-1">
+              <Label>لینک عکس</Label>
+
+              <Controller
+                name="ImageAddress"
+                control={control}
+                render={({ field }) => (
+                  <Input
+                    type="text"
+                    placeholder="لینک عکس را وارد کنید"
+                    invalid={errors.ImageAddress && true}
+                    {...field}
+                  />
+                )}
+              />
+
+              {errors.ImageAddress && (
+                <FormFeedback>{errors.ImageAddress.message}</FormFeedback>
               )}
-            />
-            {errors.ImageAddress && (
-              <FormFeedback>{errors.ImageAddress.message}</FormFeedback>
-            )}
-          </Col>
-          <Col md="8" className="mb-1">
-            <Label className="form-label" for="Image">
-              عکس دوره
-            </Label>
-            <Controller
-  name="Image"
-  control={control}
-  render={({ field }) => (
-    <>
-      <div
-        style={{
-          height: 200,
-          width: "80%",
-          border: "1px solid purple",
-          borderRadius: 8,
-          padding:5
-        }}
-      >
-        <img
-          src={preview || (field.value ? URL.createObjectURL(field.value) : null)}
-          alt="img"
-          style={{ width:"100%", height:"100%", borderRadius: 8 }}
-        />
+            </Col>
+          </Form>
+        </TabPane>
+      </TabContent>
+      <div className="d-flex justify-content-between mt-2">
+        <Button
+          color="primary"
+          className="btn-prev"
+          onClick={() => stepper.previous()}
+        >
+          <ArrowLeft size={14} className="align-middle me-1" />
+          قبلی
+        </Button>
+
+        <Button
+          color="success"
+          className="btn-submit"
+          onClick={handleSubmit(onSubmit)}
+        >
+          ثبت
+        </Button>
       </div>
-      <Input
-        style={{ width:200, height: 50, marginTop: 10 }}
-        type="file"
-        accept="image/*"
-        onChange={(e) => {
-          const file = e.target.files[0];
-          field.onChange(file);
-          setPreview(file ? URL.createObjectURL(file) : null);
-        }}
-      />
-    </>
-  )}
-/>
-
-          </Col>
-        </Row>
-
-        <div className="d-flex justify-content-between">
-          <Button
-            color="primary"
-            className="btn-prev"
-            onClick={() => stepper.previous()}
-          >
-            <ArrowLeft
-              size={14}
-              className="align-middle me-sm-25 me-0"
-            ></ArrowLeft>
-            <span className="align-middle d-sm-inline-block d-none">
-              Previous
-            </span>
-          </Button>
-          <Button type="submit" color="success" className="btn-submit">
-  Submit
-</Button>
-
-        </div>
-      </Form>
     </Fragment>
   );
 };

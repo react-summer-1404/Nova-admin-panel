@@ -11,7 +11,7 @@ import SecondStep from "./steps-with-validation/SecondStep";
 import FirstStep from "./steps-with-validation/FirstStep";
 
 // ** Icons Imports
-import { FileText, User, MapPin, Link } from "react-feather";
+import { FileText, Sliders, Info, Image } from "react-feather";
 import { useMutation } from "@tanstack/react-query";
 import { postCreateCourse } from "../../../../../core/Services/api/CreatCoursesApi";
 import toast from "react-hot-toast";
@@ -37,9 +37,7 @@ const WizardModernVertical = () => {
   const createMutation = useMutation({
     mutationFn: (formData) => postCreateCourse(formData),
     onSuccess: () => {
-      // console.log("Course created successfully", data);
       toast.success("دوره با موفقیت ساخته شد");
-      // مثلا می‌تونی به صفحه لیست دوره‌ها بری
     },
     onError: (error) => {
       console.error("Error creating course", error);
@@ -83,7 +81,7 @@ const WizardModernVertical = () => {
       id: "first-info",
       title: "مرحله اول",
       subtitle: "اطلاعات اولیه دوره",
-      icon: <User size={18} />,
+      icon: <FileText size={18} />,
       content: (
         <FirstStep
           stepper={stepper}
@@ -96,7 +94,7 @@ const WizardModernVertical = () => {
       id: "second-info",
       title: "مرحله دوم",
       subtitle: "اطلاعات  دیگر دوره",
-      icon: <User size={18} />,
+      icon: <Sliders size={18} />,
       content: (
         <SecondStep
           stepper={stepper}
@@ -109,7 +107,7 @@ const WizardModernVertical = () => {
       id: "third-info",
       title: "مرحله سوم",
       subtitle: "توضیحات دوره",
-      icon: <MapPin size={18} />,
+      icon: <Info size={18} />,
       content: (
         <ThirdStep
           stepper={stepper}
@@ -120,9 +118,9 @@ const WizardModernVertical = () => {
     },
     {
       id: "social-links",
-      title: "Social Links",
-      subtitle: "Add Social Links",
-      icon: <Link size={18} />,
+      title: "مرحله چهارم",
+      subtitle: "انتخاب عکس دوره",
+      icon: <Image size={18} />,
       content: (
         <FourthStep
           stepper={stepper}

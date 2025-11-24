@@ -81,7 +81,7 @@ const DataTableServerSide = () => {
   return (
     <Card>
       <CardHeader className='border-bottom'>
-        <CardTitle tag='h4'>گروه های دوره</CardTitle>
+        <CardTitle tag='h4'>منتور های دوره</CardTitle>
       </CardHeader>
 
       <Row className='mx-0 mt-1 mb-50'>
