@@ -88,6 +88,7 @@ state.totalProducts = action.payload.data.totalCount
         description: courseDetail.describe,
         rating: courseDetail.currentRate,
         active :courseDetail.active,
+        capacity :courseDetail.capacity,
         statusName:courseDetail.statusName,
         currentRate: courseDetail.currentRate,
         startTime: courseDetail.startTime,
