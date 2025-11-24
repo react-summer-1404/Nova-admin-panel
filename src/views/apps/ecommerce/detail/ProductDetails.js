@@ -1,215 +1,3 @@
-// // ** React Imports
-// import { useState } from "react";
-// import { Link } from "react-router-dom";
-
-// // ** Third Party Components
-// import classnames from "classnames";
-// import {
-//   Star,
-//   ShoppingCart,
-//   DollarSign,
-//   Heart,
-//   Share2,
-//   Facebook,
-//   Twitter,
-//   Youtube,
-//   Instagram,
-// } from "react-feather";
-
-// // ** Reactstrap Imports
-// import {
-//   Row,
-//   Col,
-//   Button,
-//   CardText,
-//   DropdownItem,
-//   DropdownMenu,
-//   DropdownToggle,
-//   UncontrolledButtonDropdown,
-// } from "reactstrap";
-
-
-// const Product = (props) => {
-//   // ** Props
-//   const { data, dispatch, getProduct, productId } = props;
-
-//   // ** State
-//   const [selectedColor, setSelectedColor] = useState("primary");
-
-//   // ** Renders color options
-//   // const renderColorOptions = () => {
-//   //   return data.colorOptions.map((color, index) => {
-//   //     const isLastColor = data.colorOptions.length - 1 === index
-
-//   //     return (
-//   //       <li
-//   //         key={color}
-//   //         className={classnames('d-inline-block', {
-//   //           'me-25': !isLastColor,
-//   //           selected: selectedColor === color
-//   //         })}
-//   //         onClick={() => setSelectedColor(color)}
-//   //       >
-//   //         <div className={`color-option b-${color}`}>
-//   //           <div className={`filloption bg-${color}`}></div>
-//   //         </div>
-//   //       </li>
-//   //     )
-//   //   })
-//   // }
-
-//   // ** Handle Wishlist item toggle
-//   // const handleWishlist = val => {
-//   //   if (val) {
-//   //     dispatch(deleteWishlistItem(productId))
-//   //   } else {
-//   //     dispatch(addToWishlist(productId))
-//   //   }
-//   //   dispatch(getProduct(productId))
-//   // }
-
-//   // ** Handle Move/Add to cart
-//   // const handleCartBtn = (id, val) => {
-//   //   if (val === false) {
-//   //     dispatch(addToCart(id));
-//   //   }
-//   //   dispatch(getProduct(productId));
-//   // };
-
-//   // ** Condition btn tag
-//   const CartBtnTag = data.isInCart ? Link : "button";
-
-//   return (
-//     <Row className="my-2">
-//       <Col
-//         className="d-flex align-items-center justify-content-center mb-2 mb-md-0"
-//         md="5"
-//         xs="12"
-//       >
-//         <div className="d-flex align-items-center justify-content-center">
-//           <img
-//             className="img-fluid product-img"
-//             src={data.image}
-//             alt={data.name}
-//           />
-//         </div>
-//       </Col>
-//       <Col md="7" xs="12">
-//         <h4 style={{ fontSize: 20 }}>{data.name}</h4>
-//         <CardText tag="span" className="item-company" style={{ fontSize: 16 }}>
-//           توسط
-//           <a
-//             className="company-name"
-//             style={{ fontSize: 16 }}
-//             href="/"
-//             onClick={(e) => e.preventDefault()}
-//           >
-//             {data.brand}
-//           </a>
-//         </CardText>
-//         <div className="ecommerce-details-price d-flex flex-wrap mt-1">
-//           <h4 className="item-price me-1">${data.price}</h4>
-//           <ul className="unstyled-list list-inline">
-//             {new Array(5).fill().map((listItem, index) => {
-//               return (
-//                 <li key={index} className="ratings-list-item me-25">
-//                   <Star
-//                     className={classnames({
-//                       "filled-star": index + 1 <= data.rating,
-//                       "unfilled-star": index + 1 > data.rating,
-//                     })}
-//                   />
-//                 </li>
-//               );
-//             })}
-//           </ul>
-//         </div>
-//         <CardText>
-//           <div>
-//             {data.isActive ? (
-//               <span className="text-success ms-25" style={{ fontSize: 18 }}>
-//                 فعال
-//               </span>
-//             ) : (
-//               <span className="ms-25" style={{ color: "red" }}>
-//                 غیر فعال
-//               </span>
-//             )}
-//           </div>
-//         </CardText>
-//         <div style={{display:"flex",gap:3,alignItems:"center"}}> وضعیت دوره:
-//         <CardText style={{ fontSize: 14 ,borderRadius:8,width:70,backgroundColor:"#eee" ,padding:3,color:"red",textAlign:"center"}}>{data.statusName} </CardText>
-
-//         </div>
-//         <CardText>{data.description}</CardText>
-
-
-//         <div style={{display:"flex",gap:3,alignItems:"center"}}> زمان شروع دوره:
-//         <CardText style={{ fontSize: 14,fontWeight:600 ,borderRadius:8 ,padding:3,textAlign:"center"}}>{data.endTime} </CardText>
-
-//         </div>
-//           <div style={{display:"flex",gap:3,alignItems:"center"}}> زمان پایان دوره:
-//         <CardText style={{ fontSize: 14 ,fontWeight:600,borderRadius:8,padding:3 ,textAlign:"center"}}>{data.startTime} </CardText>
-
-//         </div>
-//         <div className="d-flex flex-column flex-sm-row pt-1">
-//           {/* <Button
-//             tag={CartBtnTag}
-//             className="btn-cart me-0 me-sm-1 mb-1 mb-sm-0"
-//             color="primary"
-//             onClick={() => handleCartBtn(data.id, data.isInCart)}
-//             {...(data.isInCart
-//               ? {
-//                   to: "/apps/ecommerce/checkout",
-//                 }
-//               : {})}
-//           >
-//             <ShoppingCart className="me-50" size={14} />
-//             {data.isInCart ? "View in cart" : "Move to cart"}
-//           </Button> */}
-          
-//           {/* <Button
-//             className='btn-wishlist me-0 me-sm-1 mb-1 mb-sm-0'
-//             color='secondary'
-//             outline
-//             onClick={() => handleWishlist(data.isInWishlist)}
-//           >
-//             <Heart
-//               size={14}
-//               className={classnames('me-50', {
-//                 'text-danger': data.isInWishlist
-//               })}
-//             />
-//             <span>Wishlist</span>
-//           </Button> */}
-//           {/* <UncontrolledButtonDropdown className='dropdown-icon-wrapper btn-share'>
-//             <DropdownToggle className='btn-icon hide-arrow' color='secondary' caret outline>
-//               <Share2 size={14} />
-//             </DropdownToggle>
-//             <DropdownMenu end>
-//               <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-//                 <Facebook size={14} />
-//               </DropdownItem>
-//               <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-//                 <Twitter size={14} />
-//               </DropdownItem>
-//               <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-//                 <Youtube size={14} />
-//               </DropdownItem>
-//               <DropdownItem tag='a' href='/' onClick={e => e.preventDefault()}>
-//                 <Instagram size={14} />
-//               </DropdownItem>
-//             </DropdownMenu>
-//           </UncontrolledButtonDropdown> */}
-//         </div>
-
-//       </Col>
-//     </Row>
-
-//   );
-// };
-
-// export default Product;
 
 // ** React Imports
 import { useState, Fragment } from 'react'
@@ -220,13 +8,13 @@ import { Row, Col, Card, Form, CardBody, Button, Badge, Modal, Input, Label, Mod
 // ** Third Party Components
 import Swal from 'sweetalert2'
 import Select from 'react-select'
-import { Check, Briefcase, X } from 'react-feather'
+import { Check, MessageSquare, X ,Book} from 'react-feather'
 import { useForm, Controller } from 'react-hook-form'
 import withReactContent from 'sweetalert2-react-content'
 
 // ** Custom Components
 import Avatar from '@components/avatar'
-
+import defaultPic from "../../../../assets/images/defalt.png"
 // ** Utils
 import { selectThemeColors } from '@utils'
 
@@ -326,18 +114,18 @@ const Product = ({ selectedCourse }) => {
             <div className='d-flex align-items-center flex-column'>
               
         <img
-          height='110'
-          width='110'
+          height='90%'
+          width='90%'
           alt='user-avatar'
-          src={selectedCourse?.image}
+          src={selectedCourse?.image ||defaultPic}
           className='img-fluid rounded mt-3 mb-2'
         />
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
                   <h4>{selectedCourse?.title}</h4>
                   {selectedCourse?.active? (
-                    <Badge color='success' className='text-capitalize'> </Badge>
-                  ) :  <Badge color='danger' className='text-capitalize'> </Badge>
+                    <Badge color='success' className='text-capitalize'>فعال </Badge>
+                  ) :  <Badge color='danger' className='text-capitalize'> غیرفعال</Badge>
                 }
                 </div>
               </div>
@@ -346,24 +134,24 @@ const Product = ({ selectedCourse }) => {
           <div className='d-flex justify-content-around my-2 pt-75'>
             <div className='d-flex align-items-start me-2'>
               <Badge color='light-primary' className='rounded p-75'>
-                <Check className='font-medium-2' />
+                <Book className='font-medium-2' />
               </Badge>
               <div className='ms-75'>
-                <h4 className='mb-0'>1.23k</h4>
-                <small>Tasks Done</small>
+                <h4 className='mb-0'>{selectedCourse.reserveUserTotal}</h4>
+                <small>تعداد رزرو شده ها</small>
               </div>
             </div>
             <div className='d-flex align-items-start'>
               <Badge color='light-primary' className='rounded p-75'>
-                <Briefcase className='font-medium-2' />
+                <MessageSquare className='font-medium-2' />
               </Badge>
               <div className='ms-75'>
-                <h4 className='mb-0'>568</h4>
-                <small>Projects Done</small>
+                <h4 className='mb-0'>{selectedCourse.courseCommentTotal}</h4>
+                <small>تعداد کامنت ها</small>
               </div>
             </div>
           </div>
-          <h4 className='fw-bolder border-bottom pb-50 mb-1'>Details</h4>
+          <h4 className='fw-bolder border-bottom pb-50 mb-1'>جزییات دوره</h4>
           <div className='info-container'>
     
               <ul className='list-unstyled'>
@@ -404,14 +192,30 @@ const Product = ({ selectedCourse }) => {
                   <span>{selectedCourse?.endTime}</span>
                 </li>
               </ul>
+              <div className='mb-75'>
+                  <span className='fw-bolder me-25'> توضیحات:</span>
+                  <p>
+                {selectedCourse.describe}
+              </p>
+                </div>
+              
+             
         
           </div>
           <div className='d-flex justify-content-center pt-2'>
-            <Button color='primary' onClick={() => setShow(true)}>
-              Edit
+            <Button color="relief-primary"  onClick={() => setShow(true)}>
+              ادیت
             </Button>
-            <Button className='ms-1' color='danger' outline onClick={handleSuspendedClick}>
-              Suspended
+            <Button className='ms-1' color="relief-danger"  onClick={handleSuspendedClick}>
+              غیرفعال کردن
+            </Button>
+          </div>
+          <div className='d-flex justify-content-center pt-2'>
+            <Button color="relief-secondary"  onClick={() => setShow(true)}>
+              افزودن کتگوری
+            </Button>
+            <Button className='ms-1' color="relief-warning"  onClick={handleSuspendedClick}>
+              منقضی کردن
             </Button>
           </div>
         </CardBody>

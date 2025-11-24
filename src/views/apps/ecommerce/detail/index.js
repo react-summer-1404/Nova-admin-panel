@@ -18,7 +18,6 @@ import { getProduct } from "../store";
 
 import "@styles/base/pages/app-ecommerce-details.scss";
 import TabsIcons from "../../components/tabs/TabsIconsCourses";
-import tabsBasic from "../../components/tabs/TabsBasic";
 const Details = () => {
   // ** Vars
   const {id} = useParams()
@@ -38,8 +37,8 @@ const Details = () => {
     // currentRate : data.currentRate,
     teacherName:data.teacherName,
     statusName:data.statusName,
-    title:data.title,
-    describe:data.describe,
+    title:data.name,
+    describe:data.description,
     // courseTeches:data.courseTeches,
     active:data.active,
     price:data.price,
@@ -47,6 +46,8 @@ const Details = () => {
     endTime:data.endTime,
     capacity:data.capacity,
     image:data.image,
+    reserveUserTotal:data.reserveUserTotal,
+    courseCommentTotal:data.courseCommentTotal
 
   }:null
 
