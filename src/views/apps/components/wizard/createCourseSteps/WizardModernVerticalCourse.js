@@ -9,18 +9,21 @@ import ThirdStep from "./steps-with-validation/ThirdStep";
 import FourthStep from "./steps-with-validation/FourthStep";
 import SecondStep from "./steps-with-validation/SecondStep";
 import FirstStep from "./steps-with-validation/FirstStep";
+import FifthStep from "./steps-with-validation/FifthStep";
 
 // ** Icons Imports
 import { FileText, Sliders, Info, Image } from "react-feather";
 import { useMutation } from "@tanstack/react-query";
 import { postCreateCourse } from "../../../../../core/Services/api/CreatCoursesApi";
 import toast from "react-hot-toast";
+import { postTech } from "../../../../../core/Services/api/AddTech";
 
 const WizardModernVertical = () => {
   // ** Ref
   const ref = useRef(null);
 
   // ** State
+  const [courseId, setCourseId] = useState(null);
   const [stepper, setStepper] = useState(null);
   const [allData, setAllData] = useState({
     step1: {},
@@ -73,9 +76,16 @@ const WizardModernVertical = () => {
     if (step4Data.Image) formData.append("Image", step4Data.Image);
   
     console.log("formData", formData);
-    createMutation.mutate(formData);
+    createMutation.mutate(formData, {
+      onSuccess: (res) => {
+        setCourseId(res.id); 
+        toast.success("دوره با موفقیت ساخته شد");
+  console.log("res", res);
+
+      }
+    });
   };
-  
+
   const steps = [
     {
       id: "first-info",
@@ -127,6 +137,20 @@ const WizardModernVertical = () => {
           type="modern-vertical"
           updateStepData={updateStepData}
           handleSubmitData={handleSubmitData}
+
+        />
+      ),
+    },
+    {
+      id: "tech-info",
+      title: "مرحله پنجم",
+      subtitle: "انتخاب تکنولوژی دوره",
+      icon: <Image size={18} />,
+      content: (
+        <FifthStep
+          stepper={stepper}
+          type="modern-vertical"
+          courseId={courseId}
         />
       ),
     },
