@@ -14,12 +14,14 @@ import { getProducts,   } from '../store'
 
 // ** Styles
 import '@styles/react/apps/app-ecommerce.scss'
+import { Button } from 'reactstrap'
+import { useNavigate } from 'react-router-dom'
 
 const Shop = () => {
   // ** States
   const [activeView, setActiveView] = useState('grid')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
+const navigate =useNavigate()
   // ** Vars
   const dispatch = useDispatch()
   const store = useSelector(state => state.ecommerce)
@@ -49,6 +51,9 @@ const Shop = () => {
         setSidebarOpen={setSidebarOpen}
       />
       <Sidebar sidebarOpen={sidebarOpen} />
+      <Button color='primary' style={{width:250}} onClick={()=>navigate("/apps/ecommerce/createCourse")}>
+        افزودن دوره جدید +
+      </Button>
     </Fragment>
   )
 }
