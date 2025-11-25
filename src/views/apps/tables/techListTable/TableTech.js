@@ -24,22 +24,21 @@ import {
   DropdownToggle,
 } from "reactstrap";
 import { useState } from "react";
-import {  useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editTechList } from "../../../../core/Services/api/TechSection";
 import toast from "react-hot-toast";
 
 const TableTech = ({ data, isLoading }) => {
   const [selectedItem, setSelectedItem] = useState(null);
-const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const mutationEditTech = useMutation({
     mutationFn: editTechList,
-    onSuccess: () => {toast.success("تکنولوژی با موفقیت ویرایش شد")
-  queryClient.invalidateQueries(["getTechList"])
-  }
-    
-    ,
+    onSuccess: () => {
+      toast.success("تکنولوژی با موفقیت ویرایش شد");
+      queryClient.invalidateQueries(["getTechList"]);
+    },
+
     onError: () => toast.error("خطا در ویرایش تکنولوژی"),
-    
   });
 
   const handleEditClick = (item) => {
@@ -62,7 +61,9 @@ const queryClient = useQueryClient();
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan="4" className="text-center">در حال بارگذاری...</td>
+              <td colSpan="4" className="text-center">
+                در حال بارگذاری...
+              </td>
             </tr>
           ) : (
             data?.map((item) => (
@@ -88,7 +89,11 @@ const queryClient = useQueryClient();
                     size="sm"
                     onClick={() => handleEditClick(item)}
                   >
-                    <Edit size={15} className="ms-50" style={{ marginLeft: "6px" }} />
+                    <Edit
+                      size={15}
+                      className="ms-50"
+                      style={{ marginLeft: "6px" }}
+                    />
                     ادیت
                   </Button>
                 </td>
@@ -100,7 +105,7 @@ const queryClient = useQueryClient();
 
       {/* Modal */}
       <Modal
-        isOpen={selectedItem?true:false}
+        isOpen={selectedItem ? true : false}
         toggle={handleCloseModal}
         className="modal-dialog-centered"
       >
@@ -121,7 +126,6 @@ const queryClient = useQueryClient();
                 });
                 handleCloseModal();
               }}
-              
             >
               {({ handleSubmit }) => (
                 <Form>
@@ -135,7 +139,7 @@ const queryClient = useQueryClient();
                     className="form-control mb-1"
                     placeholder="توضیحات"
                   />
-                  <Field                 
+                  <Field
                     name="iconAddress"
                     className="form-control mb-1"
                     placeholder="آدرس آیکون"
@@ -158,4 +162,4 @@ const queryClient = useQueryClient();
     </>
   );
 };
-export default TableTech
+export default TableTech;
