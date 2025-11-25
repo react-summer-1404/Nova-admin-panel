@@ -62,6 +62,12 @@ export default [
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/techManagement",
       },
+      {
+        id: "statusList",
+        title: " وضعیت دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/statusManagement",
+      },
     ],
   },
 ];
