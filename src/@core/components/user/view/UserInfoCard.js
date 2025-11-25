@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 
 // ** Reactstrap Imports
 import { Row, Col, Card, Form, CardBody, Button, Badge, Modal, Input, Label, ModalBody, ModalHeader } from 'reactstrap'
@@ -22,6 +22,7 @@ import '@styles/react/libs/react-select/_react-select.scss'
 import { UseUpdateUser } from '../../../../core/Hook/useMUserApi'
 import SwitchIcons from '../../switch/SwitchIcons'
 import { error } from 'jquery'
+import toast from 'react-hot-toast'
 
 const roleColors = {
   SuperAdmin: 'light-info',
@@ -48,44 +49,37 @@ const genderOptions = [
 const MySwal = withReactContent(Swal)
 
 const UserInfoCard = ({ selectedUser }) => {
+  const defaultValues = {
+    userName: selectedUser?.userName || "",
+    lName: selectedUser?.lName || "",
+    fName: selectedUser?.fName || "",
+    gmail: selectedUser?.gmail|| "",
+    phoneNumber: selectedUser?.phoneNumber|| "",
+    gender : selectedUser?.gender ?? true,
+    active : selectedUser?.active ?? true,
+    id : selectedUser?.id || "",
+    recoveryEmail : selectedUser?.recoveryEmail ,
+    isDelete : selectedUser?.isDelete ?? false,
+    isTecher : selectedUser?.isTecher ?? false,
+    isStudent : selectedUser?.isStudent ?? false,
+    twoStepAuth : selectedUser?.twoStepAuth ?? false,
+    userAbout : selectedUser?.userAbout || "",
+    currentPictureAddress : selectedUser?.currentPictureAddress || "",
+    linkdinProfile : selectedUser?.linkdinProfile || "",
+    telegramLink : selectedUser?.telegramLink || "",
+    receiveMessageEvent : selectedUser?.receiveMessageEvent ?? false,
+    homeAdderess : selectedUser?.homeAdderess || "",
+    nationalCode : selectedUser?.nationalCode || "",
+    latitude : selectedUser?.latitude || "",
+    longitude : selectedUser?.longitude || "",
+    insertDate : selectedUser?.insertDate || "",
+    birthDay : selectedUser?.birthDay || "",
+  }
 
-  const {mutate: UpdateUser} = UseUpdateUser({
-    onSuccess : () => {      
-      toast.success("اطلاعات با موفقیت ویرایش شد.")
-    },
-
-    onError : () => {      
-        toast.error(error?.response?.data?.message || "خطا در ویرایش کاربر ")
-    } 
-  })
   // ** State
   const [show, setShow] = useState(false)
   const [play, setPlay] = useState(false)
-  const defaultValues = {
-    username: selectedUser?.userName || "",
-    lastName: selectedUser?.lName?.split(' ')[1] || "",
-    firstName: selectedUser?.fName?.split(' ')[0] || "",
-    // gmail: selectedUser?.gmail|| "",
-    // phoneNumber: selectedUser?.phoneNumber|| "",
-    // active : selectedUser?.active|| "",
-    // isDelete,
-    // isTecher,
-    // isStudent,
-    // recoveryEmail,
-    // twoStepAuth,
-    // userAbout,
-    // currentPictureAddress,
-    // linkdinProfile,
-    // telegramLink,
-    // receiveMessageEvent,
-    // homeAdderess,
-    // nationalCode,
-    // gender,
-    // latitude,
-    // longitude,
-    // insertDate,
-    // birthDay
-  }
+  
 
   // ** Hook
   const {
@@ -94,7 +88,41 @@ const UserInfoCard = ({ selectedUser }) => {
     setError,
     handleSubmit,
     formState: { errors }
-  } = useForm({defaultValues})
+  } = useForm({defaultValues, mode: "onChange"});
+
+  useEffect(() => {
+    reset(defaultValues);
+  },[selectedUser]);
+
+  const {mutate: updateUser} = UseUpdateUser({
+    onSuccess : () => {      
+      toast.success("اطلاعات با موفقیت ویرایش شد.")
+    },
+
+    onError : () => {      
+        toast.error(error?.response?.data?.message || "خطا در ویرایش کاربر ")
+    } 
+  })
+  const validateForm = (data) => {
+    const isValid = Object.entries(data).every(([key, value]) =>{ 
+      if (typeof value === "string") return value.trim().length > 0;
+      if (typeof value === "boolean") return true;
+      return value !== null && value !== undefined;
+    });
+
+    if (!isValid){
+      for (const key in data) {
+        const value = data[key];
+        if (!value || (typeof value=== 'string' && value.trim().length === 0)) {
+          setError(key, {
+            type: 'manual',
+            message : 'این فیلد نمی تواند خالی باشد'
+          });
+        }
+      }      
+    }
+    return isValid;
+  }
 
   // ** render user img
   const renderUserImg = () => {
@@ -131,33 +159,18 @@ const UserInfoCard = ({ selectedUser }) => {
     }
   }
 
-  const onSubmit = data => {
-    const isValid = Object.values(data).every((field ) => 
-        typeof field === "string" && field.trim().length > 0
-      );
-      if (!isValid){
-        setShow(false);
-        for (const key in data) {
-          const value = data[key]
-          if (!value || (typeof value=== 'string' && value.trim().length === 0)) {
-            setError(key, {
-              type: 'manual',
-              message : 'این فیلد نمی تواند خالی باشد'
-            })
-          }
-        }      
-      }else {
-      UpdateUser({id: selectedUser.id ,data});
+  const onSubmit = (formData) => {
+    if (!validateForm(formData)) {
+      toast.error('اطلاعات فرم معتبر نیست');
+      return;
     }
-  }
-
-  const handleReset = () => {
-    reset({
-      username: selectedUser?.userName,
-      lastName: selectedUser?.lName.split(' ')[1],
-      firstName: selectedUser?.fName.split(' ')[0]
-    })
-  }
+    const finalData = {
+      ...defaultValues,
+      ...formData,
+      id : selectedUser.id
+    }
+    updateUser(finalData);
+  };
 
   const handleSuspendedClick = () => {
     return MySwal.fire({
@@ -307,15 +320,18 @@ const UserInfoCard = ({ selectedUser }) => {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row className='gy-1 pt-75'>
               <Col md={6} xs={12}>
-                <Label className='form-label' for='firstName'>
+                <Label className='form-label' for='fName'>
                   نام
                 </Label>
                 <Controller        
-                  control={control}
-                  id='firstName'
+                  control={control}                  
                   name='fName'
+                  rules={{required: 'نام الزامی است'}}
                   render={({ field }) => (
-                    <Input {...field} id='firstName'  defaultValue= {selectedUser?.fName} placeholder='نام را وارد کنید' invalid={errors.fName && true} />
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.fName} placeholder='نام را وارد کنید' />
+                    {errors.fName && <span>{errors.fName.message}</span>}
+                    </>
                   )}
                 />
               </Col>
@@ -324,72 +340,196 @@ const UserInfoCard = ({ selectedUser }) => {
                   نام خانوادگی
                 </Label>
                 <Controller                  
-                  control={control}
-                  id='lastName'
+                  control={control}                  
                   name='lName'
+                  rules={{required: 'نام خانوادگی الزامی است'}}
                   render={({ field }) => (
-                    <Input {...field} id='lastName' defaultValue={selectedUser?.lName} placeholder='نام خانوادگی را وارد کنید' invalid={errors.lName && true} />
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.lName} placeholder='نام خانوادگی را وارد کنید' />
+                    {errors.lName && <span>{errors.lName.message}</span>}
+                    </>
                   )}
                 />
               </Col>
               <Col xs={12}>
-                <Label className='form-label' for='username'>
+                <Label className='form-label' for='userName'>
                   نام کاربری
                 </Label>
-                <Controller
-                  
-                  control={control}
-                  id='username'
+                <Controller                  
+                  control={control}                  
                   name='userName'
+                  rules={{required: 'نام کاربری الزامی است'}}
                   render={({ field }) => (
-                    <Input {...field} id='username' defaultValue={selectedUser?.userName} placeholder='نام کاربری را وارد کنید' invalid={errors.userName && true} />
-                  )}
+                    <>
+                      <Input {...field} defaultValue= {selectedUser?.userName} placeholder='نام کاربری را وارد کنید' />
+                      {errors.userName && <span>{errors.userName.message}</span>}
+                    </>                  
+                    )}
                 />
               </Col>
               <Col md={6} xs={12}>
-                <Label className='form-label' for='billing-email'>
+                <Label className='form-label' for='gmail'>
                   ایمیل
                 </Label>
-                <Input
-                  type='email'
-                  id='gmail'
-                  defaultValue={selectedUser?.gmail}
-                  placeholder='ایمیل را وارد کنید'
+                <Controller
+                  name='gmail'
+                  control={control}
+                  rules={{required: 'ایمیل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.gmail} placeholder='ایمیل را وارد کنید' />
+                    {errors.gmail && <span>{errors.gmail.message}</span>}
+                  </>
+                  )}                  
                 />
               </Col>
               <Col md={6} xs={12}>
-                <Label className='form-label' for='status'>
+                <Label className='form-label' for='active'>
                   وضعیت:
                 </Label>
-                <Select
-                  id='status'
-                  isClearable={false}
-                  className='react-select'
-                  classNamePrefix='select'
-                  options={statusOptions}
-                  theme={selectThemeColors}
-                  defaultValue={statusOptions[statusOptions.findIndex(i => i.value === selectedUser?.active)]}
-                />
+                <Controller
+                  name='active'
+                  control={control}
+                  render={({field}) => (
+                    <select {...field} className='form-control'>
+                      {statusOptions.map((opt) => (
+                        <option key={opt.value.toString()} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}                                    
+                    </select>
+                  )}
+              />
               </Col>
               <Col md={6} xs={12}>
-                <Label className='form-label' for='tax-id'>
+                <Label className='form-label' for='gender'>
                   جنسیت:
                 </Label>
-                <Select
-                  id='gender'
-                  isClearable={false}
-                  className='react-select'
-                  classNamePrefix='select'
-                  options={genderOptions}
-                  theme={selectThemeColors}
-                  defaultValue={genderOptions[genderOptions.findIndex(i => i.value === selectedUser?.gender)]}
-                />
+                <Controller
+                  name='gender'
+                  control={control}
+                  render={({field}) => (
+                    <select {...field} className='form-control'>
+                      {genderOptions.map((opt) => (
+                        <option key={opt.value.toString()} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}                                    
+                    </select>
+                  )}
+              />
               </Col>
               <Col md={6} xs={12}>
-                <Label className='form-label' for='contact'>
-                  شماره تلفن:
+                <Label className='form-label' for='phoneNumber'>
+                  شماره موبایل:
                 </Label>
-                <Input id='contact' defaultValue={selectedUser?.phoneNumber} placeholder='شماره تلفن را وارد کنید' />
+                <Controller
+                  name='phoneNumber'
+                  control={control}
+                  rules={{required: 'شماره موبایل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.phoneNumber} placeholder='شماره موبایل را وارد کنید' />
+                    {errors.phoneNumber && <span>{errors.phoneNumber.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='userAbout'>
+                  درباره کاربر:
+                </Label>
+                <Controller
+                  name='userAbout'
+                  control={control}
+                  // rules={{required: 'شماره موبایل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.userAbout} placeholder='درباره کاربر را وارد کنید' />
+                    {errors.userAbout && <span>{errors.userAbout.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='insertDate'>
+                  تاریخ درج:
+                </Label>
+                <Controller
+                  name='insertDate'
+                  control={control}
+                  // rules={{required: 'شماره موبایل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.insertDate?.slice(0,10)} placeholder='تاریخ درج را وارد کنید' />
+                    {errors.insertDate && <span>{errors.insertDate.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='nationalCode'>
+                  کد ملی:
+                </Label>
+                <Controller
+                  name='nationalCode'
+                  control={control}
+                  // rules={{required: 'شماره موبایل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.nationalCode} placeholder='کد ملی را وارد کنید' />
+                    {errors.nationalCode && <span>{errors.nationalCode.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='linkdinProfile'>
+                لینکدین :
+                </Label>
+                <Controller
+                  name='linkdinProfile'
+                  control={control}
+                  // rules={{required: 'شماره موبایل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.linkdinProfile} placeholder='لینکدین را وارد کنید' />
+                    {errors.linkdinProfile && <span>{errors.linkdinProfile.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='latitude'>
+                عرض جغرافیایی :
+                </Label>
+                <Controller
+                  name='latitude'
+                  control={control}
+                  // rules={{required: 'شماره موبایل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.latitude} placeholder='عرض جغرافیایی را وارد کنید' />
+                    {errors.latitude && <span>{errors.latitude.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='longitude'>
+                طول جغرافیایی :
+                </Label>
+                <Controller
+                  name='longitude'
+                  control={control}
+                  // rules={{required: 'شماره موبایل الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} defaultValue= {selectedUser?.longitude} placeholder='طول جغرافیایی را وارد کنید' />
+                    {errors.longitude && <span>{errors.longitude.message}</span>}
+                  </>
+                  )}                  
+                />              
               </Col>
               
               <Col xs={12} className='text-center mt-2 pt-50'>

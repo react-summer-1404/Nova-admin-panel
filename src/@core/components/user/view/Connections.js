@@ -32,7 +32,27 @@ const UserInfoCard2 = ({ selectedUser }) => {
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>ادرس تلگرام:</span>
                   <span className='text-capitalize'>{selectedUser?.telegramLink}</span>
-                </li>              
+                </li>
+                <li className='mb-75'>
+                  <span className='fw-bolder me-25'>درباره کاربر :</span>
+                  <span className='text-capitalize'>{selectedUser?.userAbout}</span>
+                </li>  
+                <li className='mb-75'>
+                  <span className='fw-bolder me-25'> لینکدین :</span>
+                  <span className='text-capitalize'>{selectedUser?.linkdinProfile}</span>
+                </li> 
+                <li className='mb-75'>
+                  <span className='fw-bolder me-25'>کد ملی  :</span>
+                  <span className='text-capitalize'>{selectedUser?.nationalCode}</span>
+                </li>             
+                <li className='mb-75'>
+                  <span className='fw-bolder me-25'>تاریخ درج :</span>
+                  <span className='text-capitalize'>{selectedUser?.insertDate}</span>
+                </li> 
+                {/* <li className='mb-75'>
+                  <span className='fw-bolder me-25'>درباره کاربر :</span>
+                  <span className='text-capitalize'>{selectedUser?.userAbout}</span>
+                </li>  */}
               </ul>
             ) : null}
           </div>
