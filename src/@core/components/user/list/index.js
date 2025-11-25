@@ -18,12 +18,7 @@ const UsersList = () => {
   const apiParams = {
       PageNumber:1,
       RowsOfPage:10,
-      SortingCol:'',
-      SortType : '',
-      // ...(searchTerm && {Query : searchTerm}),
-      // ...(isActive.value != "" && {IsActiveUser : isActive.value}),
-      // ...(isDeleted.value !="" && {IsDeletedUser : isDeleted.value}),  
-      // ...(selectedRoleID.value !="" && {roleId : selectedRoleID.value}),   
+      
       
   }
   // console.log("selectedRoleID", selectedRoleID)
