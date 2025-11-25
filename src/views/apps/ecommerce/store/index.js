@@ -27,7 +27,6 @@ export const appEcommerceSlice = createSlice({
     cart: [],
     params: {},
     products: [],
-    wishlist: [],
     totalProducts: 0,
     productDetail: {},
     selectedFilter: "all",

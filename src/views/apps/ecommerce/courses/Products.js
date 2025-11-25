@@ -26,7 +26,7 @@ const ProductsPage = props => {
     sidebarOpen,
     getProducts,
     // getCartItems,
-    addToWishlist,
+    // addToWishlist,
     setActiveView,
     // deleteCartItem,
     setSidebarOpen,

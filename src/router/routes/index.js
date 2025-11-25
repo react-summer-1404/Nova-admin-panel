@@ -36,8 +36,8 @@ const Error = lazy(() => import("../../pages/Error"));
 const Sample = lazy(() => import("../../pages/Sample"));
 const EcommerceShop = lazy(() => import('../../views/apps/ecommerce/courses'))
 const EcommerceDetail = lazy(() => import('../../views/apps/ecommerce/detail'))
-// const EcommerceWishlist = lazy(() => import('../../views/apps/ecommerce/wishlist'))
 const EcommerceCheckout = lazy(() => import('../../views/apps/ecommerce/checkout'))
+const TechManagement = lazy(() => import('../../views/apps/ecommerce/techManagement'))
 
 
 const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
@@ -148,6 +148,13 @@ const Routes = [
   {
     path: '/apps/ecommerce/createCourse',
     element: <EcommerceCheckout />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/techManagement',
+    element: <TechManagement />,
     meta: {
       className: 'ecommerce-application'
     }

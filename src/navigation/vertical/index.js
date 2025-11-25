@@ -43,23 +43,24 @@ export default [
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/courses",
       },
+   
       // {
-      //   id: "detail",
-      //   title: "Details",
+      //   id: "wishList",
+      //   title: "Wish List",
       //   icon: <Circle size={12} />,
-      //   navLink: "/apps/ecommerce/product-detail",
+      //   navLink: "/apps/ecommerce/wishlist",
       // },
-      {
-        id: "wishList",
-        title: "Wish List",
-        icon: <Circle size={12} />,
-        navLink: "/apps/ecommerce/wishlist",
-      },
       {
         id: "checkout",
         title: "ساخت دوره",
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/createCourse",
+      },
+      {
+        id: "techList",
+        title: " تکنولوژی دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/techManagement",
       },
     ],
   },
