@@ -47,7 +47,7 @@ const List = () => {
       <Col xl="3" md="4" sm="6">
         <StatsVertical
           icon={<Cpu size={21} />}
-          color="info"
+          color="primary"
           stats={data?.length}
           statTitle="تعداد تکنولوژی ها"
         />
@@ -78,7 +78,7 @@ const List = () => {
                 mutationPostTech.mutate(values);
               }}
             >
-              {({ handleSubmit }) => (
+              
                 <Form>
                   <Field
                     name="techName"
@@ -108,7 +108,7 @@ const List = () => {
                     </Button>
                   </ModalFooter>
                 </Form>
-              )}
+       
             </Formik>
           </ModalBody>
         </Modal>

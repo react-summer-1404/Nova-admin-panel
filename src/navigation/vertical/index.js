@@ -43,13 +43,6 @@ export default [
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/courses",
       },
-   
-      // {
-      //   id: "wishList",
-      //   title: "Wish List",
-      //   icon: <Circle size={12} />,
-      //   navLink: "/apps/ecommerce/wishlist",
-      // },
       {
         id: "checkout",
         title: "ساخت دوره",
@@ -67,6 +60,18 @@ export default [
         title: " وضعیت دوره ها",
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/statusManagement",
+      },
+      {
+        id: "statusList",
+        title: " سطح دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/levelManagement",
+      },
+      {
+        id: "statusList",
+        title: "لیست کاربران",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/useList",
       },
     ],
   },

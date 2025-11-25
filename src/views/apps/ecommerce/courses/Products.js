@@ -118,7 +118,7 @@ return new Array(arrLength).fill().map((item, index) => {
           </Fragment>
         ) : (
           <div className='d-flex justify-content-center mt-2'>
-            <p>No Results</p>
+            <p>نتیجه ای یافت نشد</p>
           </div>
         )}
       </div>
