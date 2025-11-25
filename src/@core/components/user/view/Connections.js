@@ -23,7 +23,7 @@ const UserInfoCard2 = ({ selectedUser }) => {
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'> تاریخ تولد:</span>
-                  <span>{selectedUser?.birthDay.slice(0,10)}</span>
+                  <span>{selectedUser?.birthDay?.slice(0,10)}</span>
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>تکمیل پروفایل:</span>                  

@@ -21,64 +21,80 @@ const defaultValues = {
   phoneNumber: '',
   firstName: '',
   lastName: '',
-  birthDay: '',
+  password: '',
+  role : '',
 }
 
-const checkIsValid = data => {
-  return Object.values(data).every(field => (typeof field === 'object' ?field.length > 0: field == null ))
+const checkIsValid = (data) => {
+  if (!data || typeof data !== "object") return false;
+  return Object.values(data).every(field => (typeof field === 'object' ?field.length > 0: field == null ),
+)
 }
+
 
 const SidebarNewUsers = ({ open, toggleSidebar }) => {
   // ** States
   const [data, setData] = useState(null)
-  const [role, setRole] = useState('student')
+  // const [role, setRole] = useState('student')
 
   // ** Vars
   const {
     control,
     setValue,
-    setError,
+    watch,   
     handleSubmit,
     formState: { errors }
   } = useForm({ defaultValues })
 
-
-  const {mutate : createUser} = UseCreateUser(() =>{
-    toast.success('کاربر با موفقیت ایجاد شد')
-    toggleSidebar()
-  })
+  const role = watch ('role');
+  const {mutate : createUser} = UseCreateUser({
+    onSuccess : () => {
+      toast.success('کاربر با موفقیت ایجاد شد');
+      toggleSidebar();
+    },
+    onError : (error) => {
+      toast.error(error?.response?.data?.message ||' خطا در ایجاد کابر');
+    }
+  });
 
   const handleCreate = (data) => {
+    console.log("مقدار data", data)
+  console.log("اعتبار سنجی ", checkIsValid(data))
     if (!checkIsValid(data)){
       for (const key in data){
-        if (data[key] === null || data[key].toString().trim().length === 0) {
-          setError(key, {type: 'manual'})
-        }     
+        const value = data[key];
+        const isValid = value !== null && value !== undefined &&
+        ( typeof value !== "string" || value.trim().length > 0) 
+        console.log(`${key} : ${isValid ? "ok" : "notOk"}`)
+              
     }
     return
-  }
-    const mappedRole = {
-      isStudent : role === "student",
-      isTeacher : role === "teacher"
-      }
-      createUser({
-        ...data,
-        ...mappedRole,
-      })
-    
+  } 
   }
 
   // ** Function to handle form submit
-  const onSubmit = data => {
-    setData(data)
-    handleCreate(data)
+  const onSubmit = (data) => {
+    console.log("نقش انتخاب شده", data.role)
+    const mappedRole = {
+      isStudent : String(data.role === "student"),
+      isTeacher : String(data.role === "teacher"),
+      };
+      const finalData ={
+        ...data,
+        ...mappedRole,
+      };
+      console.log('ارسال نهایی', finalData)
+      createUser(finalData);
+    // setData(data)
+    // handleCreate(data)
+    console.log("onsubmit user")
   }
 
   const handleSidebarClosed = () => {
     for (const key in defaultValues) {
       setValue(key, '')
     }
-    setRole('student')
+    
   }
 
   return (
@@ -92,7 +108,94 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
       onClosed={handleSidebarClosed}
     >
       <Form onSubmit={handleSubmit(onSubmit)}>
-        <div className='mb-1'>
+        <div className ='mb-1'>
+          <Label className ='form-label' for='firstName'>
+          نام  <span className='text-danger'>*</span>
+          </Label>
+          <Controller
+            name='firstName'
+            control={control}
+            render={({field}) => (
+              <input id='firstName' className='form-control' type='text' placeholder='نام را وارد کنید' invalid={errors.firstName && true} {...field}/>
+            )}
+          />
+        </div>
+        <div className ='mb-1'>
+          <Label className ='form-label' for='lastName'>
+            نام خانوادگی <span className='text-danger'>*</span>
+          </Label>
+          <Controller
+            name='lastName'
+            control={control}
+            render={({field}) => (
+              <input id='lastName' className='form-control' type='text' placeholder='نام خانوادگی را وارد کنید' invalid={errors.lastName && true} {...field}/>
+            )}
+          />
+        </div>
+        <div className ='mb-1'>
+          <Label className='form-label' for='gmail'>
+            ایمیل<span className='text-danger'>*</span>
+          </Label>
+          <Controller
+            name='gmail'
+            control={control}
+            render={({field}) => (
+              <input id='gmail' className='form-control' type='text' placeholder='ایمیل را وارد کنید' invalid={errors.gmail && true} {...field}/>
+            )}
+          />
+          <FormText color='muted'>از حروف اعداد و نقطه استفاده کنید</FormText>
+        </div>
+        <div className ='mb-1'>
+          <Label className='form-label' for='phoneNumber'>
+          شماره تلفن <span className='text-danger'>*</span>
+          </Label>
+          <Controller
+            name='phoneNumber'
+            control={control}
+            render={({field}) => (
+              <input id='phoneNumber' className='form-control' type='text' placeholder='شماره تلفن را وارد کنید' invalid={errors.phoneNumber && true} {...field}/>
+            )}
+          />
+        </div>
+        <div className ='mb-1'>
+          <Label className='form-label' for='password'>
+          رمز  <span className='text-danger'>*</span>
+          </Label>
+          <Controller
+            name='password'
+            control={control}
+            render={({field}) => (
+              <input id='password' className='form-control' type='text' placeholder='رمز را وارد کنید' invalid={errors.password && true} {...field}/>
+            )}
+          />
+        </div>
+        <div className ='mb-1'>
+        <Label className='form-label' for='mappedRole'>
+            نقش
+          </Label>
+        <Controller
+          name='role'
+          control={control}
+          render={({field}) =>(        
+            <select  id='mappedRole' className='form-control'
+              {...field}>
+              <option value='student'>دانش اموز </option>
+              <option value='teacher'> معلم </option>
+              </select>           
+          )}
+        />        
+        </div>
+        {/* <div className ='mb-1'>
+          <Label className='form-label' for='mappedRole'>
+            نقش
+          </Label>
+          <Input type='select' id='mappedRole' name='mappedRole' value={role} onChange={e => setRole(e.target.value)}>
+            <option value='student'>دانش اموز</option>
+            <option value='teacher'>معلم</option>
+          </Input>
+        </div> */}
+        {/* <div cl
+        {/* <div className='mb-1'>
           <Label className='form-label' for='firstName'>
             نام  <span className='text-danger'>*</span>
           </Label>
@@ -101,11 +204,11 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
             name='firstName'
             control={control}
             render={({ field }) => (
-              <Input id='firstName' placeholder=' نام را وارد کنید' invalid={errors.firstName && true} {...field} />
+              <Input id='firstName' autoComplete='' placeholder=' نام را وارد کنید' invalid={errors.firstName && true} {...field} />
             )}
           />
-        </div>
-        <div className='mb-1'>
+        </div> */}
+        {/* <div className='mb-1'>
           <Label className='form-label' for='lastName'>
           نام خانوادگی <span className='text-danger'>*</span>
           </Label>
@@ -113,11 +216,11 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
             name='lastName'
             control={control}
             render={({ field }) => (
-              <Input id='lastName' placeholder='نام خاوادکی را وارد کنید' invalid={errors.lastName && true} {...field} />
+              <Input id='lastName' autoComplete='off' placeholder='نام خاوادکی را وارد کنید' invalid={errors.lastName && true} {...field} />
             )}
           />
-        </div>
-        <div className='mb-1'>
+        </div> */}
+        {/* <div className='mb-1'>
           <Label className='form-label' for='gmail'>
             ایمیل <span className='text-danger'>*</span>
           </Label>
@@ -129,34 +232,36 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
                 type='gmail'
                 id='gmail'
                 placeholder='ایمیل را وارد کنید'
+                 autoComplete='off'
                 invalid={errors.gmail && true}
                 {...field}
               />
             )}
           />
           <FormText color='muted'>از حروف اعداد و نقطه استفاده کنید</FormText>
-        </div>
+        </div> */}
 
-        <div className='mb-1'>
+        {/* <div className='mb-1'>
           <Label className='form-label' for='phoneNumber'>
             شماره تلفن <span className='text-danger'>*</span>
           </Label>
           <Controller
             rules={""}  
-          defaultValue=''
+          // defaultValue=''
             name='phoneNumber'
-            type = "number"
+            
             control={control}
             render={({ field }) => {
               console.log("phoneNumber field ==>", field)
-              return (
-              <Input id='phoneNumber' placeholder='شماره را وارد کنید' invalid={errors.phoneNumber && true} {...field} />
+              return ( 
+              <Input id='phoneNumber' type = "number" placeholder='شماره را وارد کنید' invalid={errors.phoneNumber && true} {...field} />
               )
             }}
           />
-        </div>
+         
+        </div> */}
     
-        <div className='mb-1'>
+        {/* <div className='mb-1'>
           <Label className='form-label' for='password'>
             رمز  <span className='text-danger'>*</span>
           </Label>
@@ -164,22 +269,22 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
             name='password'
             control={control}
             render={({ field }) => (
-              <Input id='password' type='password' placeholder=' رمز را وارد کنید' invalid={errors.password && true} {...field} />
+              <Input id='password' autoComplete='' type='password' placeholder=' رمز را وارد کنید' invalid={errors.password && true} {...field} />
             )}
           />
-        </div>
+        </div> */}
 
-        <div className='mb-1'>
+        {/* <div className='mb-1'>
           <Label className='form-label' for='user-role'>
             نقش
           </Label>
-          <Input type='select' id='user-role' name='user-role' value={role} onChange={e => setRole(e.target.value)}>
+          <Input type='select' id='user-role' autoComplete='' name='user-role' value={role} onChange={e => setRole(e.target.value)}>
             <option value='student'>دانش اموز</option>
             <option value='teacher'>معلم</option>
           </Input>
-        </div>
+        </div> */}
         <Button type='submit' className='me-1' color='primary' onClick={() => handleCreate(data)}>
-          افزودن کاربر
+           ثبت
         </Button>
         <Button type='reset' color='secondary' outline onClick={toggleSidebar}>
           بستن

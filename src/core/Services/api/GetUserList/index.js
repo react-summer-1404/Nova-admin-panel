@@ -20,8 +20,11 @@ export const CreateUser = async(data) => {
     return response.data
 }
 
-export const UpdateUser = async (data) => {
-    const response = await instance.put("/User/UpdateUser",data)
+export const UpdateUser = async (id, data) => {
+    const response = await instance.put('/User/UpdateUser',{
+        id,
+        ...data,
+    })
     return response.data
 }
 export const DeleteUser = async(id) => {
@@ -34,14 +37,23 @@ export const ReverseToActiveUser = async(id) => {
     return response.data
 }
 
-export const AddUserAccess = async (data) => {
-    const response = await instance.post("/User/AddUserAccess", data)
+export const AddUserAccess = async ({userId,roleId,enable}) => {
+    const response = await instance.post(`/User/AddUserAccess?Enable=${enable}`, {userId, roleId})
     return response.data
 }
 
-export const CommentManagment = async() => {
+export const CommentManagment = async(userId,accept) => {
+    console.log("userid:", userId)
+    console.log("accept:", accept)
     const response = await instance.get("/Course/CommentManagment",{
-        params
-    })
-    return response.data
+        params : {
+            userId,
+            PageNumber : 1,
+            RowsOfPage: 50,
+            Accept: String(accept),
+        }
+        
+    });
+    console.log("response:", response.data)
+    return response.data?.comments || [];  
 }

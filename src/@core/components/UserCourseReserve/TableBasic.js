@@ -35,7 +35,7 @@ const TableBasic = ({data}) => {
               {item.active == true ? "فعال" : "غیرفعال"}
             </Badge>
           </td>
-          <td> {item.reserverDate.slice(0,10)}</td>                    
+          <td> {item.reserverDate}</td>                    
           <td>
             <UncontrolledDropdown>
               <DropdownToggle className='icon-btn hide-arrow' color='transparent' size='sm' caret>

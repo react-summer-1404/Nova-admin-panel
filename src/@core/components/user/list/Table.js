@@ -208,7 +208,8 @@ const total = data?.totalCount || 0
     } else if (users.length === 0 && isFiltered) {
       return []
     } else {
-      return users.slice(0, rowsPerPage)
+      return users
+      // return users.slice(0, rowsPerPage)
     }
   }
 

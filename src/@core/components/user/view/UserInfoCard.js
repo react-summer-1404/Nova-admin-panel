@@ -7,7 +7,7 @@ import { Row, Col, Card, Form, CardBody, Button, Badge, Modal, Input, Label, Mod
 // ** Third Party Components
 import Swal from 'sweetalert2'
 import Select from 'react-select'
-import { Check, Briefcase, X } from 'react-feather'
+import { Check, Briefcase, X, Edit2, Edit } from 'react-feather'
 import { useForm, Controller } from 'react-hook-form'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -19,6 +19,9 @@ import { selectThemeColors } from '@utils'
 
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
+import { UseUpdateUser } from '../../../../core/Hook/useMUserApi'
+import SwitchIcons from '../../switch/SwitchIcons'
+import { error } from 'jquery'
 
 const roleColors = {
   SuperAdmin: 'light-info',
@@ -45,13 +48,43 @@ const genderOptions = [
 const MySwal = withReactContent(Swal)
 
 const UserInfoCard = ({ selectedUser }) => {
+
+  const {mutate: UpdateUser} = UseUpdateUser({
+    onSuccess : () => {      
+      toast.success("اطلاعات با موفقیت ویرایش شد.")
+    },
+
+    onError : () => {      
+        toast.error(error?.response?.data?.message || "خطا در ویرایش کاربر ")
+    } 
+  })
   // ** State
   const [show, setShow] = useState(false)
-
+  const [play, setPlay] = useState(false)
   const defaultValues = {
     username: selectedUser?.userName || "",
-    lastName: selectedUser?.lName.split(' ')[1] || "",
-    firstName: selectedUser?.fName.split(' ')[0] || ""
+    lastName: selectedUser?.lName?.split(' ')[1] || "",
+    firstName: selectedUser?.fName?.split(' ')[0] || "",
+    // gmail: selectedUser?.gmail|| "",
+    // phoneNumber: selectedUser?.phoneNumber|| "",
+    // active : selectedUser?.active|| "",
+    // isDelete,
+    // isTecher,
+    // isStudent,
+    // recoveryEmail,
+    // twoStepAuth,
+    // userAbout,
+    // currentPictureAddress,
+    // linkdinProfile,
+    // telegramLink,
+    // receiveMessageEvent,
+    // homeAdderess,
+    // nationalCode,
+    // gender,
+    // latitude,
+    // longitude,
+    // insertDate,
+    // birthDay
   }
 
   // ** Hook
@@ -65,7 +98,8 @@ const UserInfoCard = ({ selectedUser }) => {
 
   // ** render user img
   const renderUserImg = () => {
-    if (selectedUser !== null && selectedUser?.currentPictureAddress.length) {
+    const picture = selectedUser?.currentPictureAddress;
+    if (typeof picture === "string" && picture.trim().length > 0) {
       return (
         <img
           height='110'
@@ -98,16 +132,22 @@ const UserInfoCard = ({ selectedUser }) => {
   }
 
   const onSubmit = data => {
-    if (Object.values(data).every(field => field.length > 0)) {
-      setShow(false)
-    } else {
-      for (const key in data) {
-        if (data[key].length === 0) {
-          setError(key, {
-            type: 'manual'
-          })
-        }
-      }
+    const isValid = Object.values(data).every((field ) => 
+        typeof field === "string" && field.trim().length > 0
+      );
+      if (!isValid){
+        setShow(false);
+        for (const key in data) {
+          const value = data[key]
+          if (!value || (typeof value=== 'string' && value.trim().length === 0)) {
+            setError(key, {
+              type: 'manual',
+              message : 'این فیلد نمی تواند خالی باشد'
+            })
+          }
+        }      
+      }else {
+      UpdateUser({id: selectedUser.id ,data});
     }
   }
 
@@ -163,6 +203,7 @@ const UserInfoCard = ({ selectedUser }) => {
               {renderUserImg()}
               <div className='d-flex flex-column align-items-center text-center'>
                 <div className='user-info'>
+                  <h4>{selectedUser !== null ? selectedUser?.lName : ' نام خانواگی کاربر'}</h4>
                   <h4>{selectedUser !== null ? selectedUser?.fName : ' نام کاربر'}</h4>
                   {selectedUser?.roles?.map((role, index) => (
                     <Badge color={roleColors[role]} className='text-capitalize me-50'>
@@ -216,7 +257,12 @@ const UserInfoCard = ({ selectedUser }) => {
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'>نقش:</span>
-                  <span className='text-capitalize'>{selectedUser?.roles?.join(', ')}</span>
+                  <span className='text-capitalize'>{selectedUser?.roles.map((rol)=>(
+                    rol.roleName
+                  )).join(', ')}</span>
+                  <Button color='transparent' onClick={() => setPlay(true)}>
+                  <Edit className='font-medium-3'/>
+                  </Button>
                 </li>
                 <li className='mb-75'>
                   <span className='fw-bolder me-25'> جنسیت:</span>
@@ -230,6 +276,18 @@ const UserInfoCard = ({ selectedUser }) => {
               </ul>
             ) : null}
           </div>
+          <Modal isOpen={play} toggle={() => setPlay(!play)} className ='modal-dialog-centered modal-sm'>
+          <ModalHeader className='bg-transparent' toggle={() => setPlay(!play)}></ModalHeader>
+          <div className='text-center mb-1'> 
+            <h1 > افرودن دسترسی ها به کاربر</h1>
+          </div>
+          <div>
+            <SwitchIcons
+              userId={selectedUser?.id}
+              userRoles={selectedUser?.roles}
+            />
+          </div>
+          </Modal>
           <div className='d-flex justify-content-center pt-2'>
             <Button color='primary' onClick={() => setShow(true)}>
               ویرایش
@@ -240,7 +298,7 @@ const UserInfoCard = ({ selectedUser }) => {
           </div>
         </CardBody>
       </Card>
-      <Modal isOpen={show} toggle={() => setShow(!show)} className='modal-dialog-centered modal-lg'>
+      <Modal isOpen={show} toggle={() => setShow(!show)} className ='modal-dialog-centered modal-lg'>
         <ModalHeader className='bg-transparent' toggle={() => setShow(!show)}></ModalHeader>
         <ModalBody className='px-sm-5 pt-50 pb-5'>
           <div className='text-center mb-2'>
@@ -252,13 +310,12 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Label className='form-label' for='firstName'>
                   نام
                 </Label>
-                <Controller
-                  defaultValue=''
+                <Controller        
                   control={control}
                   id='firstName'
                   name='fName'
                   render={({ field }) => (
-                    <Input {...field} id='firstName' placeholder='نام را وارد کنید' invalid={errors.fName && true} />
+                    <Input {...field} id='firstName'  defaultValue= {selectedUser?.fName} placeholder='نام را وارد کنید' invalid={errors.fName && true} />
                   )}
                 />
               </Col>
@@ -266,13 +323,12 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Label className='form-label' for='lastName'>
                   نام خانوادگی
                 </Label>
-                <Controller
-                  defaultValue=''
+                <Controller                  
                   control={control}
                   id='lastName'
                   name='lName'
                   render={({ field }) => (
-                    <Input {...field} id='lastName' placeholder='نام خانوادگی را وارد کنید' invalid={errors.lName && true} />
+                    <Input {...field} id='lastName' defaultValue={selectedUser?.lName} placeholder='نام خانوادگی را وارد کنید' invalid={errors.lName && true} />
                   )}
                 />
               </Col>
@@ -281,12 +337,12 @@ const UserInfoCard = ({ selectedUser }) => {
                   نام کاربری
                 </Label>
                 <Controller
-                  defaultValue=''
+                  
                   control={control}
                   id='username'
                   name='userName'
                   render={({ field }) => (
-                    <Input {...field} id='username' placeholder='نام کاربری را وارد کنید' invalid={errors.userName && true} />
+                    <Input {...field} id='username' defaultValue={selectedUser?.userName} placeholder='نام کاربری را وارد کنید' invalid={errors.userName && true} />
                   )}
                 />
               </Col>

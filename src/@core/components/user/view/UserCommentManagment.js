@@ -1,12 +1,13 @@
 import React from 'react'
 import CommentTable from '../../UserCommentManag/CommentTable'
+import { Col, Row } from 'reactstrap'
 
-const UserCommentManagment = () => {
+const UserCommentManagment = ({userId}) => {
     return (
         <>
         <Row>
             <Col md ={12}>
-                <CommentTable data={data}/>
+                <CommentTable userId={userId}/>
             </Col>
         </Row>
         </>

@@ -20,7 +20,7 @@ const renderClient = row => {
         initials
         className ='me-1'
         color={row.avatarColor || 'light-primary'}
-        content={row.fName || 'کاربر'}
+        content={row.fName || 'نامشخص'}
       />
     )
   }
@@ -77,11 +77,11 @@ export const columns = ({handleDelete}) => [
         <div className ='d-flex flex-column'>
           <Link
             to={`/list/view/${row.id}`}
-            className ='user_name text-truncate text-body'
+            className ='user_name text-truncate text-body '
           >
-            <span className ='fw-bolder'>{row.fName}</span>
-          </Link>
-          <small className ='text-truncate text-muted mb-0'>{row.gmail}</small>
+            <span className ='fw-bolder d-block'>{row.fName ? row.fName :'نامشخص' }</span>
+            <small className ='text-truncate text-muted d-block mb-0'>{row.gmail}</small>
+          </Link>          
         </div>
       </div>
     )
