@@ -1,4 +1,4 @@
-import { Mail, Home, Airplay, Circle,Users } from "react-feather";
+import { Mail, Home, Airplay, Circle,Users, MessageSquare } from "react-feather";
 // ** Navigation imports
 import pages from "./pages"
 

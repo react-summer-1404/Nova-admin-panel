@@ -33,7 +33,11 @@ const Register = lazy(() => import("../../pages/Register"));
 const ForgotPassword = lazy(() => import("../../pages/ForgotPassword"));
 const Error = lazy(() => import("../../pages/Error"));
 const Sample = lazy(() => import("../../pages/Sample"));
-const BlogList = lazy(() => import('../../views/pages/blogs/list/index'))
+const BlogList = lazy(() => import('./../../views/pages/blogs/list/index'))
+const BlogEdit = lazy(() => import('../../views/pages/blogs/edit/index'))
+const BlogDetails = lazy(() => import('../../views/pages/blogs/details/index'))
+const Comments = lazy(() => import('../../views/pages/comments/index'))
+
 
 // ** Merge Routes
 const Routes = [
@@ -82,6 +86,26 @@ const Routes = [
   {
     path: '/pages/blog/list',
     element: <BlogList />
+  },
+  {
+    path: '/pages/blog/detail/:id',
+    element: <BlogDetails />
+  },
+  {
+    path: '/pages/blog/detail',
+    element: <Navigate to='/pages/blog/detail/1' />
+  },
+  {
+    path: '/pages/blog/edit/:id',
+    element: <BlogEdit />
+  },
+  {
+    path: '/pages/blog/edit',
+    element: <Navigate to='/pages/blog/edit/1' />
+  },
+  {
+    path: '/pages/comments',
+    element: <Comments />
   },
   {
     path: "/error",
