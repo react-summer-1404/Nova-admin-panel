@@ -36,7 +36,7 @@ const List = () => {
     onSuccess: () => {
       toast.success("تکنولوژی با موفقیت اضافه شد");
       queryClient.invalidateQueries(["getTechList"]);
-      setCenteredModal(!centeredModal)
+      setCenteredModal(!centeredModal);
     },
 
     onError: () => toast.error("خطا در افزودن تکنولوژی"),
@@ -52,7 +52,7 @@ const List = () => {
           statTitle="تعداد تکنولوژی ها"
         />
         <Button
-          color="relief-primary"
+          color="primary"
           style={{ width: "100%" }}
           onClick={() => setCenteredModal(!centeredModal)}
         >
@@ -78,37 +78,35 @@ const List = () => {
                 mutationPostTech.mutate(values);
               }}
             >
-              
-                <Form>
-                  <Field
-                    name="techName"
-                    className="form-control mb-1"
-                    placeholder="نام تکنولوژی"
-                  />
-                  <Field
-                    name="describe"
-                    className="form-control mb-1"
-                    placeholder="توضیحات"
-                  />
-                  <Field
-                    name="iconAddress"
-                    className="form-control mb-1"
-                    placeholder="آدرس آیکون"
-                  />
+              <Form>
+                <Field
+                  name="techName"
+                  className="form-control mb-1"
+                  placeholder="نام تکنولوژی"
+                />
+                <Field
+                  name="describe"
+                  className="form-control mb-1"
+                  placeholder="توضیحات"
+                />
+                <Field
+                  name="iconAddress"
+                  className="form-control mb-1"
+                  placeholder="آدرس آیکون"
+                />
 
-                  <ModalFooter>
-                    <Button color="primary" onClick={ onsubmit}>
-                      ذخیره
-                    </Button>
-                    <Button
-                      color="secondary"
-                      onClick={() => setCenteredModal(!centeredModal)}
-                    >
-                      بستن
-                    </Button>
-                  </ModalFooter>
-                </Form>
-       
+                <ModalFooter>
+                  <Button color="primary" onClick={onsubmit}>
+                    ذخیره
+                  </Button>
+                  <Button
+                    color="secondary"
+                    onClick={() => setCenteredModal(!centeredModal)}
+                  >
+                    بستن
+                  </Button>
+                </ModalFooter>
+              </Form>
             </Formik>
           </ModalBody>
         </Modal>

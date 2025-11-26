@@ -52,7 +52,7 @@ const List = () => {
           statTitle="تعداد وضعیت دوره ها"
         />
         <Button
-          color="relief-primary"
+          color="primary"
           style={{ width: "100%" }}
           onClick={() => setCenteredModal(!centeredModal)}
         >
@@ -84,17 +84,17 @@ const List = () => {
                   className="form-control mb-1"
                   placeholder="نام وضعیت"
                 />
-             
+
                 <Field
-                    name="describe"
-                    className="form-control mb-1"
-                    placeholder="توضیحات"
-                  />
+                  name="describe"
+                  className="form-control mb-1"
+                  placeholder="توضیحات"
+                />
                 <Field
-                    name="statusNumber"
-                    className="form-control mb-1"
-                    placeholder="شماره"
-                  />
+                  name="statusNumber"
+                  className="form-control mb-1"
+                  placeholder="شماره"
+                />
 
                 <ModalFooter>
                   <Button color="primary" onClick={onsubmit}>

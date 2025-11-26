@@ -70,7 +70,7 @@ function CourseUserList() {
         </Col>
         <Col xl="3" md="4" sm="6">
           <Button
-            color="relief-primary"
+            color="primary"
             style={{ width: "100%" }}
             onClick={() => setCenteredModal(!centeredModal)}
           >

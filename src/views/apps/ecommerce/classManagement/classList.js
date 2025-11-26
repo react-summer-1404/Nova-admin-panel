@@ -52,6 +52,8 @@ const ClassList = () => {
   const { data: building } = useQuery({
     queryFn: getBuilding,
     queryKey: ["classBuilding"],
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 1000 * 60,
   });
   return (
     <Row>
@@ -63,7 +65,7 @@ const ClassList = () => {
           statTitle="تعداد کلاس ها"
         />
         <Button
-          color="relief-primary"
+          color="primary"
           style={{ width: "100%" }}
           onClick={() => setCenteredModal(!centeredModal)}
         >

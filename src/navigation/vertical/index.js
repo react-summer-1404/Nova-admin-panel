@@ -79,6 +79,12 @@ export default [
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/classList",
       },
+      {
+        id: "TermList",
+        title: "لیست ترم دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/TermList",
+      },
     ],
   },
 ];

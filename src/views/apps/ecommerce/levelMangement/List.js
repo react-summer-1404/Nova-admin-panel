@@ -16,7 +16,10 @@ import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
 import TableLevel from "../../tables/levelListTable/TableStatus";
-import { getLevelList, postLevelList } from "../../../../core/Services/api/levelSection";
+import {
+  getLevelList,
+  postLevelList,
+} from "../../../../core/Services/api/levelSection";
 
 const List = () => {
   const [centeredModal, setCenteredModal] = useState(false);
@@ -49,7 +52,7 @@ const List = () => {
           statTitle="تعداد سطح دوره ها"
         />
         <Button
-          color="relief-primary"
+          color="primary"
           style={{ width: "100%" }}
           onClick={() => setCenteredModal(!centeredModal)}
         >
@@ -67,7 +70,7 @@ const List = () => {
           <ModalBody>
             <Formik
               initialValues={{
-                levelName: ""
+                levelName: "",
               }}
               onSubmit={(values) => {
                 mutationPostLevelLis.mutate(values);

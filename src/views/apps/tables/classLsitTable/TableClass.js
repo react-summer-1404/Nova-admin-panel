@@ -1,33 +1,18 @@
 // ** Custom Components
 import React from "react";
 import { Formik, Form, Field } from "formik";
-// ** Images
-import defaultpPic from "../../../../assets/images/defalt.png";
 // ** Icons Imports
-import { MoreVertical, Edit, Trash } from "react-feather";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Alert,
-} from "reactstrap";
+import { Edit } from "react-feather";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
 
 // ** Reactstrap Imports
-import {
-  Table,
-  Badge,
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-} from "reactstrap";
+import { Table } from "reactstrap";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { editClassist } from "../../../../core/Services/api/ClassSection";
 import * as Yup from "yup";
+
 const validationSchema = Yup.object().shape({
   classRoomName: Yup.string().required("*الزامی"),
 
@@ -69,7 +54,8 @@ const TableClass = ({ data, isLoading, building }) => {
           {isLoading ? (
             <tr>
               <td colSpan="4" className="text-center">
-                در حال بارگذاری...
+               <Spinner color="primary" className='d-flex justify-content-center'/>;
+
               </td>
             </tr>
           ) : (
@@ -141,7 +127,7 @@ const TableClass = ({ data, isLoading, building }) => {
                     className="form-control mb-1"
                     placeholder="نام کلاس"
                   />
-                   {errors.classRoomName && (
+                  {errors.classRoomName && (
                     <div
                       className="text-danger"
                       style={{ fontSize: "12px", marginBottom: "6px" }}
@@ -150,12 +136,12 @@ const TableClass = ({ data, isLoading, building }) => {
                     </div>
                   )}
                   <Field
-                  type="number"
+                    type="number"
                     name="capacity"
                     className="form-control mb-1"
                     placeholder="ظرفیت"
                   />
-                    {errors.capacity && (
+                  {errors.capacity && (
                     <div
                       className="text-danger"
                       style={{ fontSize: "12px", marginBottom: "6px" }}
@@ -164,14 +150,15 @@ const TableClass = ({ data, isLoading, building }) => {
                     </div>
                   )}
                   <Field
-                  as="select"
+                    as="select"
                     name="buildingId"
                     className="form-control mb-1"
                     placeholder="ساختمان کلاس"
-                   
                   >
-                    {building?.map((build)=>(
-                      <option key={build.id} value={build.id}>{build.buildingName}</option>
+                    {building?.map((build) => (
+                      <option key={build.id} value={build.id}>
+                        {build.buildingName}
+                      </option>
                     ))}
                   </Field>
                   {errors.buildingId && (

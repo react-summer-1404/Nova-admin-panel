@@ -27,7 +27,7 @@ const TableUserList = ({ data, isLoading, selectedId }) => {
   }
 
   if (isLoading) {
-    return <Spinner color="primary" />;
+    return <Spinner color="primary" className='d-flex justify-content-center'/>;
   }
 
   if (!data || data.length === 0) {

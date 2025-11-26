@@ -4,7 +4,7 @@ import { Formik, Form, Field } from "formik";
 // ** Images
 import defaultpPic from "../../../../assets/images/defalt.png";
 // ** Icons Imports
-import { MoreVertical, Edit, Trash } from "react-feather";
+import { Edit } from "react-feather";
 import {
   Button,
   Modal,
@@ -12,16 +12,12 @@ import {
   ModalBody,
   ModalFooter,
   Alert,
+  Spinner,
 } from "reactstrap";
 
 // ** Reactstrap Imports
 import {
   Table,
-  Badge,
-  UncontrolledDropdown,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
 } from "reactstrap";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -61,8 +57,9 @@ const TableTech = ({ data, isLoading }) => {
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan="4" className="text-center">
-                در حال بارگذاری...
+              <td colSpan="4" className='d-flex justify-content-center'>
+              <Spinner color="primary" className='d-flex justify-content-center'/>;
+
               </td>
             </tr>
           ) : (
