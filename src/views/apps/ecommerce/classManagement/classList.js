@@ -9,10 +9,9 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import TableTech from "../../tables/techListTable/TableTech";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import StatsVertical from "@components/widgets/stats/StatsVertical";
-import { Cpu } from "react-feather";
+import { Grid } from "react-feather";
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
@@ -30,7 +29,7 @@ const validationSchema = Yup.object().shape({
 
   buildingId: Yup.string().required("*الزامی"),
 });
-const List = () => {
+const ClassList = () => {
   const [centeredModal, setCenteredModal] = useState(false);
 
   const { data, isLoading } = useQuery({
@@ -58,7 +57,7 @@ const List = () => {
     <Row>
       <Col xl="3" md="4" sm="6">
         <StatsVertical
-          icon={<Cpu size={21} />}
+          icon={<Grid size={21} />}
           color="primary"
           stats={data?.length}
           statTitle="تعداد کلاس ها"
@@ -177,4 +176,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default ClassList;

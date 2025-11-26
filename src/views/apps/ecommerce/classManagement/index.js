@@ -1,5 +1,5 @@
 import React from 'react'
-import List from './List'
+import ClassList from './classList'
 import BreadCrumbs from '@components/breadcrumbs'
 
 const ClassManagement = () => {
@@ -7,7 +7,7 @@ const ClassManagement = () => {
     <>
       <BreadCrumbs title='کلاس' data={[{ title: ' کلاس دوره ها' }, { title: ' کلاس' }]} />
       <div>
-      <List/>
+      <ClassList/>
     </div>
     </>
  

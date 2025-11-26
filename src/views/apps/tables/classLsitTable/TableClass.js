@@ -27,7 +27,14 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { editClassist } from "../../../../core/Services/api/ClassSection";
+import * as Yup from "yup";
+const validationSchema = Yup.object().shape({
+  classRoomName: Yup.string().required("*الزامی"),
 
+  capacity: Yup.number("این فیلد باید عدد باشد").required("*الزامی"),
+
+  buildingId: Yup.string().required("*الزامی"),
+});
 const TableClass = ({ data, isLoading, building }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const queryClient = useQueryClient();
@@ -125,20 +132,37 @@ const TableClass = ({ data, isLoading, building }) => {
                 });
                 handleCloseModal();
               }}
+              validationSchema={validationSchema}
             >
-              {({ handleSubmit }) => (
+              {({ handleSubmit, errors }) => (
                 <Form>
                   <Field
                     name="classRoomName"
                     className="form-control mb-1"
                     placeholder="نام کلاس"
                   />
+                   {errors.classRoomName && (
+                    <div
+                      className="text-danger"
+                      style={{ fontSize: "12px", marginBottom: "6px" }}
+                    >
+                      {errors.classRoomName}
+                    </div>
+                  )}
                   <Field
                   type="number"
                     name="capacity"
                     className="form-control mb-1"
                     placeholder="ظرفیت"
                   />
+                    {errors.capacity && (
+                    <div
+                      className="text-danger"
+                      style={{ fontSize: "12px", marginBottom: "6px" }}
+                    >
+                      {errors.capacity}
+                    </div>
+                  )}
                   <Field
                   as="select"
                     name="buildingId"
@@ -150,6 +174,14 @@ const TableClass = ({ data, isLoading, building }) => {
                       <option key={build.id} value={build.id}>{build.buildingName}</option>
                     ))}
                   </Field>
+                  {errors.buildingId && (
+                    <div
+                      className="text-danger"
+                      style={{ fontSize: "12px", marginBottom: "6px" }}
+                    >
+                      {errors.buildingId}
+                    </div>
+                  )}
 
                   <ModalFooter>
                     <Button color="primary" onClick={handleSubmit}>
