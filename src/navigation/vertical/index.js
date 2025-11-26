@@ -73,6 +73,12 @@ export default [
         icon: <Circle size={12} />,
         navLink: "/apps/ecommerce/useList",
       },
+      {
+        id: "classList",
+        title: "لیست کلاس ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/classList",
+      },
     ],
   },
 ];

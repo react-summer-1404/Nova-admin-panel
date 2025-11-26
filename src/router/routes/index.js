@@ -41,6 +41,7 @@ const TechManagement = lazy(() => import('../../views/apps/ecommerce/techManagem
 const StatusManagement = lazy(() => import('../../views/apps/ecommerce/statusManagement'))
 const LevelManagement = lazy(() => import('../../views/apps/ecommerce/levelMangement'))
 const CourseUserList = lazy(() => import('../../views/apps/ecommerce/useList'))
+const ClassManagement = lazy(() => import('../../views/apps/ecommerce/classManagement'))
 
 
 const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
@@ -179,6 +180,13 @@ const Routes = [
   {
     path: '/apps/ecommerce/useList',
     element: <CourseUserList />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/classList',
+    element: <ClassManagement />,
     meta: {
       className: 'ecommerce-application'
     }
