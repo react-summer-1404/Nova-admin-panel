@@ -25,16 +25,16 @@ import { useForm, Controller } from "react-hook-form";
 import withReactContent from "sweetalert2-react-content";
 
 // ** Custom Components
-import Avatar from "@components/avatar";
 import defaultPic from "../../../../assets/images/defalt.png";
 // ** Utils
-import { selectThemeColors } from "@utils";
 
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { editActiveCourse, editExpireCourse } from "../../../../core/Services/api/EditCourse";
 import toast from "react-hot-toast";
+import { getStatusList } from "../../../../core/Services/api/StatusSection";
+import EditStatus from "./components/EditStatus";
 
 const MySwal = withReactContent(Swal);
 
@@ -42,6 +42,8 @@ const Product = ({ selectedCourse }) => {
   // ** State
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(selectedCourse?.active);
+  const [centeredModal, setCenteredModal] = useState(false);
+
 
   // ** Hook
   const {
@@ -101,16 +103,7 @@ const Product = ({ selectedCourse }) => {
     
   })
  
-  // const deActiveCourse = () => {
-    
-  //     editActiveMutation.mutate(apiParams)
- 
-  // };
-  // const ExpireCourse = () => {
-    
-  //   editExpireMutation.mutate(apiParams)
- 
-  // };
+
   const handleCourseAction  = () => {
     return MySwal.fire({
       title: "آیا مطمئن هستید؟",
@@ -250,7 +243,7 @@ const Product = ({ selectedCourse }) => {
             <Button 
               className="ms-1"
               color={active?"danger":"success"}
-              onClick={()=>handleCourseAction("deActiveCourse") }
+              onClick={()=>handleCourseAction() }
             >
              {active?"غیرفعال کردن":"فعال کردن"}
             </Button>
@@ -262,12 +255,14 @@ const Product = ({ selectedCourse }) => {
             <Button
               className="ms-1"
               color="warning"
-              // onClick={()=>handleCourseAction("ExpireCourse") }
+              onClick={() => setCenteredModal(!centeredModal)}
 
             >
                تغییر وضعیت
             </Button>
           </div>
+          <EditStatus selectedCourse={selectedCourse} setCenteredModal={setCenteredModal} centeredModal={centeredModal}/>
+
         </CardBody>
       </Card>
       <Modal

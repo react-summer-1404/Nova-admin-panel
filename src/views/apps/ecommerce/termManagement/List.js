@@ -159,7 +159,6 @@ const mutationPostTermTime = useMutation({
                   as="select"
                   name="departmentId"
                   className="form-control mb-1"
-                  placeholder="دپارتمان کلاس"
                 >
                   {dep?.map((d) => (
                     <option key={d.id} value={d.id}>
