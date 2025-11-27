@@ -72,7 +72,7 @@ const TableClass = ({ data, isLoading, building }) => {
                     <p>{item.capacity}</p>
                   </td>
                   <td>
-                    <p>{buildingName.buildingName}</p>
+                    <p>{buildingName?.buildingName}</p>
                   </td>
                   <td>
                     <Button

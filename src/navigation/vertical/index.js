@@ -81,9 +81,9 @@ export default [
       },
       {
         id: "TermList",
-        title: "لیست ترم دوره ها",
+        title: "  تسک ها",
         icon: <Circle size={12} />,
-        navLink: "/apps/ecommerce/TermList",
+        navLink: "/apps/ecommerce/TaskList",
       },
     ],
   },
