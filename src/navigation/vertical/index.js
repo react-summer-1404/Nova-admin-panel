@@ -1,4 +1,4 @@
-import { Mail, Home, Airplay, Circle, Users, BookOpen ,ShoppingCart} from "react-feather";
+import { Mail, Home, Airplay, Circle, Users, BookOpen ,Briefcase } from "react-feather";
 
 export default [
   {
@@ -86,5 +86,11 @@ export default [
         navLink: "/apps/ecommerce/TaskList",
       },
     ],
+  },
+  {
+    id: "departmentList",
+    title: "دپارتمان",
+    icon: <Briefcase  size={12} />,
+    navLink: "/apps/ecommerce/Department",
   },
 ];

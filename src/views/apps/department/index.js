@@ -17,46 +17,42 @@ import { Clipboard   } from "react-feather";
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
-import {
-  getMentorList,
-  getTaskList,
-  postTaskList,
-} from "../../../../core/Services/api/TaskSection";
-import TableTask from "../../tables/taskListTable/TableTask";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
-import Flatpickr from "react-flatpickr";
+import { getDepartmentList, postDepartmentList } from "../../../core/Services/api/DepartmentSection";
+import { getBuilding } from "../../../core/Services/api/ClassSection";
+import TableDepartment from "../tables/depaermentManagement/TableDepartment";
 function TasksManagement() {
   const [centeredModal, setCenteredModal] = useState(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getTaskList"],
-    queryFn: getTaskList,
+    queryKey: ["getDepartmentList"],
+    queryFn: getDepartmentList,
     refetchOnWindowFocus: false,
     staleTime: 5 * 1000 * 60,
   });
   const queryClient = useQueryClient();
-  const mutationPostTask = useMutation({
-    mutationFn: postTaskList,
+  const mutationPostDepartment = useMutation({
+    mutationFn: postDepartmentList,
     onSuccess: () => {
-      toast.success("تسک با موفقیت اضافه شد");
-      queryClient.invalidateQueries(["getTaskList"]);
+      toast.success("دپارتمان با موفقیت اضافه شد");
+      queryClient.invalidateQueries(["getDepartmentList"]);
       setCenteredModal(!centeredModal);
     },
 
-    onError: () => toast.error("خطا در افزودن تسک"),
+    onError: () => toast.error("خطا در افزودن دپارتمان"),
   });
-  const { data: mentor } = useQuery({
-    queryKey: ["getmentorList"],
-    queryFn: getMentorList,
+  const { data: building } = useQuery({
+    queryKey: ["buildList"],
+    queryFn: getBuilding,
     refetchOnWindowFocus: false,
     staleTime: 5 * 1000 * 60,
   });
   return (
     <>
       <BreadCrumbs
-        title="تسک"
-        data={[{ title: " تسک دوره ها" }, { title: " تسک" }]}
+        title="دپارتمان"
+        data={[{ title: "دپارتمان ها" }, { title: " دپارتمان" }]}
       />
       <Row>
         <Col xl="3" md="4" sm="6">
@@ -64,14 +60,14 @@ function TasksManagement() {
             icon={<Clipboard  size={21} />}
             color="primary"
             stats={data?.length}
-            statTitle="تعداد تسک ها"
+            statTitle="تعداد دپارتمان ها"
           />
           <Button
             color="primary"
             style={{ width: "100%" }}
             onClick={() => setCenteredModal(!centeredModal)}
           >
-            افزودن تسک +
+            افزودن دپارتمان +
           </Button>
           <Modal
             isOpen={centeredModal}
@@ -79,58 +75,35 @@ function TasksManagement() {
             className="modal-dialog-centered"
           >
             <ModalHeader toggle={() => setCenteredModal(!centeredModal)}>
-              افزودن تسک
+              افزودن دپارتمان
             </ModalHeader>
 
             <ModalBody>
               <Formik
                 initialValues={{
-                  worktitle: "",
-                  workDescribe: "",
-                  workDate: "",
-                  assistanceId: "",
+                    depName: "",
+                    buildingId: "",
                 }}
                 onSubmit={(values) => {
-                  mutationPostTask.mutate(values);
+                    mutationPostDepartment.mutate(values);
                 }}
               >
                 <Form>
                   <Label className="form-label mt-1">عنوان تسک</Label>
                   <Field
-                    name="worktitle"
+                    name="depName"
                     className="form-control mb-1"
-                    placeholder="عنوان تسک"
+                    placeholder="نام دپارتمان"
                   />
-                  <Label className="form-label mt-1">توضیحات</Label>
-                  <Field
-                  as="textarea"
-                    name="workDescribe"
-                    className="form-control mb-1"
-                    placeholder="توضیحات"
-                  />
-                  <Label className="form-label mt-1">تاریخ تسک</Label>
-                  <Field name="workDate">
-                    {({ field, form }) => (
-                      <Flatpickr
-                        className="form-control"
-                        id="workDate"
-                        value={field.value}
-                        onChange={(date) =>
-                          form.setFieldValue("workDate", date[0])
-                        }
-                      />
-                    )}
-                  </Field>
-
-                  <Label className="form-label mt-1">منتور تسک</Label>
+                  <Label className="form-label mt-1">انتخاب ساختمان</Label>
                   <Field
                     as="select"
-                    name="assistanceId"
+                    name="buildingId"
                     className="form-control mb-1"
                   >
-                    {mentor?.map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.assistanceName}
+                    {building?.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.buildingName}
                       </option>
                     ))}
                   </Field>
@@ -154,7 +127,7 @@ function TasksManagement() {
 
         <Col md="9">
           <Card>
-            <TableTask data={data} isLoading={isLoading} mentor={mentor} />
+            <TableDepartment data={data} isLoading={isLoading} building={building} />
           </Card>
         </Col>
       </Row>

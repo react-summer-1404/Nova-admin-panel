@@ -44,6 +44,7 @@ const CourseUserList = lazy(() => import('../../views/apps/ecommerce/useList'))
 const ClassManagement = lazy(() => import('../../views/apps/ecommerce/classManagement'))
 const TermManagement = lazy(() => import('../../views/apps/ecommerce/termManagement'))
 const TasksManagement = lazy(() => import('../../views/apps/ecommerce/TasksManagement'))
+const Department = lazy(() => import('../../views/apps/department'))
 
 
 const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
@@ -203,6 +204,13 @@ const Routes = [
   {
     path: '/apps/ecommerce/taskList',
     element: <TasksManagement />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/Department',
+    element: <Department />,
     meta: {
       className: 'ecommerce-application'
     }
