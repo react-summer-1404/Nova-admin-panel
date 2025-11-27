@@ -12,20 +12,12 @@ export default [
     title: "مدیریت کاربران",
     icon: <User size={20} />,
     navLink: "/list",
-    // children: [
-    //   // {
-    //   //   id: "list",
-    //   //   title: "لیست",
-    //   //   icon: <Circle size={12} />,
-    //   //   navLink: "/user/list",
-    //   // },
-    //   // {
-    //   //   id: "view",
-    //   //   title: "View",
-    //   //   icon: <Circle size={12} />,
-    //   //   navLink: "/view",
-    //   // },
-    // ],
+  },
+  {
+    id: "buildings",
+    title: "ساختمان ها ",
+    icon: <Home size={20} />,
+    navLink: "/building",
   },
   {
     id: "secondPage",

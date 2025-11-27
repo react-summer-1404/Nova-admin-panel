@@ -14,12 +14,9 @@ import withReactContent from 'sweetalert2-react-content'
 // ** Custom Components
 import Avatar from '../../../components/avatar'
 
-// ** Utils
-import { selectThemeColors } from '@utils'
-
 // ** Styles
 import '@styles/react/libs/react-select/_react-select.scss'
-import { UseUpdateUser } from '../../../../core/Hook/useMUserApi'
+import { useUpdateUser } from '../../../../core/Hook/useMUserApi'
 import SwitchIcons from '../../switch/SwitchIcons'
 import { error } from 'jquery'
 import toast from 'react-hot-toast'
@@ -94,7 +91,7 @@ const UserInfoCard = ({ selectedUser }) => {
     reset(defaultValues);
   },[selectedUser]);
 
-  const {mutate: updateUser} = UseUpdateUser({
+  const {mutate: updateUser} = useUpdateUser({
     onSuccess : () => {      
       toast.success("اطلاعات با موفقیت ویرایش شد.")
     },
@@ -540,8 +537,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   type='reset'
                   color='secondary'
                   outline
-                  onClick={() => {
-                    handleReset()
+                  onClick={() => {                   
                     setShow(false)
                   }}
                 >

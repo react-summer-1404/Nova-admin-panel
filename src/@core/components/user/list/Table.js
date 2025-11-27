@@ -38,7 +38,7 @@ import {
 import '@styles/react/libs/react-select/_react-select.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import { useUserList } from '../../../../core/Hook/useQUserApi'
-import { UseDeleteUser } from '../../../../core/Hook/useMUserApi'
+import { useDeleteUser } from '../../../../core/Hook/useMUserApi'
 import toast from 'react-hot-toast'
 
 
@@ -166,7 +166,7 @@ const total = data?.totalCount || 0
 
   // ** Custom Pagination
   const CustomPagination = () => {
-    const count = Number(Math.ceil(data?.total / rowsPerPage))
+    const count = Number(Math.ceil(data?.totalCount / rowsPerPage))
 
     return (
       <ReactPaginate
@@ -186,8 +186,6 @@ const total = data?.totalCount || 0
       />
     )
   }
-
-
 
   // ** Table data to render
   const dataToRender = () => {
@@ -218,7 +216,7 @@ const total = data?.totalCount || 0
     setSortColumn(column.sortField)
   }
 
-  const {mutate: deleteUser, onSuccess} = UseDeleteUser(() => {
+  const {mutate: deleteUser, onSuccess} = useDeleteUser(() => {
     onSuccess.toast.success("کاربر با موفقیت حذف شد در انتظار تایید توسط مدیران " )
     refetch()
   })

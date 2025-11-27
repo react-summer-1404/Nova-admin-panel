@@ -3,7 +3,7 @@ import { Check, X } from 'react-feather'
 
 // ** Reactstrap Imports
 import { Card, CardBody, Input, Label } from 'reactstrap'
-import { UseAddUserAccess } from '../../../core/Hook/useMUserApi'
+import { useAddUserAccess } from '../../../core/Hook/useMUserApi'
 import { useEffect, useState } from 'react'
 
 const CustomLabel = ({ htmlFor, enabled }) => {
@@ -27,7 +27,7 @@ const SwitchIcons = ({userId, userRoles:userRolesProp}) => {
     }
   },[userRolesProp]);
 
-  const {mutate : toggleAccess} = UseAddUserAccess(() => {
+  const {mutate : toggleAccess} = useAddUserAccess(() => {
     // setUserRoles((prev) =>{
     //   const hasRole = prev.includes(roleId);
     //   if (enable && !hasRole) return [...prev, roleId]
