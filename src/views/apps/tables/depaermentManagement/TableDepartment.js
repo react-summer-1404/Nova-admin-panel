@@ -24,8 +24,9 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { editDepartmentList } from "../../../../core/Services/api/DepartmentSection";
+import ReactPaginate from "react-paginate";
 
-const TableTask = ({ data, isLoading ,building }) => {
+const TableTask = ({ data, isLoading, building }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const queryClient = useQueryClient();
   const mutationEditDepartment = useMutation({
@@ -43,7 +44,10 @@ const TableTask = ({ data, isLoading ,building }) => {
   };
 
   const handleCloseModal = () => setSelectedItem(null);
-
+const rowsPerPage=5;
+const count = Number((data?.length / rowsPerPage).toFixed(0))
+ 
+ 
   return (
     <>
       <Table hover responsive>
@@ -67,37 +71,30 @@ const TableTask = ({ data, isLoading ,building }) => {
             </tr>
           ) : (
             data?.map((item) => {
-                return(
-              <tr key={item.id}>
-               
+              return (
+                <tr key={item.id}>
+                  <td className="fw-bold text-black">{item.depName}</td>
 
-                <td className="fw-bold text-black">{item.depName}</td>
-
-                <td>
-                  <p>{item.buildingName}</p>
-                </td>
-
-                
-
-               
-               
-
-                <td>
-                  <Button
-                    color="primary"
-                    size="sm"
-                    onClick={() => handleEditClick(item)}
-                  >
-                    <Edit
-                      size={15}
-                      className="ms-50"
-                      style={{ marginLeft: "6px" }}
-                    />
-                    ادیت
-                  </Button>
-                </td>
-              </tr>
-            )})
+                  <td>
+                    <p>{item.buildingName}</p>
+                  </td>
+                  <td>
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={() => handleEditClick(item)}
+                    >
+                      <Edit
+                        size={15}
+                        className="ms-50"
+                        style={{ marginLeft: "6px" }}
+                      />
+                      ادیت
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </Table>
@@ -116,7 +113,6 @@ const TableTask = ({ data, isLoading ,building }) => {
               initialValues={{
                 depName: selectedItem.depName,
                 buildingId: selectedItem.buildingId,
-               
               }}
               onSubmit={(values) => {
                 mutationEditDepartment.mutate({
@@ -135,8 +131,7 @@ const TableTask = ({ data, isLoading ,building }) => {
                     className="form-control mb-1"
                     placeholder="نام دپارتمان"
                   />
-    
-                  
+
                   <Label className="form-label mt-1">انتخاب ساختمان</Label>
                   <Field
                     as="select"
@@ -164,6 +159,23 @@ const TableTask = ({ data, isLoading ,building }) => {
           )}
         </ModalBody>
       </Modal>
+      <ReactPaginate
+      nextLabel=''
+      breakLabel='...'
+      previousLabel=''
+      activeClassName='active'
+      breakClassName='page-item'
+      pageClassName={'page-item'}
+      breakLinkClassName='page-link'
+      nextLinkClassName={'page-link'}
+      pageLinkClassName={'page-link'}
+      nextClassName={'page-item next'}
+      previousLinkClassName={'page-link'}
+      previousClassName={'page-item prev'}
+      containerClassName={'pagination react-paginate justify-content-end p-1'}
+      pageCount={count || 1}
+
+      />
     </>
   );
 };

@@ -127,7 +127,7 @@ function TasksManagement() {
 
         <Col md="9">
           <Card>
-            <TableDepartment data={data} isLoading={isLoading} building={building} />
+            <TableDepartment  data={data} isLoading={isLoading} building={building} />
           </Card>
         </Col>
       </Row>
