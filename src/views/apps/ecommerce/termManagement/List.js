@@ -19,6 +19,7 @@ import toast from "react-hot-toast";
 import {
   getTermList,
   postTermList,
+  postTermListTime,
 } from "../../../../core/Services/api/TermSection";
 import TableTerm from "../../tables/TermListTable/TableTerm";
 import { getDepartmentList } from "../../../../core/Services/api/DepartmentSection";
@@ -28,6 +29,7 @@ import Flatpickr from "react-flatpickr";
 
 const List = () => {
   const [centeredModal, setCenteredModal] = useState(false);
+  const [centeredModalTime, setCenteredModalTime] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["getTermList"],
@@ -55,6 +57,15 @@ const List = () => {
 const expired =data?.filter((item)=>item.expire==true)
 const unexpired =data?.filter((item)=>item.expire==false)
 
+const mutationPostTermTime = useMutation({
+  mutationFn: postTermListTime,
+  onSuccess: () => {
+    toast.success("زمان ترم با موفقیت اضافه شد");
+    setCenteredModalTime(!centeredModalTime);
+  },
+
+  onError: () => toast.error("خطا در افزودن زمان تزم"),
+});
   return (
     <Row>
       <Col xl="3" md="4" sm="6">
@@ -76,7 +87,9 @@ const unexpired =data?.filter((item)=>item.expire==false)
           stats={unexpired?.length}
           statTitle="تعداد ترم های منقضی نشده"
         />
-        <Button
+      <Row className="mt-1">
+     <Col>
+     <Button
           color="primary"
           style={{ width: "100%" }}
           onClick={() => setCenteredModal(!centeredModal)}
@@ -102,7 +115,6 @@ const unexpired =data?.filter((item)=>item.expire==false)
               }}
               onSubmit={(values) => {
                 mutationPostTerm.mutate(values);
-                // console.log(values)
               }}
             >
               <Form>
@@ -171,7 +183,98 @@ const unexpired =data?.filter((item)=>item.expire==false)
               </Form>
             </Formik>
           </ModalBody>
-        </Modal>
+        </Modal></Col>
+     <Col>
+     <Button
+          color="primary"
+          style={{ width: "100%" }}
+          onClick={() => setCenteredModalTime(!centeredModalTime)}
+        >
+          افزودن زمان +
+        </Button>
+        <Modal
+          isOpen={centeredModalTime}
+          toggle={() => setCenteredModalTime(!centeredModalTime)}
+          className="modal-dialog-centered"
+        >
+          <ModalHeader toggle={() => setCenteredModalTime(!centeredModalTime)}>
+            افزودن زمان
+          </ModalHeader>
+
+          <ModalBody>
+            <Formik
+              initialValues={{
+                termId: "",
+                startCloseDate: "",
+                endCloseDate: "",
+                closeReason: "",
+              }}
+              onSubmit={(values) => {
+                mutationPostTermTime.mutate(values);
+              }}
+            >
+              <Form>
+              <Label className="form-label mt-1"> انتخاب ترم</Label>
+                <Field
+                  as="select"
+                  name="termId"
+                  className="form-control mb-1"
+                  placeholder="ترم"
+                >
+                  {data?.map((d) => (
+                    <option key={d.id} value={d.id}>
+                      {d.termName}
+                    </option>
+                  ))}
+                </Field>
+                
+                <Label className="form-label">تاریخ شروع</Label>
+                <Field name="startDate">
+                  {({ field, form }) => (
+                    <Flatpickr
+                      className="form-control"
+                      id="startDate"
+                      value={field.value}
+                      onChange={(date) =>
+                        form.setFieldValue("startDate", date[0])
+                      }
+                    />
+                  )}
+                </Field>
+
+                <Label className="form-label mt-1">تاریخ پایان</Label>
+                <Field name="endDate">
+                  {({ field, form }) => (
+                    <Flatpickr
+                      className="form-control"
+                      id="endDate"
+                      value={field.value}
+                      onChange={(date) =>
+                        form.setFieldValue("endDate", date[0])
+                      }
+                    />
+                  )}
+                </Field>
+                <Label className="form-label mt-1">دلیل بسته بودن</Label>
+                <Field name="closeReason" as="textarea"  className="form-control mb-1"/>
+
+                <ModalFooter>
+                  <Button color="primary" onClick={onsubmit}>
+                    ذخیره
+                  </Button>
+                  <Button
+                    color="secondary"
+                    onClick={() => setCenteredModalTime(!centeredModalTime)}
+                  >
+                    بستن
+                  </Button>
+                </ModalFooter>
+              </Form>
+            </Formik>
+          </ModalBody>
+        </Modal></Col>
+        
+      </Row>
       </Col>
 
       <Col md="9">

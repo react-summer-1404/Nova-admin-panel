@@ -2,7 +2,7 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
 // ** Icons Imports
-import { Edit } from "react-feather";
+import { Edit, MoreVertical } from "react-feather";
 import {
   Button,
   Modal,
@@ -12,6 +12,10 @@ import {
   Spinner,
   Label,
   Badge,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
 import "@styles/react/libs/react-select/_react-select.scss";
 import "@styles/react/libs/flatpickr/flatpickr.scss";
@@ -22,10 +26,14 @@ import { Table } from "reactstrap";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { editTermList } from "../../../../core/Services/api/TermSection";
+import {
+  editTermList,
+  editTermListTime,
+} from "../../../../core/Services/api/TermSection";
 
 const TableTerm = ({ data, isLoading, dep }) => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItemTime, setSelectedItemTime] = useState(null);
 
   const queryClient = useQueryClient();
   const mutationEditTerm = useMutation({
@@ -37,12 +45,26 @@ const TableTerm = ({ data, isLoading, dep }) => {
 
     onError: () => toast.error("خطا در ویرایش ترم"),
   });
+  const mutationEditTermTime = useMutation({
+    mutationFn: editTermListTime,
+    onSuccess: () => {
+      toast.success("زمان ترم با موفقیت ویرایش شد");
+    },
+
+    onError: () => toast.error("خطا در ویرایش زمان ترم"),
+  });
 
   const handleEditClick = (item) => {
     setSelectedItem(item);
   };
 
   const handleCloseModal = () => setSelectedItem(null);
+
+  const handleEditTimeClick = (item) => {
+    setSelectedItemTime(item);
+  };
+
+  const handleCloseTimeModal = () => setSelectedItemTime(null);
 
   return (
     <>
@@ -87,18 +109,26 @@ const TableTerm = ({ data, isLoading, dep }) => {
                     )}
                   </td>
                   <td>
-                    <Button
-                      color="primary"
-                      size="sm"
-                      onClick={() => handleEditClick(item)}
-                    >
-                      <Edit
-                        size={15}
-                        className="ms-50"
-                        style={{ marginLeft: "6px" }}
-                      />
-                      ادیت
-                    </Button>
+                    <UncontrolledDropdown>
+                      <DropdownToggle
+                        className="icon-btn hide-arrow"
+                        color="transparent"
+                        size="sm"
+                        caret
+                      >
+                        <MoreVertical size={15} />
+                      </DropdownToggle>
+                      <DropdownMenu>
+                        <DropdownItem onClick={() => handleEditClick(item)}>
+                          <Edit className="me-50" size={15} />{" "}
+                          <span className="align-middle">ادیت ترم</span>
+                        </DropdownItem>
+                        <DropdownItem onClick={() => handleEditTimeClick(item)}>
+                          <Edit className="me-50" size={15} />{" "}
+                          <span className="align-middle">ادیت زمان</span>
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </UncontrolledDropdown>
                   </td>
                 </tr>
               );
@@ -128,7 +158,7 @@ const TableTerm = ({ data, isLoading, dep }) => {
               onSubmit={(values) => {
                 mutationEditTerm.mutate({
                   ...values,
-                  expire:values.expire === "true",
+                  expire: values.expire === "true",
                   id: selectedItem.id,
                 });
 
@@ -206,14 +236,108 @@ const TableTerm = ({ data, isLoading, dep }) => {
                   </Field>
 
                   <ModalFooter>
-                    <Button
-                      color="primary"
-                      onClick={handleSubmit}
-                    >
+                    <Button color="primary" onClick={handleSubmit}>
                       ذخیره
                     </Button>
 
                     <Button color="secondary" onClick={handleCloseModal}>
+                      بستن
+                    </Button>
+                  </ModalFooter>
+                </Form>
+              )}
+            </Formik>
+          )}
+        </ModalBody>
+      </Modal>
+
+      <Modal
+        isOpen={selectedItemTime ? true : false}
+        toggle={handleCloseTimeModal}
+        className="modal-dialog-centered"
+      >
+        <ModalHeader toggle={handleCloseTimeModal}>ویرایش ترم</ModalHeader>
+
+        <ModalBody>
+          {selectedItemTime && (
+            <Formik
+              initialValues={{
+                termId: selectedItemTime.termId,
+                startCloseDate: selectedItemTime.startCloseDate
+                  ? new Date(selectedItemTime.startCloseDate)
+                  : "",
+                endCloseDate: selectedItemTime.endCloseDate
+                  ? new Date(selectedItemTime.endCloseDate)
+                  : "",
+                closeReason: selectedItemTime.closeReason || "",
+              }}
+              onSubmit={(values) => {
+                mutationEditTermTime.mutate({
+                  ...values,
+                  id: selectedItemTime.id,
+                });
+
+                handleCloseTimeModal();
+              }}
+            >
+              {({ handleSubmit }) => (
+                <Form>
+                  <Label className="form-label mt-1"> ترم</Label>
+                  <Field
+                    as="select"
+                    name="termId"
+                    className="form-control mb-1"
+                  >
+                    {data?.map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.termName}
+                      </option>
+                    ))}
+                  </Field>
+
+                  <Label className="form-label">تاریخ شروع</Label>
+                  <Field name="startCloseDate">
+                    {({ field, form }) => (
+                      <Flatpickr
+                        className="form-control"
+                        id="startCloseDate"
+                        value={field.value ? new Date(field.value) : null}
+                        onChange={(date) =>
+                          form.setFieldValue("startCloseDate", date[0])
+                        }
+                      />
+                    )}
+                  </Field>
+
+                  <Label className="form-label mt-1">تاریخ پایان</Label>
+                  <Field name="endCloseDate">
+                    {({ field, form }) => (
+                      <Flatpickr
+                        className="form-control"
+                        id="endCloseDate"
+                        value={field.value ? new Date(field.value) : null}
+                        onChange={(date) =>
+                          form.setFieldValue("endCloseDate", date[0])
+                        }
+                      />
+                    )}
+                  </Field>
+
+                  <Label className="form-label mt-1">دلیل بسته بودن</Label>
+
+                  <Field
+                    as="textarea"
+                    name="closeReason"
+                    className="form-control mb-1"
+                    placeholder="وضعیت"
+                  />
+
+                  <ModalFooter>
+                    <Button color="primary" onClick={handleSubmit}>
+                      ذخیره
+                    </Button>
+
+                    <Button color="secondary" onClick={handleCloseTimeModal}>
                       بستن
                     </Button>
                   </ModalFooter>
