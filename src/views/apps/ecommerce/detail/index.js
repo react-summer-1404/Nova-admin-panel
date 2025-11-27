@@ -35,6 +35,7 @@ const Details = () => {
  
   const selectedCourse =data?{
     // currentRate : data.currentRate,
+    id:data.id,
     teacherName:data.teacherName,
     statusName:data.statusName,
     title:data.name,
@@ -47,7 +48,8 @@ const Details = () => {
     capacity:data.capacity,
     image:data.image,
     reserveUserTotal:data.reserveUserTotal,
-    courseCommentTotal:data.courseCommentTotal
+    courseCommentTotal:data.courseCommentTotal,
+    isExpire:data.isExpire
 
   }:null
 
