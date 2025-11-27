@@ -1,39 +1,40 @@
 // ** Custom Components
 import React from "react";
-import { Formik, Form, Field } from "formik";
 // ** Images
 import Avatar from "@components/avatar";
 
 import defaultpPic from "../../../../assets/images/defalt.png";
 
 // ** Reactstrap Imports
-import {
-  Table,
-  Spinner,
-} from "reactstrap";
-import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import { editStatusList } from "../../../../core/Services/api/StatusSection";
-import defaultPic from "../../../../assets/images/defalt.png";
-
+import { Table, Spinner } from "reactstrap";
+import { Alert } from "reactstrap";
 const TableUserList = ({ data, isLoading, selectedId }) => {
   if (!selectedId) {
     return (
       <div className="text-center p-4">
-        <h5>لطفاً یک دوره انتخاب کنید</h5>
+        <Alert color="primary">
+          <div className="alert-body">
+            <span className="fw-bold">لطفا یک دوره را انتخاب کنید</span>
+          </div>
+        </Alert>
       </div>
     );
   }
 
   if (isLoading) {
-    return <Spinner color="primary" className='d-flex justify-content-center'/>;
+    return (
+      <Spinner color="primary" className="d-flex justify-content-center" />
+    );
   }
 
   if (!data || data.length === 0) {
     return (
       <div className="text-center p-4">
-        <h5>کاربری برای این دوره یافت نشد</h5>
+        <Alert color="warning">
+          <div className="alert-body">
+            <span className="fw-bold">کاربری برای این دوره یافت نشد</span>
+          </div>
+        </Alert>
       </div>
     );
   }
@@ -52,10 +53,16 @@ const TableUserList = ({ data, isLoading, selectedId }) => {
           {data?.map((item) => (
             <tr key={item.id}>
               <td className="fw-bold text-black">
-                <Avatar img={item.currentPictureAddress||defaultpPic} />
+                <Avatar img={item.currentPictureAddress || defaultpPic} />
               </td>
 
-              <td className="fw-bold text-black">{item.fName}</td>
+              <td className="fw-bold text-black">
+                <span>{item.fName}</span>
+                <span style={{ marginLeft: 8, marginRight: 8 }}>
+                  {item.lName}
+                </span>
+              </td>
+
               <td className="fw-bold text-black">{item.gmail}</td>
             </tr>
           ))}

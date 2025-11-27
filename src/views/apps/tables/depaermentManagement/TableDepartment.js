@@ -44,7 +44,7 @@ const TableTask = ({ data, isLoading, building }) => {
   };
 
   const handleCloseModal = () => setSelectedItem(null);
-const rowsPerPage=5;
+const rowsPerPage=5 ;
 const count = Number((data?.length / rowsPerPage).toFixed(0))
  
  
