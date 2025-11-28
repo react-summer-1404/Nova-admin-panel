@@ -85,7 +85,7 @@ const DataTableServerSide = () => {
   }
 
   // ** Slice data for current page
-  const dataToRender = store.data.slice(
+  const dataToRender = store?.data?.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   )
@@ -105,7 +105,7 @@ const DataTableServerSide = () => {
       <Row className='mx-0 mt-1 mb-50'>
         <Col sm='6'>
           <div className='d-flex align-items-center'>
-            <Label for='sort-select'>show</Label>
+            <Label for='sort-select'></Label>
             <Input
               className='dataTable-select'
               type='select'
@@ -114,14 +114,14 @@ const DataTableServerSide = () => {
               onChange={handlePerPage}
               style={{ width: '70px' }}
             >
-              <option value={7}>7</option>
+              <option value={5}>5</option>
               <option value={10}>10</option>
               <option value={25}>25</option>
               <option value={50}>50</option>
               <option value={75}>75</option>
               <option value={100}>100</option>
             </Input>
-            <Label for='sort-select'>entries</Label>
+            <Label for='sort-select'></Label>
           </div>
         </Col>
       </Row>

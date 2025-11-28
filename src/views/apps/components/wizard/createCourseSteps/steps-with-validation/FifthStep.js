@@ -115,7 +115,7 @@ const FifthStep = ({ stepper, courseId }) => {
               className="align-middle me-sm-25 me-0"
             ></ArrowLeft>
             <span className="align-middle d-sm-inline-block d-none">
-              مرحله قبل
+               قبلی
             </span>
           </Button>
           <Button type="submit" color="success" className="btn-next">

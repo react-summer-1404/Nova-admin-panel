@@ -5,7 +5,7 @@ import { Fragment, useState, useEffect, memo } from 'react'
 import { serverSideColumns } from '../../data-tables-user/userData'
 
 // ** Store & Actions
-import { getData } from '../../data-tables-user/store'
+// import { getData } from '../../data-tables-user/store'
 import { useSelector, useDispatch } from 'react-redux'
 
 // ** Third Party Components
@@ -15,21 +15,30 @@ import DataTable from 'react-data-table-component'
 
 // ** Reactstrap Imports
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col } from 'reactstrap'
+import { useQuery } from '@tanstack/react-query'
+import { GetStudentList } from '../../../../../core/Services/api/GetUserList'
 
 const DataTableServerSide = () => {
   const dispatch = useDispatch()
   const courseId = useSelector(state => state.ecommerce.productDetail.id)
-  const store = useSelector(state => state.courseUsers)
+  // const store = useSelector(state => state.userExpandableTable)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
-
+const {data:users}=useQuery({
+  queryKey:["courseStudent"],
+  queryFn:()=>GetStudentList(courseId),
+  enabled: !!courseId
+})
+const userList=users?.courseStudent||[];
+// console.log("userList",userList)
+// console.log("user",users)
   // ** Fetch data
-  useEffect(() => {
-    if (courseId) {
-      dispatch(getData({ courseId }))
-    }
-  }, [courseId])
+  // useEffect(() => {
+  //   if (courseId) {
+  //     dispatch(getData({ courseId }))
+  //   }
+  // }, [courseId])
 
   // ** Handle rows per page
   const handlePerPage = e => {
@@ -45,7 +54,7 @@ const DataTableServerSide = () => {
 
   // ** Custom Pagination
   const CustomPagination = () => {
-    const pageCount = Math.ceil(store.total / rowsPerPage)
+    const pageCount = Math.ceil(userList.length / rowsPerPage)
 
     return (
       <ReactPaginate
@@ -72,10 +81,11 @@ const DataTableServerSide = () => {
   }
 
   // ** Slice data for current page
-  const dataToRender = store.data.slice(
+  const dataToRender = userList?.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   )
+  
 
   return (
     <Card>
@@ -109,6 +119,7 @@ const DataTableServerSide = () => {
 
       <div className='react-dataTable'>
         <DataTable
+         keyField="id"
           columns={serverSideColumns}
           data={dataToRender}
           sortIcon={<ChevronDown size={10} />}

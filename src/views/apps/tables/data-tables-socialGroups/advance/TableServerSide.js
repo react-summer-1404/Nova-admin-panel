@@ -21,9 +21,7 @@ const DataTableServerSide = () => {
   const courseId = useSelector(state => state.ecommerce.productDetail.id)
   const store = useSelector(state => state.courseSocialGroup)
   const newStore = store?.data?.filter(item=>item.courseId==courseId)
-  console.log("newStore",newStore)
-  console.log("store.data",store.data)
-  console.log("courseId",courseId)
+
 
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)

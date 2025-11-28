@@ -73,7 +73,7 @@ const DataTableServerSide = () => {
   }
 
   // ** Slice data for current page
-  const dataToRender = store.data.slice(
+  const dataToRender = store?.data?.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   )

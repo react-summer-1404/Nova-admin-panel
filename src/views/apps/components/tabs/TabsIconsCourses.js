@@ -4,7 +4,7 @@ import { lazy } from "react";
 import { Fragment, useState } from "react";
 
 // ** Icons Imports
-import { MessageCircle, Box, Users,CreditCard,Globe,UserCheck } from "react-feather";
+import { MessageCircle, Box, Users,CreditCard,Globe,UserCheck ,Bookmark} from "react-feather";
 
 // ** Reactstrap Imports
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
@@ -21,6 +21,9 @@ import("../../../apps/tables/data-tables-socialGroups/advance")
 );
 const DTAdvance6 = lazy(() =>
 import("../../../apps/tables/data-tables-mentors/advance")
+);
+const TableServerSide = lazy(() =>
+import("../../../apps/tables/data-tables-userReserve/advance/TableServerSide")
 );
 const TabsIcons = () => {
   {
@@ -59,6 +62,18 @@ const TabsIcons = () => {
           >
             <Users size={18} />
             <span className="align-middle">دانشجویان این دوره</span>
+          </NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink
+            active={active === "7"}
+            onClick={() => {
+              toggle("7");
+            }}
+          >
+            <Bookmark size={18} />
+            <span className="align-middle">رزرو ها</span>
           </NavLink>
         </NavItem>
 
@@ -109,6 +124,8 @@ const TabsIcons = () => {
             <span className="align-middle">منتور ها</span>
           </NavLink>
         </NavItem>
+
+      
       </Nav>
       <TabContent className="py-50" activeTab={active}>
         <TabPane tabId="1">
@@ -150,6 +167,13 @@ const TabsIcons = () => {
           {/*mentors table */}
           <Suspense>
             <DTAdvance6 />
+          </Suspense>
+        </TabPane>
+
+        <TabPane tabId="7">
+          {/*reserve users table */}
+          <Suspense>
+            <TableServerSide />
           </Suspense>
         </TabPane>
 

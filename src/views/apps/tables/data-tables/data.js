@@ -25,7 +25,7 @@ export const serverSideColumns = [
   { name: 'ایدی کاربر', selector: row => row.userId, sortable: true },
   { name: 'عنوان', selector: row => row.title, sortable: true },
   { name: 'تاریخ', selector: row => row.date?.slice(0,10), sortable: true },
-  { name: 'وضعیت تایید', selector: row => row.accepted?"accept":"reject", sortable: true },
+  { name: 'وضعیت تایید', selector: row => row.accepted?<Badge color='light-success'>تایید شده</Badge>:<Badge color='light-danger'>تایید نشده</Badge>, sortable: true },
 ]
 
 
