@@ -30,7 +30,7 @@ const DetailModal = ({toggle, isOpen, buildingId}) => {
                     </div>
                     <div>
                         <span className='fw-semibold text-secondary'>وضعیت :</span>
-                        <span className={`ms-2 fw-bold ${data.active ? 'text-success ' : 'text-danger'}`}>{data.active ? 'غیر فعال' : 'فعال'}</span>
+                        <span className={`ms-2 fw-bold ${data.active ? 'text-success ' : 'text-danger'}`}>{data.active ? ' فعال' : ' غیر فعال'}</span>
                     </div>
                     <div>
                     <span className='fw-semibold text-secondary'> موقعیت جغرافیایی :</span>
