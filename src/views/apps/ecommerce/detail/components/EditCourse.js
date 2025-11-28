@@ -18,7 +18,11 @@ import "@styles/react/libs/flatpickr/flatpickr.scss";
 import Flatpickr from "react-flatpickr";
 import { editCourse } from "../../../../../core/Services/api/EditCourse";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { getProducts, getProduct } from "../../store";
 const EditCourse = ({ show, setShow, selectedCourse }) => {
+const dispatch = useDispatch();
+
   const { data } = useQuery({
     queryKey: ["courseEditInfo"],
     queryFn: getCreateCourse,
@@ -27,8 +31,13 @@ const EditCourse = ({ show, setShow, selectedCourse }) => {
   const mutationEditCourse = useMutation({
     mutationFn: (formData) => editCourse(formData),
     onSuccess: () => {
-      toast.success("ویرایش دوره با موفقیت انجام شد"), setShow(!show);
-    },
+      toast.success("ویرایش دوره با موفقیت انجام شد");
+
+      dispatch(getProduct(selectedCourse.id));
+    
+      setShow(false);
+    }
+,    
     onError: (error) => {
       console.log("error", error), toast.error("ویرایش دوره با خطا مواجه شد");
     },
@@ -62,7 +71,7 @@ const EditCourse = ({ show, setShow, selectedCourse }) => {
               EndTime: selectedCourse.endTime?.slice(0, 10),
               GoogleTitle: selectedCourse.googleTitle,
               Id: selectedCourse.id,
-              // ImageAddress: null,
+              ImageAddress: "",
             }}
             onSubmit={(values) => {
               const formData = new FormData();
@@ -80,6 +89,8 @@ const EditCourse = ({ show, setShow, selectedCourse }) => {
 
               if (values.Image) {
                 formData.append("Image", values.Image);
+              } else if (values.ImageAddress) {
+                formData.append("ImageAddress", values.ImageAddress);
               }
 
               mutationEditCourse.mutate(formData);
@@ -221,30 +232,29 @@ const EditCourse = ({ show, setShow, selectedCourse }) => {
                           className="form-control mb-1"
                           onChange={(e) => {
                             form.setFieldValue("Image", e.target.files[0]);
-                            // form.setFieldValue("ImageAddress", "");
+                            form.setFieldValue("ImageAddress", "");
                           }}
                         />
                       )}
                     </Field>
                   </Col>
-                  {/* <Col md={6} xs={12}>
+                  <Col md={6} xs={12}>
                     <Label className="form-label" for="ImageAddress">
                       لینک عکس
                     </Label>
                     <Field name="ImageAddress">
-  {({ field, form }) => (
-    <Input
-      {...field}
-      className="form-control mb-1"
-      onChange={(e) => {
-        form.setFieldValue("ImageAddress", e.target.value);
-        form.setFieldValue("Image", null);
-      }}
-    />
-  )}
-</Field>
-
-                  </Col> */}
+                      {({ field, form }) => (
+                        <Input
+                          {...field}
+                          className="form-control mb-1"
+                          onChange={(e) => {
+                            form.setFieldValue("ImageAddress", e.target.value);
+                            form.setFieldValue("Image", null);
+                          }}
+                        />
+                      )}
+                    </Field>
+                  </Col>
 
                   <Col xs={12} className="text-center mt-2 pt-50">
                     <Button
@@ -253,7 +263,7 @@ const EditCourse = ({ show, setShow, selectedCourse }) => {
                       color="primary"
                       onClick={handleSubmit}
                     >
-                      Submit
+                      ویرایش
                     </Button>
                     <Button
                       type="reset"
@@ -263,7 +273,7 @@ const EditCourse = ({ show, setShow, selectedCourse }) => {
                         setShow(false);
                       }}
                     >
-                      Discard
+                      لغو
                     </Button>
                   </Col>
                 </Row>
