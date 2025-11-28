@@ -35,6 +35,7 @@ import { editActiveCourse, editExpireCourse } from "../../../../core/Services/ap
 import toast from "react-hot-toast";
 import { getStatusList } from "../../../../core/Services/api/StatusSection";
 import EditStatus from "./components/EditStatus";
+import AddTechnology from "./components/addCategory";
 
 const MySwal = withReactContent(Swal);
 
@@ -43,6 +44,7 @@ const Product = ({ selectedCourse }) => {
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(selectedCourse?.active);
   const [centeredModal, setCenteredModal] = useState(false);
+  const [centeredModalTech, setCenteredModalTech] = useState(false);
 
 
   // ** Hook
@@ -249,7 +251,7 @@ const Product = ({ selectedCourse }) => {
             </Button>
           </div>
           <div className="d-flex justify-content-center pt-2">
-            <Button  color="secondary" onClick={() => setShow(true)}>
+            <Button  color="secondary" onClick={() => setCenteredModalTech(!centeredModalTech)}>
               افزودن کتگوری
             </Button>
             <Button
@@ -262,7 +264,7 @@ const Product = ({ selectedCourse }) => {
             </Button>
           </div>
           <EditStatus selectedCourse={selectedCourse} setCenteredModal={setCenteredModal} centeredModal={centeredModal}/>
-
+<AddTechnology  selectedCourse={selectedCourse} setCenteredModal={setCenteredModalTech} centeredModal={centeredModalTech}/>
         </CardBody>
       </Card>
       <Modal
