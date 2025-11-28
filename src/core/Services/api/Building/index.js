@@ -1,3 +1,4 @@
+
 import instance from "../../../interseptor/Interseptor"
 
 export const GetBuilding = async() => {
@@ -10,21 +11,19 @@ export const GetBuildingDetail = async(Id) => {
     return response.data
 }
 
-export const UpdateBuilding = async(id, data) => {
-    const response = await instance.put("/Building",{
-        id,
-        ...data
-    })
+export const UpdateBuilding = async(data) => {
+    const response = await instance.put("/Building",data)
     return response.data
 }
 
 export const CreateBuilding = async(data) => {
     const response = await instance.post('/Building',data)
+    console.log("response form server :", response.data)
     return response.data
 }
 
-export const ActiveDeactiveBuilding = async(id) => {
-    const response = await instance.put('/Building/Active',{id})
+export const ActiveDeactiveBuilding = async({id,active}) => {
+    const response = await instance.put('/Building/Active',{id, active})
     return response.data
 }
 

@@ -6,7 +6,7 @@ import {
     ReverseToActiveUser,
     UpdateUser,
 } from "../Services/api/GetUserList";
-import { CreateBuilding, UpdateBuilding } from "../Services/api/Building";
+import { ActiveDeactiveBuilding, CreateBuilding, UpdateBuilding } from "../Services/api/Building";
 import { data } from "jquery";
 
 
@@ -44,22 +44,23 @@ export const useAddUserAccess = (onSuccess) =>
         onSuccess,
     });
 
-export const useUpdateBuilding = (onSuccess) => 
+export const useUpdateBuilding = ({onSuccess,onError}) => 
     useMutation({
-        mutationFn : async ({id, data}) => UpdateBuilding(id, data),
+        mutationFn :  UpdateBuilding,
         onSuccess,
-        onError,
+        onError
     });
 
-export const useCreateBuilding = (onSuccess, onError)  => 
+export const useCreateBuilding = ({onSuccess, onError})  => 
     useMutation({
         mutationFn : async (data) => await CreateBuilding(data),
         onSuccess,
         onError,
     });
 
-export const useActiveDeactiveBuilding = (onSuccess) => 
+export const useActiveDeactiveBuilding = ({onSuccess, onError}) => 
     useMutation({
-        mutationFn : async (data) => await ActiveDeactiveBuilding(data),
+        mutationFn : ActiveDeactiveBuilding,
         onSuccess,
+        onError
     })

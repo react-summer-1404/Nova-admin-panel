@@ -6,8 +6,7 @@ import { Row, Col, Card, Form, CardBody, Button, Badge, Modal, Input, Label, Mod
 
 // ** Third Party Components
 import Swal from 'sweetalert2'
-import Select from 'react-select'
-import { Check, Briefcase, X, Edit2, Edit } from 'react-feather'
+import { Check, Briefcase, Edit } from 'react-feather'
 import { useForm, Controller } from 'react-hook-form'
 import withReactContent from 'sweetalert2-react-content'
 

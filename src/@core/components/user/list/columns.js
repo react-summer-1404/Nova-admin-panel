@@ -130,9 +130,9 @@ export const columns = ({handleDelete}) => [
           </DropdownToggle>
           <DropdownMenu>
             <DropdownItem
-              tag={Link}
+              
               className='w-100'
-              to={`user/view/${row.id}`}              
+                       
             >
               <FileText size={14} className='me-50' />
               <span className='align-middle'>جزییات</span>

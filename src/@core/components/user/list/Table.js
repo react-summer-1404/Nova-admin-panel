@@ -12,7 +12,7 @@ import { columns } from './columns'
 import Select from 'react-select'
 import ReactPaginate from 'react-paginate'
 import DataTable from 'react-data-table-component'
-import { ChevronDown, Share, Printer, FileText, File, Grid, Copy } from 'react-feather'
+import { ChevronDown} from 'react-feather'
 
 // ** Utils
 import { selectThemeColors } from '@utils'
@@ -28,10 +28,6 @@ import {
   CardBody,
   CardTitle,
   CardHeader,
-  DropdownMenu,
-  DropdownItem,
-  DropdownToggle,
-  UncontrolledDropdown
 } from 'reactstrap'
 
 // ** Styles
@@ -39,7 +35,7 @@ import '@styles/react/libs/react-select/_react-select.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import { useUserList } from '../../../../core/Hook/useQUserApi'
 import { useDeleteUser } from '../../../../core/Hook/useMUserApi'
-import toast from 'react-hot-toast'
+
 
 
 // ** Table Header

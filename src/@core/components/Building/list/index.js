@@ -1,12 +1,12 @@
 // ** React Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // ** Table Columns
-import { columns } from "./columns";
+// import { columns } from "./columns";
 
 // ** Third Party Components
 import ReactPaginate from "react-paginate";
-import { ChevronDown } from "react-feather";
+import { ChevronDown, Edit, FileText, MoreVertical, Trash } from "react-feather";
 import DataTable from "react-data-table-component";
 
 // ** Reactstrap Imports
@@ -20,81 +20,70 @@ import {
   ModalHeader,
   ModalBody,
   Label,
-  Form
+  Form,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 
 // ** Styles
 import "@styles/react/apps/app-invoice.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import { useBuildingList } from "../../../../core/Hook/useQUserApi";
-import { useCreateBuilding } from "../../../../core/Hook/useMUserApi";
+import { useActiveDeactiveBuilding, useCreateBuilding } from "../../../../core/Hook/useMUserApi";
 import { Controller, useForm } from "react-hook-form";
 
 import toast from "react-hot-toast";
-
+import EditModal from "../Editmodal";
+import { useQueryClient } from "@tanstack/react-query";
+import DetailModal from "../DetailModal";
 
 const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
   const [data, setData] = useState(null)
-  const defaultValues = {
-    id: '',
+  
+  const queryClient = useQueryClient();
+  const [isCreatedOpen, setIsCreatedOpen] = useState(false);
+  const toggleCreate = () => setIsCreatedOpen(!isCreatedOpen);
+  
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors,isValid },
+  } = useForm({ defaultValues : {
+    
     buildingName: "",
     floor: 0,
     latitude: "",
     longitude: "",
-  };
-  const [play, setPlay] = useState(false);
-
-  const checkIsValid = (data) => {
-    if (!data || typeof data !== "object") return false;
-    return Object.entries(data).every(([key, value]) => {
-      if (typeof value === "string") return value.trim().length > 0;
-      if (typeof value === "number") return value !== null && !isNaN(value);
-      if (Array.isArray(value)) return value.length > 0;
-      return value !== null && value !== undefined;
-    });
-  };
-  
-  const {
-    control,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({ defaultValues, mode: "onChange" });
+  }, mode: "onChange" });
 
   const { mutate: createBuilding } = useCreateBuilding({
-    onSuccess: () => {
+    onSuccess: (newItem) => {
+      console.log("new Building: ", newItem);
+      queryClient.setQueriesData(["BuildingList"], (old = []) => [...old, newItem]);
       toast.success("ساختمان با موفقیت ایجاد شد");
+      toggle();
+      reset();
     },
     onError: (error) => {
-      toast.error(error?.response?.data?.message || " خطا در ایجاد ساختمان");
+      // toast.error(error?.response?.data?.message || " خطا در ایجاد ساختمان");
     },
   });
 
-  const handleCreate = (data) => {
-    console.log("مقدار data", data);
-    console.log("اعتبار سنجی ", checkIsValid(data));
-    if (!checkIsValid(data)) {
-      for (const key in data) {
-        const value = data[key];
-        const isValid =
-          value !== null &&
-          value !== undefined &&
-          (typeof value !== "string" || value.trim().length > 0);
-        console.log(`${key} : ${isValid ? "ok" : "notOk"}`);
-      }
+  
+  const onSubmit = (formData) => {
+    if (!isValid){
+      console.log("Form invalid, not sending");
       return;
     }
-  };
-
-  // ** Function to handle form submit
-  const onSubmit = (data) => {
     const finalData= {
-      ...data,
-      floor : Number(data.floor)
+      ...formData,
+      floor : Number(formData.floor),
     }
-    
+    console.log("sending to api:", finalData); 
     createBuilding(finalData);
-    console.log("onsubmit user");
   };
 
   return (
@@ -116,7 +105,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                 <option value="50">50</option>
               </Input>
             </div>
-            <Button color="primary" onClick={() => setPlay(true)}>
+            <Button color="primary" onClick={toggleCreate}>
               افزودن ساختمان
             </Button>
           </Col>
@@ -139,13 +128,13 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
         </Row>
       </div>
       <Modal
-        isOpen={play}
-        toggle={() => setPlay(!play)}
+        isOpen={isCreatedOpen}
+        toggle={toggleCreate}
         className="modal-dialog-centered modal-md"
       >
         <ModalHeader
           className="bg-transparent"
-          toggle={() => setPlay(!play)}
+          toggle={toggleCreate}
         ></ModalHeader>
         <ModalBody className="px-sm-5 pt-50 pb-5">
           <div className="text-center mb-2">
@@ -185,9 +174,8 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                   render={({ field }) => (
                     <>
                       <Input
-                        {...field}
-                        
-                        placeholder="نام خانوادگی را وارد کنید"
+                        {...field}                        
+                        placeholder=" طبقه را وارد کنید"
                       />
                       {errors.floor && <span>{errors.floor.message}</span>}
                     </>
@@ -196,18 +184,18 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
               </Col>
               <Col md={12} xs={12}>
                 <Label className="form-label" for="latitude">
-                  طبقه
+                عرض جغرافیایی
                 </Label>
                 <Controller
                   control={control}
                   name="latitude"
-                  rules={{ required: "طبقه الزامی است" }}
+                  rules={{ required: "عرض جغرافیایی الزامی است" }}
                   render={({ field }) => (
                     <>
                       <Input
                         {...field}
                         
-                        placeholder="نام خانوادگی را وارد کنید"
+                        placeholder=" عرض جغرافیایی را وارد کنید"
                       />
                       {errors.latitude && <span>{errors.latitude.message}</span>}
                     </>
@@ -216,18 +204,18 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
               </Col>
               <Col md={12} xs={12}>
                 <Label className="form-label" for="longitude">
-                  طبقه
+                طول جغرافیایی
                 </Label>
                 <Controller
                   control={control}
                   name="longitude"
-                  rules={{ required: "طبقه الزامی است" }}
+                  rules={{ required: "طول جغرافیایی الزامی است" }}
                   render={({ field }) => (
                     <>
                       <Input
                         {...field}
                         
-                        placeholder="نام خانوادگی را وارد کنید"
+                        placeholder="طول جغرافیایی را وارد کنید"
                       />
                       {errors.longitude && <span>{errors.longitude.message}</span>}
                     </>
@@ -235,7 +223,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                 />
               </Col>
               <Col xs={12} className="text-center mt-2 pt-50"> 
-                <Button type="submit" className="me-1" color="primary" onClick={() => handleCreate(data)}>
+                <Button type="submit" className="me-1" color="primary">
                   تایید و ارسال
                 </Button>
                 <Button
@@ -243,7 +231,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                   color="secondary"
                   outline
                   onClick={() => {
-                    setPlay(false);
+                    setIsCreatedOpen(false);
                   }}
                 >
                   صرف نظر کردن
@@ -259,9 +247,29 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
 
 const InvoiceList = () => {
   // ** States
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
   const [value, setValue] = useState("");
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const queryClient = useQueryClient();
+
+  const {mutate: ActiveDeActive} = useActiveDeactiveBuilding({
+    onSuccess: (_, variables) => {
+      queryClient.setQueriesData(["BuildingList"], (old = []) => 
+        old.map((b) => 
+          b.id === variables.id ? {...b, active: variables.active} : b
+        )
+      );
+      toast.success(
+        variables.active ? 'ساختمان فعال شد' : 'ساختمان غیر فعال شد'
+      )
+    },
+    onError : () => {
+      toast.error('خطا ئر تغییر وضعیت ساختمان');
+    }
+});
 
   const { data } = useBuildingList();
 
@@ -305,12 +313,86 @@ const InvoiceList = () => {
 
   const dataToRender = () => {
     const filtered = data?.filter((b) =>
-      b.buildingName.toLowerCase().includes(value.toLowerCase())
+      b?.buildingName?.toLowerCase().includes(value.toLowerCase())
     );
     return filtered?.slice((currentPage - 1) * perPage, currentPage * perPage);
   };
 
+  useEffect(() => {
+    console.log("selectedRow", selectedRow);
+  }, [selectedRow])
+
+  const columns = [ 
+    {
+      name: 'ردیف',
+      sortable: true,
+      minWidth: '150px',
+      sortField: 'id',
+      cell: (row, index) => index +1
+    },
+    {
+      sortable: true,
+      minWidth: '200px',
+      name: 'نام ساختمان ',
+      sortField: 'buildingName',
+      cell: row => row.buildingName
+    },
+    {
+      sortable: true,
+      minWidth: '200px',
+      name: 'طبقه  ',
+      sortField: 'floor',
+      cell: row => row.floor
+    },
+    {
+      sortable: true,
+      minWidth: '200px',
+      name: 'وضعیت',
+      sortField: 'floor',
+      cell: row => (
+        <span className ={`badge ${row.active? 'bg-success' : 'bg-danger'}`}>
+          {row.active ? 'فعال': " غیر فعال "}
+        </span>
+      )
+    },
+    {
+      name: 'اقدام',
+      minWidth: '110px',
+      cell: row => (
+        <div className='column-action d-flex align-items-center'>
+          <UncontrolledDropdown>
+            <DropdownToggle tag='span'>
+              <MoreVertical size={17} className='cursor-pointer' />
+            </DropdownToggle>
+            <DropdownMenu end>
+              <DropdownItem className='w-100' onClick={() => {setSelectedRow(row.id);
+                 setShowDetailModal(true)}}>
+                <FileText size={14} className='me-50' />
+                جزئیات
+              </DropdownItem>
+              <DropdownItem  className='w-100' onClick={() => {setSelectedRow(row);
+                  setShowEditModal(true);
+                  console.log("Row:", row)
+                }}>
+                <Edit size={14} className='me-50' />
+                ویرایش
+              </DropdownItem>
+              <DropdownItem  className='w-100' color={row.active ? 'danger' : 'success'} 
+                onClick={() => ActiveDeActive({id : row.id, active : !row.active})}       
+              >
+                <Trash size={14} className='me-50' />
+                <span className='align-middle'>{row.active ? 'غیر فعال کردن'  : 'فعال کردن'}</span>
+              </DropdownItem>            
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </div>
+      )
+    }
+    
+  ]
+
   return (
+    <>
     <div className="invoice-list-wrapper">
       <Card>
         <div className="invoice-list-dataTable react-dataTable">
@@ -340,6 +422,16 @@ const InvoiceList = () => {
         </div>
       </Card>
     </div>
+    <EditModal
+      isOpen={showEditModal}
+      toggle={() => setShowEditModal(false)}
+      data={selectedRow}
+    />
+    <DetailModal isOpen={showDetailModal}
+      toggle={() => setShowDetailModal(false)}
+      buildingId={selectedRow}
+    />
+    </>
   );
 };
 
