@@ -49,7 +49,13 @@ const Details = () => {
     image:data.image,
     reserveUserTotal:data.reserveUserTotal,
     courseCommentTotal:data.courseCommentTotal,
-    isExpire:data.isExpire
+    isExpire:data.isExpire,
+    googleTitle:data.googleTitle,
+    teacherId:data.teacherId,
+    courseLvlId:data.courseLvlId,
+    imageAddress:data.imageAddress,
+    miniDescribe:data.miniDescribe,
+    statusId:data.statusId
 
   }:null
 

@@ -8,3 +8,15 @@ export const editExpireCourse = async (apiParam) => {
   const response = await instance.put("/Course/SetExpireCourse",apiParam);
   return response.data;
 };
+export const editCourse = async (formData) => {
+  const response = await instance.put(
+    "/Course",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  return response.data;
+};

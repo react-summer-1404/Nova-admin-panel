@@ -12,7 +12,6 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Label } from "recharts";
 import toast from "react-hot-toast";
-import { getTechList } from "../../../../../core/Services/api/TechSection";
 import { postTech } from "../../../../../core/Services/api/AddTech";
 import { useForm, Controller } from "react-hook-form";
 import { getCreateCourse } from "../../../../../core/Services/api/CreateCourse";
@@ -20,9 +19,7 @@ import "@styles/react/libs/react-select/_react-select.scss";
 import Select from "react-select";
 import { selectThemeColors } from "@utils";
 
-
 const AddTechnology = ({ selectedCourse, centeredModal, setCenteredModal }) => {
-  
   const { data: courseInfo } = useQuery({
     queryKey: ["getSomeInfoDetail"],
     queryFn: getCreateCourse,
@@ -36,7 +33,7 @@ const AddTechnology = ({ selectedCourse, centeredModal, setCenteredModal }) => {
   const defaultValues = {
     techId: [],
   };
-  
+
   const {
     control,
     handleSubmit,
@@ -60,7 +57,6 @@ const AddTechnology = ({ selectedCourse, centeredModal, setCenteredModal }) => {
     const formatted = data.techId.map((id) => ({ techId: id }));
 
     addTechProductMutation.mutate({ courseId, techIds: formatted });
-
   };
 
   return (
@@ -77,7 +73,7 @@ const AddTechnology = ({ selectedCourse, centeredModal, setCenteredModal }) => {
         <ModalBody>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Label className="form-label" for="techId">
-              انتخاب کنید    
+              انتخاب کنید
             </Label>
 
             <Controller
@@ -98,9 +94,9 @@ const AddTechnology = ({ selectedCourse, centeredModal, setCenteredModal }) => {
               )}
             />
             <ModalFooter>
-            <Button color="primary" type="submit">
-      ذخیره
-    </Button>
+              <Button color="primary" type="submit">
+                ذخیره
+              </Button>
               <Button
                 color="secondary"
                 onClick={() => setCenteredModal(!centeredModal)}

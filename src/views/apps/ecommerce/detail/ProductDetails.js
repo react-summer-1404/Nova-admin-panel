@@ -31,11 +31,15 @@ import defaultPic from "../../../../assets/images/defalt.png";
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { editActiveCourse, editExpireCourse } from "../../../../core/Services/api/EditCourse";
+import {
+  editActiveCourse,
+  editExpireCourse,
+} from "../../../../core/Services/api/EditCourse";
 import toast from "react-hot-toast";
 import { getStatusList } from "../../../../core/Services/api/StatusSection";
 import EditStatus from "./components/EditStatus";
 import AddTechnology from "./components/addCategory";
+import EditCourse from "./components/EditCourse";
 
 const MySwal = withReactContent(Swal);
 
@@ -45,7 +49,6 @@ const Product = ({ selectedCourse }) => {
   const [active, setActive] = useState(selectedCourse?.active);
   const [centeredModal, setCenteredModal] = useState(false);
   const [centeredModalTech, setCenteredModalTech] = useState(false);
-
 
   // ** Hook
   const {
@@ -85,28 +88,24 @@ const Product = ({ selectedCourse }) => {
       // title: selectedCourse?.title || ""
     });
   };
-  const apiParams={
-    id:selectedCourse.id,
-    active:!active
-  }
+  const apiParams = {
+    id: selectedCourse.id,
+    active: !active,
+  };
 
   const editActiveMutation = useMutation({
-    mutationFn:(apiParams)=>editActiveCourse(apiParams),
-    onError:(error)=>{
-      toast.error("خطایی رخ داد")
-      console.log("error=====>",error)
+    mutationFn: (apiParams) => editActiveCourse(apiParams),
+    onError: (error) => {
+      toast.error("خطایی رخ داد");
+      console.log("error=====>", error);
     },
-    onSuccess:()=>{
+    onSuccess: () => {
+      toast.success("عملیات با موفقیت انجام شد");
+      setActive(!active);
+    },
+  });
 
-    toast.success("عملیات با موفقیت انجام شد")
-    setActive(!active);
-
-    }
-    
-  })
- 
-
-  const handleCourseAction  = () => {
+  const handleCourseAction = () => {
     return MySwal.fire({
       title: "آیا مطمئن هستید؟",
       text: "با این کار، دوره غیرفعال خواهد شد.",
@@ -121,8 +120,8 @@ const Product = ({ selectedCourse }) => {
       buttonsStyling: false,
     }).then(function (result) {
       if (result.value) {
-        editActiveMutation.mutate(apiParams) 
-        
+        editActiveMutation.mutate(apiParams);
+
         MySwal.fire({
           icon: "success",
           title: "تغییرات با موفقیت اعمال شد!",
@@ -131,7 +130,6 @@ const Product = ({ selectedCourse }) => {
             confirmButton: "btn btn-success",
           },
         });
-        
       } else if (result.dismiss === MySwal.DismissReason.cancel) {
         MySwal.fire({
           title: "لغو شد",
@@ -144,7 +142,6 @@ const Product = ({ selectedCourse }) => {
       }
     });
   };
-  
 
   return (
     <Fragment>
@@ -226,11 +223,11 @@ const Product = ({ selectedCourse }) => {
                 </li> */}
               <li className="mb-75">
                 <span className="fw-bolder me-25">تاریخ شروع:</span>
-                <span>{selectedCourse?.startTime?.slice(0,10)}</span>
+                <span>{selectedCourse?.startTime?.slice(0, 10)}</span>
               </li>
               <li className="mb-75">
                 <span className="fw-bolder me-25">تاریخ پایان:</span>
-                <span>{selectedCourse?.endTime?.slice(0,10)}</span>
+                <span>{selectedCourse?.endTime?.slice(0, 10)}</span>
               </li>
             </ul>
             <div className="mb-75">
@@ -242,226 +239,42 @@ const Product = ({ selectedCourse }) => {
             <Button color="primary" onClick={() => setShow(true)}>
               ادیت
             </Button>
-            <Button 
+            <Button
               className="ms-1"
-              color={active?"danger":"success"}
-              onClick={()=>handleCourseAction() }
+              color={active ? "danger" : "success"}
+              onClick={() => handleCourseAction()}
             >
-             {active?"غیرفعال کردن":"فعال کردن"}
+              {active ? "غیرفعال کردن" : "فعال کردن"}
             </Button>
           </div>
           <div className="d-flex justify-content-center pt-2">
-            <Button  color="secondary" onClick={() => setCenteredModalTech(!centeredModalTech)}>
+            <Button
+              color="secondary"
+              onClick={() => setCenteredModalTech(!centeredModalTech)}
+            >
               افزودن کتگوری
             </Button>
             <Button
               className="ms-1"
               color="warning"
               onClick={() => setCenteredModal(!centeredModal)}
-
             >
-               تغییر وضعیت
+              تغییر وضعیت
             </Button>
           </div>
-          <EditStatus selectedCourse={selectedCourse} setCenteredModal={setCenteredModal} centeredModal={centeredModal}/>
-<AddTechnology  selectedCourse={selectedCourse} setCenteredModal={setCenteredModalTech} centeredModal={centeredModalTech}/>
+          <EditStatus
+            selectedCourse={selectedCourse}
+            setCenteredModal={setCenteredModal}
+            centeredModal={centeredModal}
+          />
+          <AddTechnology
+            selectedCourse={selectedCourse}
+            setCenteredModal={setCenteredModalTech}
+            centeredModal={centeredModalTech}
+          />
         </CardBody>
       </Card>
-      <Modal
-        isOpen={show}
-        toggle={() => setShow(!show)}
-        className="modal-dialog-centered modal-lg"
-      >
-        <ModalHeader
-          className="bg-transparent"
-          toggle={() => setShow(!show)}
-        ></ModalHeader>
-        <ModalBody className="px-sm-5 pt-50 pb-5">
-          <div className="text-center mb-2">
-            <h1 className="mb-1">Edit User Information</h1>
-            <p>Updating user details will receive a privacy audit.</p>
-          </div>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Row className="gy-1 pt-75">
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="firstName">
-                  First Name
-                </Label>
-                <Controller
-                  defaultValue=""
-                  control={control}
-                  id="firstName"
-                  name="firstName"
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="firstName"
-                      placeholder="John"
-                      invalid={errors.firstName && true}
-                    />
-                  )}
-                />
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="lastName">
-                  Last Name
-                </Label>
-                <Controller
-                  defaultValue=""
-                  control={control}
-                  id="lastName"
-                  name="lastName"
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="lastName"
-                      placeholder="Doe"
-                      invalid={errors.lastName && true}
-                    />
-                  )}
-                />
-              </Col>
-              <Col xs={12}>
-                <Label className="form-label" for="username">
-                  Username
-                </Label>
-                <Controller
-                  defaultValue=""
-                  control={control}
-                  id="username"
-                  name="username"
-                  render={({ field }) => (
-                    <Input
-                      {...field}
-                      id="username"
-                      placeholder="john.doe.007"
-                      invalid={errors.username && true}
-                    />
-                  )}
-                />
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="billing-email">
-                  Billing Email
-                </Label>
-                <Input
-                  type="email"
-                  id="billing-email"
-                  defaultValue={selectedCourse.email}
-                  placeholder="example@domain.com"
-                />
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="status">
-                  Status:
-                </Label>
-                {/* <Select
-                  id='status'
-                  isClearable={false}
-                  className='react-select'
-                  classNamePrefix='select'
-                  options={statusOptions}
-                  theme={selectThemeColors}
-                  defaultValue={statusOptions[statusOptions.findIndex(i => i.value === selectedCourse.status)]}
-                /> */}
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="tax-id">
-                  Tax ID
-                </Label>
-                <Input
-                  id="tax-id"
-                  placeholder="Tax-1234"
-                  // defaultValue={selectedCourse.contact.substr(selectedCourse.contact.length - 4)}
-                />
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="contact">
-                  Contact
-                </Label>
-                <Input
-                  id="contact"
-                  defaultValue={selectedCourse.contact}
-                  placeholder="+1 609 933 4422"
-                />
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="language">
-                  language
-                </Label>
-                {/* <Select
-                  id='language'
-                  isClearable={false}
-                  className='react-select'
-                  classNamePrefix='select'
-                  options={languageOptions}
-                  theme={selectThemeColors}
-                  defaultValue={languageOptions[0]}
-                /> */}
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className="form-label" for="country">
-                  Country
-                </Label>
-                {/* <Select
-                  id='country'
-                  isClearable={false}
-                  className='react-select'
-                  classNamePrefix='select'
-                  options={countryOptions}
-                  theme={selectThemeColors}
-                  defaultValue={countryOptions[0]}
-                /> */}
-              </Col>
-              <Col xs={12}>
-                <div className="d-flex align-items-center mt-1">
-                  <div className="form-switch">
-                    <Input
-                      type="switch"
-                      defaultChecked
-                      id="billing-switch"
-                      name="billing-switch"
-                    />
-                    <Label
-                      className="form-check-label"
-                      htmlFor="billing-switch"
-                    >
-                      <span className="switch-icon-left">
-                        <Check size={14} />
-                      </span>
-                      <span className="switch-icon-right">
-                        <X size={14} />
-                      </span>
-                    </Label>
-                  </div>
-                  <Label
-                    className="form-check-label fw-bolder"
-                    for="billing-switch"
-                  >
-                    Use as a billing address?
-                  </Label>
-                </div>
-              </Col>
-              <Col xs={12} className="text-center mt-2 pt-50">
-                <Button type="submit" className="me-1" color="primary">
-                  Submit
-                </Button>
-                <Button
-                  type="reset"
-                  color="secondary"
-                  outline
-                  onClick={() => {
-                    handleReset();
-                    setShow(false);
-                  }}
-                >
-                  Discard
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </ModalBody>
-      </Modal>
+      <EditCourse show={show} setShow={setShow}  selectedCourse={selectedCourse}/>
     </Fragment>
   );
 };

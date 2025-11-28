@@ -97,6 +97,10 @@ state.totalProducts = action.payload.data.totalCount
         courseCommentTotal:courseDetail.courseCommentTotal,
         reserveUserTotal :courseDetail.reserveUserTotal,
         courseGroupTotal :courseDetail.courseGroupTotal,
+        googleTitle:courseDetail.googleTitle,
+        courseLvlId:courseDetail.courseLvlId,
+        imageAddress:courseDetail.imageAddress,
+        statusId:courseDetail.statusId,
       }
     })
     
