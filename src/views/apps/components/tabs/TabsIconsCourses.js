@@ -23,7 +23,7 @@ const DTAdvance6 = lazy(() =>
 import("../../../apps/tables/data-tables-mentors/advance")
 );
 const TableServerSide = lazy(() =>
-import("../../../apps/tables/data-tables-userReserve/advance/TableServerSide")
+import("../../../apps/tables/userReserveList/TableServerSide")
 );
 const TabsIcons = () => {
   {

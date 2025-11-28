@@ -27,7 +27,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { GetStudentReserveList } from "../../../../../core/Services/api/GetUserList";
+import { GetStudentReserveList } from "../../../../core/Services/api/GetUserList";
 // import { editStatusList } from "../../../../core/Services/api/StatusSection";
 
 const TableServerSide = () => {
@@ -52,7 +52,6 @@ const TableServerSide = () => {
   const handleEditClick = (item) => {
     setSelectedItem(item);
   };
-
   const handleCloseModal = () => setSelectedItem(null);
 console.log("reserve",reserve)
   return (
@@ -60,9 +59,9 @@ console.log("reserve",reserve)
       <Table hover responsive>
         <thead>
           <tr>
-          <th>عکس</th>
-            <th>عنوان</th>
-            <th>توضیح </th>
+          <th>نام داشنجو</th>
+            <th>نام دوره</th>
+            <th>وضعیت </th>
             <th>اقدام</th>
           </tr>
         </thead>
@@ -79,8 +78,9 @@ console.log("reserve",reserve)
                   />
                 </td> */}
 
-                <td className="fw-bold text-black">{item.courseName}</td>
                 <td className="fw-bold text-black">{item.studentName}</td>
+                <td className="fw-bold text-black">{item.courseName}</td>
+                <td className="fw-bold text-black">{item.accept?<Badge color="light-success">تایید شده</Badge>:<Badge color="light-danger"> تایید نشده</Badge>}</td>
                 <td>
                   <Button
                     color="primary"
@@ -92,7 +92,7 @@ console.log("reserve",reserve)
                       className="ms-50"
                       style={{ marginLeft: "6px" }}
                     />
-                    ادیت
+                    
                   </Button>
                 </td>
               </tr>
