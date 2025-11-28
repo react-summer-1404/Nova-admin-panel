@@ -80,6 +80,12 @@ export default [
         navLink: "/apps/ecommerce/classList",
       },
       {
+        id: "classList",
+        title: "ترم ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/termList",
+      },
+      {
         id: "TermList",
         title: "  تسک ها",
         icon: <Circle size={12} />,

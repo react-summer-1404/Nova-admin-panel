@@ -1,6 +1,6 @@
 import instance from "../../../interseptor/Interseptor"
 
-export const GetGroupList = async (apiParams) => {
+export const getGroupList = async (apiParams) => {
     const response = await instance.get("/CourseGroup",{
         params : apiParams,
     });

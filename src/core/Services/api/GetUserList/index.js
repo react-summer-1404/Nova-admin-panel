@@ -14,3 +14,7 @@ export const GetStudentReserveList = async (courseId) => {
     const response = await instance.get(`/CourseReserve/${courseId}`);
     return response.data
 }
+export const GetAllUserReserveList = async () => {
+    const response = await instance.get("/CourseReserve");
+    return response.data
+}
