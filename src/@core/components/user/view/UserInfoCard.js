@@ -84,6 +84,7 @@ const UserInfoCard = ({ selectedUser }) => {
     handleSubmit,
     formState: { errors, isValid }
   } = useForm({defaultValues : {
+    id : "",
     userName: "",
     lName: "",
     fName: "",
@@ -99,6 +100,7 @@ const UserInfoCard = ({ selectedUser }) => {
   useEffect(() => {
     if (selectedUser) {
       reset({
+        id: selectedUser.id || "",
         userName: selectedUser.userName || "",
         lName: selectedUser.lName || "",
         fName: selectedUser.fName || "",
@@ -108,6 +110,7 @@ const UserInfoCard = ({ selectedUser }) => {
         active : Boolean(selectedUser.active) ||  false,
         birthDay : selectedUser.birthDay || "",
         insertDate : selectedUser.insertDate || "",
+        role : selectedUser.isTecher? "teacher":"student"
       });
     }
     
@@ -157,16 +160,13 @@ const UserInfoCard = ({ selectedUser }) => {
   }
 
   const onSubmit = (formData) => {
-    const mappedRole = {
-      isStudent : String(formData.role === "student"),
-      isTecher : String(formData.role === "teacher"),
-    };
     const finalData = {
       ...formData,
       id : selectedUser.id,
       gender : formData.gender === true,
       active : formData.active === true,
-      ...mappedRole,
+      isTecher : formData.role === "teacher",
+      isStudent : formData.role === "student",
     }
     console.log("sending :", finalData)
     updateUser(finalData);
@@ -467,14 +467,14 @@ const UserInfoCard = ({ selectedUser }) => {
                 />              
               </Col>
               <Col md={6} xs={12}>
-                <Label className='form-label' for='mappedRole'>
+                <Label className='form-label' for='role'>
                     نقش
                 </Label>
                 <Controller
                   name='role'
                   control={control}
                   render={({field}) =>(        
-                    <select  id='mappedRole' className='form-control'
+                    <select  id='role' className='form-control'
                       {...field}>
                       <option value='student'>دانش اموز </option>
                       <option value='teacher'> معلم </option>
