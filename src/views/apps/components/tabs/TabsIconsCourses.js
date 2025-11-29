@@ -43,9 +43,9 @@ const TabsIcons = () => {
       <Nav tabs >
         <NavItem>
           <NavLink
-            active={active === "1"}
+            active={active === "7"}
             onClick={() => {
-              toggle("1");
+              toggle("7");
             }}
           >
             <MessageCircle size={18} />
@@ -67,9 +67,9 @@ const TabsIcons = () => {
 
         <NavItem>
           <NavLink
-            active={active === "7"}
+            active={active === "1"}
             onClick={() => {
-              toggle("7");
+              toggle("1");
             }}
           >
             <Bookmark size={18} />
@@ -128,7 +128,7 @@ const TabsIcons = () => {
       
       </Nav>
       <TabContent className="py-50" activeTab={active}>
-        <TabPane tabId="1">
+        <TabPane tabId="7">
           {/* comment table */}
           <Suspense>
             <DTAdvance />
@@ -170,7 +170,7 @@ const TabsIcons = () => {
           </Suspense>
         </TabPane>
 
-        <TabPane tabId="7">
+        <TabPane tabId="1">
           {/*reserve users table */}
           <Suspense>
             <TableServerSide />

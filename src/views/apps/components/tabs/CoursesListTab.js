@@ -6,7 +6,7 @@ import { Fragment, useState } from "react";
 // ** Icons Imports
 import {
   MessageCircle,
-  Box,
+  Grid,
   Users,
   CreditCard,
   Globe,
@@ -19,9 +19,12 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import ProductsPage from "../../ecommerce/courses/Products";
 import { useQuery } from "@tanstack/react-query";
-import { getReserveListUsers } from "../../../../core/Services/api/CourseListApi";
-import { getProductsCourse } from "../../../../core/Services/api/getCourseList";
+import { getReserveListUsers, listCoursePayment } from "../../../../core/Services/api/CourseListApi";
+// import { getProductsCourse } from "../../../../core/Services/api/getCourseList";
 import CourseReserveList from "../../tables/CourseReserveList";
+import CoursePayMentList from "../../tables/coursePayMentList";
+import MyCoursesTable from "../../tables/myCoursesTaable";
+
 
 const CoursesListTab = (props) => {
   {
@@ -40,23 +43,25 @@ const CoursesListTab = (props) => {
   const dispatch = useDispatch();
 
   const store = useSelector((state) => state.ecommerce);
+  const courseId = useSelector((state) => state.ecommerce.productDetail.id);
 
-  const {
-    getProducts,
-  } = props;
-const {data,isLoading}=useQuery({
-  queryKey:["getReserveListUsers"],
-  queryFn:getReserveListUsers
-})
-const {data:allProducts}=useQuery({
-  queryKey:["allProducts"],
-  queryFn:getProductsCourse
-})
-const courses = allProducts?.courseDtos || [];
-const reservedCourses = courses.filter(course =>
-  data?.some(p => p.courseId === course.courseId)
-);
-console.log("reserves",reservedCourses)
+  const { getProducts } = props;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["getReserveListUsers"],
+    queryFn: getReserveListUsers,
+    refetchOnWindowFocus:false
+  });
+  const { data: pays,isLoading:loading } = useQuery({
+    queryKey: ["listOfWhoIsPay"],
+    queryFn: listCoursePayment,
+    refetchOnWindowFocus:false
+
+  });
+  
+  // const courses = allProducts?.courseDtos || [];
+  // const reservedCourses = courses?.find((item) =>item.courseId == data.courseId);
+  // console.log("pays",pays)
   return (
     <Fragment>
       <Nav tabs>
@@ -67,7 +72,7 @@ console.log("reserves",reservedCourses)
               toggle("1");
             }}
           >
-            <MessageCircle size={18} />
+            <Grid size={18} />
             <span className="align-middle">همه دوره ها</span>
           </NavLink>
         </NavItem>
@@ -77,18 +82,6 @@ console.log("reserves",reservedCourses)
             active={active === "2"}
             onClick={() => {
               toggle("2");
-            }}
-          >
-            <Users size={18} />
-            <span className="align-middle">رزرو شده ها</span>
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink
-            active={active === "7"}
-            onClick={() => {
-              toggle("7");
             }}
           >
             <Bookmark size={18} />
@@ -103,8 +96,8 @@ console.log("reserves",reservedCourses)
               toggle("3");
             }}
           >
-            <Box size={18} />
-            <span className="align-middle">گروه ها</span>
+            <CreditCard size={18} />
+            <span className="align-middle">پرداختی ها</span>
           </NavLink>
         </NavItem>
 
@@ -115,38 +108,14 @@ console.log("reserves",reservedCourses)
               toggle("4");
             }}
           >
-            <CreditCard size={18} />
-            <span className="align-middle">پرداخت</span>
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink
-            active={active === "5"}
-            onClick={() => {
-              toggle("5");
-            }}
-          >
-            <Globe size={18} />
-            <span className="align-middle">گروه های اجتماعی</span>
-          </NavLink>
-        </NavItem>
-
-        <NavItem>
-          <NavLink
-            active={active === "6"}
-            onClick={() => {
-              toggle("6");
-            }}
-          >
-            <UserCheck size={18} />
-            <span className="align-middle">منتور ها</span>
+            <Grid size={18} />
+            <span className="align-middle">دوره های من </span>
           </NavLink>
         </NavItem>
       </Nav>
       <TabContent className="py-50" activeTab={active}>
         <TabPane tabId="1">
-          {/* comment table */}
+          {/* all course table */}
           <Suspense>
             <ProductsPage
               store={store}
@@ -157,46 +126,33 @@ console.log("reserves",reservedCourses)
         </TabPane>
 
         <TabPane tabId="2">
-          {/* students table */}
+          {/* reserve table */}
           <Suspense>
-          <CourseReserveList data={reservedCourses} isLoading={isLoading}/>
+            <CourseReserveList
+              data={data}
+              isLoading={isLoading}
+              courseId={courseId}
+            />
           </Suspense>
         </TabPane>
 
         <TabPane tabId="3">
-          {/* group table */}
+          {/* payment table */}
           <Suspense>
-            {/* <DTAdvance3 /> */}
+           
+            <CoursePayMentList
+              data={pays}
+              isLoading={loading}
+              
+            />
           </Suspense>
         </TabPane>
 
         <TabPane tabId="4">
-          {/* group table */}
-          <Suspense>
-            {/* <DTAdvance4 /> */}
-          </Suspense>
+          {/* my course table*/}
+          <Suspense><MyCoursesTable/></Suspense>
         </TabPane>
 
-        <TabPane tabId="5">
-          {/*social group table */}
-          <Suspense>
-            {/* <DTAdvance5 /> */}
-          </Suspense>
-        </TabPane>
-
-        <TabPane tabId="6">
-          {/*mentors table */}
-          <Suspense>
-            {/* <DTAdvance6 /> */}
-          </Suspense>
-        </TabPane>
-
-        <TabPane tabId="7">
-          {/*reserve users table */}
-          <Suspense>
-            {/* <TableServerSide /> */}
-          </Suspense>
-        </TabPane>
       </TabContent>
     </Fragment>
   );
