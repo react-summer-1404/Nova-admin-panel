@@ -3,6 +3,10 @@ export const getClassist = async () => {
   const response = await instance.get("/ClassRoom");
   return response.data;
 };
+export const getClassistDetail = async (id) => {
+  const response = await instance.get(`/ClassRoom/${id}`);
+  return response.data;
+};
 export const editClassist = async (apiData) => {
   const response = await instance.put("/ClassRoom",apiData);
   return response.data;

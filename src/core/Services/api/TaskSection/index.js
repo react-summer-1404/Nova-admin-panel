@@ -3,6 +3,10 @@ export const getTaskList = async () => {
   const response = await instance.get("/AssistanceWork");
   return response.data;
 };
+export const getTaskDetail = async (id) => {
+  const response = await instance.get(`/AssistanceWork/${id}`);
+  return response.data;
+};
 export const editTaskList = async (apiData) => {
   const response = await instance.put("/AssistanceWork",apiData);
   return response.data;

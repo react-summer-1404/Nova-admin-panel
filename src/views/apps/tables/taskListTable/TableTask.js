@@ -22,11 +22,14 @@ import Flatpickr from "react-flatpickr";
 // ** Reactstrap Imports
 import { Table } from "reactstrap";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { editTaskList } from "../../../../core/Services/api/TaskSection";
+import {
+  editTaskList,
+  getTaskDetail,
+} from "../../../../core/Services/api/TaskSection";
 
-const TableTask = ({ data, isLoading ,mentor }) => {
+const TableTask = ({ data, isLoading, mentor }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const queryClient = useQueryClient();
   const mutationEditTask = useMutation({
@@ -44,7 +47,14 @@ const TableTask = ({ data, isLoading ,mentor }) => {
   };
 
   const handleCloseModal = () => setSelectedItem(null);
-
+  const [modal, setModal] = useState(false);
+  const [detailId, setDetailId] = useState(false);
+  const { data: detail, isLoading: detailLoading } = useQuery({
+    queryKey: ["getTaskDetail"],
+    queryFn: () => getTaskDetail(detailId),
+    enabled: !!detailId,
+    refetchOnWindowFocus: false,
+  });
   return (
     <>
       <Table hover responsive>
@@ -70,48 +80,73 @@ const TableTask = ({ data, isLoading ,mentor }) => {
             </tr>
           ) : (
             data?.map((item) => {
-                const mentorName = mentor?.find(
-                    (b) => b.id == item?.assistanceId
-                  );
-                return(
-              <tr key={item.id}>
-               
-
-                <td className="fw-bold text-black">{item.worktitle}</td>
-
-                <td>
-                  <p style={{ color: "#7367f0" }}>{item.workDescribe}</p>
-                </td>
-
-                <td>
-                  <p >{item.workDate?.slice(0,10)}</p>
-                </td>
-
-                <td>
-                  <p className="fw-bold">{mentorName?.assistanceName}</p>
-                </td>
-               
-
-                <td>
-                  <Button
-                    color="primary"
-                    size="sm"
-                    onClick={() => handleEditClick(item)}
+              const mentorName = mentor?.find(
+                (b) => b.id == item?.assistanceId
+              );
+              return (
+                <tr key={item.id}>
+                  <td
+                    className="fw-bold text-black"
+                    onClick={() => {
+                      setModal(!modal);
+                      setDetailId(item.id);
+                    }}
                   >
-                    <Edit
-                      size={15}
-                      className="ms-50"
-                      style={{ marginLeft: "6px" }}
-                    />
-                    ادیت
-                  </Button>
-                </td>
-              </tr>
-            )})
+                    {item.worktitle}
+                  </td>
+
+                  <td>
+                    <p style={{ color: "#7367f0" }}>{item.workDescribe}</p>
+                  </td>
+
+                  <td>
+                    <p>{item.workDate?.slice(0, 10)}</p>
+                  </td>
+
+                  <td>
+                    <p className="fw-bold">{mentorName?.assistanceName}</p>
+                  </td>
+
+                  <td>
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={() => handleEditClick(item)}
+                    >
+                      <Edit
+                        size={15}
+                        className="ms-50"
+                        style={{ marginLeft: "6px" }}
+                      />
+                      ادیت
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })
           )}
         </tbody>
       </Table>
-
+      <Modal
+        isOpen={modal}
+        toggle={() => setModal(false)}
+        className="modal-dialog-centered"
+      >
+        <ModalHeader>جزئیات کلاس</ModalHeader>
+        <ModalBody>
+          {detailLoading ? (
+            <Spinner color="primary" />
+          ) : detail ? (
+            <>
+              <p> نام تسک: {detail.worktitle}</p>
+              <p> توضیحات تسک : {detail.workDescribe}</p>
+              <p> تاریخ تسک : {detail.workDate?.slice(0, 10)}</p>
+            </>
+          ) : (
+            <p>اطلاعات یافت نشد</p>
+          )}
+        </ModalBody>
+      </Modal>
       {/* Modal */}
       <Modal
         isOpen={selectedItem ? true : false}
@@ -128,8 +163,8 @@ const TableTask = ({ data, isLoading ,mentor }) => {
                 workDescribe: selectedItem.workDescribe,
                 assistanceId: selectedItem.assistanceId,
                 workDate: selectedItem.workDate
-                ? new Date(selectedItem.workDate)
-                : "",
+                  ? new Date(selectedItem.workDate)
+                  : "",
               }}
               onSubmit={(values) => {
                 mutationEditTask.mutate({
@@ -169,7 +204,7 @@ const TableTask = ({ data, isLoading ,mentor }) => {
                       />
                     )}
                   </Field>
-                  
+
                   <Label className="form-label mt-1"> منتور</Label>
                   <Field
                     as="select"

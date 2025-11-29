@@ -3,14 +3,24 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 // ** Icons Imports
 import { Edit } from "react-feather";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Spinner,
+} from "reactstrap";
 
 // ** Reactstrap Imports
 import { Table } from "reactstrap";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { editClassist } from "../../../../core/Services/api/ClassSection";
+import {
+  editClassist,
+  getClassistDetail,
+} from "../../../../core/Services/api/ClassSection";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
@@ -38,6 +48,14 @@ const TableClass = ({ data, isLoading, building }) => {
   };
 
   const handleCloseModal = () => setSelectedItem(null);
+  const [modal, setModal] = useState(false);
+  const [detailId, setDetailId] = useState(false);
+  const { data: detail, isLoading: detailLoading } = useQuery({
+    queryKey: ["getClassistDetail"],
+    queryFn: () => getClassistDetail(detailId),
+    enabled: !!detailId,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <>
@@ -54,8 +72,11 @@ const TableClass = ({ data, isLoading, building }) => {
           {isLoading ? (
             <tr>
               <td colSpan="4" className="text-center">
-               <Spinner color="primary" className='d-flex justify-content-center'/>;
-
+                <Spinner
+                  color="primary"
+                  className="d-flex justify-content-center"
+                />
+                ;
               </td>
             </tr>
           ) : (
@@ -66,7 +87,15 @@ const TableClass = ({ data, isLoading, building }) => {
 
               return (
                 <tr key={item.id}>
-                  <td className="fw-bold text-black">{item.classRoomName}</td>
+                  <td
+                    onClick={() => {
+                      setModal(!modal);
+                      setDetailId(item.id);
+                    }}
+                    className="fw-bold text-black"
+                  >
+                    {item.classRoomName}
+                  </td>
 
                   <td>
                     <p>{item.capacity}</p>
@@ -94,7 +123,25 @@ const TableClass = ({ data, isLoading, building }) => {
           )}
         </tbody>
       </Table>
-
+      <Modal
+        isOpen={modal}
+        toggle={() => setModal(false)}
+        className="modal-dialog-centered"
+      >
+        <ModalHeader>جزئیات کلاس</ModalHeader>
+        <ModalBody>
+          {detailLoading ? (
+            <Spinner color="primary" />
+          ) : detail ? (
+            <>
+              <p> نام کلاس: {detail.classRoomName}</p>
+              <p> ظرفیت : {detail.capacity}</p>
+            </>
+          ) : (
+            <p>اطلاعات یافت نشد</p>
+          )}
+        </ModalBody>
+      </Modal>
       {/* Modal */}
       <Modal
         isOpen={selectedItem ? true : false}

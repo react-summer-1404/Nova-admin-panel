@@ -24,11 +24,12 @@ import Flatpickr from "react-flatpickr";
 // ** Reactstrap Imports
 import { Table } from "reactstrap";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import {
   editTermList,
   editTermListTime,
+  getTermDetail,
 } from "../../../../core/Services/api/TermSection";
 
 const TableTerm = ({ data, isLoading, dep }) => {
@@ -65,7 +66,14 @@ const TableTerm = ({ data, isLoading, dep }) => {
   };
 
   const handleCloseTimeModal = () => setSelectedItemTime(null);
-
+  const [modal, setModal] = useState(false);
+  const [detailId, setDetailId] = useState(false);
+  const { data: detail, isLoading: detailLoading } = useQuery({
+    queryKey: ["getTermDetail"],
+    queryFn: () => getTermDetail(detailId),
+    enabled: !!detailId,
+    refetchOnWindowFocus: false,
+  });
   return (
     <>
       <Table hover responsive>
@@ -93,7 +101,15 @@ const TableTerm = ({ data, isLoading, dep }) => {
             data?.map((item) => {
               return (
                 <tr key={item.id}>
-                  <td className="fw-bold text-black">{item.termName}</td>
+                  <td
+                    className="fw-bold text-black"
+                    onClick={() => {
+                      setModal(!modal);
+                      setDetailId(item.id);
+                    }}
+                  >
+                    {item.termName}
+                  </td>
 
                   <td style={{ display: "flex", gap: 6 }}>
                     <p>{item.startDate?.slice(0, 10)}</p> تا{" "}
@@ -136,7 +152,35 @@ const TableTerm = ({ data, isLoading, dep }) => {
           )}
         </tbody>
       </Table>
-
+      <Modal
+        isOpen={modal}
+        toggle={() => setModal(false)}
+        className="modal-dialog-centered"
+      >
+        <ModalHeader>جزئیات کلاس</ModalHeader>
+        <ModalBody>
+          {detailLoading ? (
+            <Spinner color="primary" />
+          ) : detail ? (
+            <>
+              <p> نام ترم: {detail.termName}</p>
+              <p> تاریخ شروع : {detail.startDate?.slice(0, 10)}</p>
+              <p> تاریخ پایان : {detail.endDate?.slice(0, 10)}</p>
+              <p>
+                {" "}
+                وضعیت :{" "}
+                {detail.expire ? (
+                  <Badge color="light-success">منقضی نشده</Badge>
+                ) : (
+                  <Badge color="light-danger">منقضی شده</Badge>
+                )}
+              </p>
+            </>
+          ) : (
+            <p>اطلاعات یافت نشد</p>
+          )}
+        </ModalBody>
+      </Modal>
       {/* Modal */}
       <Modal
         isOpen={selectedItem ? true : false}
