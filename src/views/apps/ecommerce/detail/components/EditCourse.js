@@ -95,9 +95,7 @@ const dispatch = useDispatch();
 
               mutationEditCourse.mutate(formData);
 
-              //   setCenteredModal(!centeredModal)
-              console.log(values);
-              console.log("SelectedCourse ID:", selectedCourse.id);
+
             }}
           >
             {({ handleSubmit }) => (

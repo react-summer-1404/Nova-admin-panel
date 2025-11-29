@@ -153,7 +153,7 @@ const Sidebar = (props) => {
   
     total = mappedData.length;
   
-    console.log("دوره‌های پرداخت شده:", mappedData);
+    // console.log("دوره‌های پرداخت شده:", mappedData);
   }
   
   
@@ -164,7 +164,7 @@ const Sidebar = (props) => {
     data: {  mappedData, totalCount: total } 
   }));
   
-console.log(mappedData)
+// console.log(mappedData)
   };
   const categories = [
     { id: "all", title: "همه دوره ها" },

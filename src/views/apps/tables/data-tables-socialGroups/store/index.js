@@ -9,7 +9,6 @@ export const getData = createAsyncThunk(
   'courseSocialGroup/getData',
   async () => {
     const response = await instance.get("/CourseSocialGroup")
-    console.log("response", response.data) 
     return response.data
   }
 )
@@ -31,7 +30,6 @@ export const courseSocialGroupSlice = createSlice({
         groupLink: item.groupLink,
         groupName: item.groupName,
       }))
-      console.log("action.payload",action.payload)
 
       state.total = action.payload.length
     })

@@ -47,7 +47,6 @@ const GroupTable = ({
       courseGroupId: id,
       studentId
     });
-  console.log("id",id)
     setCenteredModal(false);
   };
   

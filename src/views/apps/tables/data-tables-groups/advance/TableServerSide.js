@@ -1,100 +1,126 @@
 // ** React Imports
-import { Fragment, useState, useEffect, memo } from 'react'
+import { Fragment, useState, useEffect, memo } from "react";
 
 // ** Table Columns
-import { serverSideColumns } from '../groupData'
 
 // ** Store & Actions
-import { getData } from '../store'
-import { useSelector, useDispatch } from 'react-redux'
+import { getData } from "../store";
+import { useSelector, useDispatch } from "react-redux";
 
 // ** Third Party Components
-import ReactPaginate from 'react-paginate'
-import { ChevronDown } from 'react-feather'
-import DataTable from 'react-data-table-component'
+import ReactPaginate from "react-paginate";
+import { ChevronDown } from "react-feather";
+import DataTable from "react-data-table-component";
 
 // ** Reactstrap Imports
-import { Card, CardHeader, CardTitle, Input, Label, Row, Col } from 'reactstrap'
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Row,
+  Col,
+  Button,
+} from "reactstrap";
+
+import CreateModal from "./modals/CreateModal";
+import EditTable from "./modals/EditTable";
+// import EditTable from './modals/EditTable'
 
 const DataTableServerSide = () => {
-  const dispatch = useDispatch()
-  const courseId = useSelector(state => state.ecommerce.productDetail.id)
-  const teacherId = useSelector(state => state.ecommerce.productDetail.teacherId)
-  const store = useSelector(state => state.courseGroup)
+  const dispatch = useDispatch();
+  const courseId = useSelector((state) => state.ecommerce.productDetail.id);
+  const teacherId = useSelector(
+    (state) => state.ecommerce.productDetail.teacherId
+  );
+  const store = useSelector((state) => state.courseGroup);
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(7)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(7);
+  const [centeredModal, setCenteredModal] = useState(false);
 
   // ** Fetch data
   useEffect(() => {
     if (courseId && teacherId) {
-      dispatch(getData({ courseId, teacherId }))
+      dispatch(getData({ courseId, teacherId }));
     }
-  }, [courseId, teacherId])
+  }, [courseId, teacherId]);
 
   // ** Handle rows per page
-  const handlePerPage = e => {
-    const newPerPage = parseInt(e.target.value)
-    setRowsPerPage(newPerPage)
-    setCurrentPage(1)
-  }
+  const handlePerPage = (e) => {
+    const newPerPage = parseInt(e.target.value);
+    setRowsPerPage(newPerPage);
+    setCurrentPage(1);
+  };
 
   // ** Handle pagination
-  const handlePagination = page => {
-    setCurrentPage(page.selected + 1)
-  }
+  const handlePagination = (page) => {
+    setCurrentPage(page.selected + 1);
+  };
+  const [actionModal, setActionModal] = useState(false);
+const [selectedRow, setSelectedRow] = useState(null);
+
+const openActionModal = (row) => {
+  setSelectedRow(row);
+  setActionModal(true);
+};
+
+const closeActionModal = () => {
+  setSelectedRow(null);
+  setActionModal(false);
+};
 
   // ** Custom Pagination
   const CustomPagination = () => {
-    const pageCount = Math.ceil(store.total / rowsPerPage)
-
+    const pageCount = Math.ceil(store.total / rowsPerPage);
     return (
       <ReactPaginate
-        previousLabel={''}
-        nextLabel={''}
-        breakLabel='...'
+        previousLabel={""}
+        nextLabel={""}
+        breakLabel="..."
         pageCount={pageCount || 1}
         marginPagesDisplayed={2}
         pageRangeDisplayed={2}
-        activeClassName='active'
+        activeClassName="active"
         forcePage={currentPage !== 0 ? currentPage - 1 : 0}
         onPageChange={handlePagination}
-        pageClassName='page-item'
-        breakClassName='page-item'
-        nextLinkClassName='page-link'
-        pageLinkClassName='page-link'
-        breakLinkClassName='page-link'
-        previousLinkClassName='page-link'
-        nextClassName='page-item next-item'
-        previousClassName='page-item prev-item'
-        containerClassName='pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1'
+        pageClassName="page-item"
+        breakClassName="page-item"
+        nextLinkClassName="page-link"
+        pageLinkClassName="page-link"
+        breakLinkClassName="page-link"
+        previousLinkClassName="page-link"
+        nextClassName="page-item next-item"
+        previousClassName="page-item prev-item"
+        containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
       />
-    )
-  }
+    );
+  };
 
   // ** Slice data for current page
   const dataToRender = store?.data?.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
-  )
+  );
 
   return (
     <Card>
-      <CardHeader className='border-bottom'>
-        <CardTitle tag='h4'>گروه های دوره</CardTitle>
+      <CardHeader className="border-bottom">
+        <CardTitle tag="h4">گروه های دوره</CardTitle>
       </CardHeader>
 
-      <Row className='mx-0 mt-1 mb-50'>
-        <Col sm='6'>
-          <div className='d-flex align-items-center'>
-            <Label for='sort-select'>show</Label>
+      <Row className="mx-0 mt-1 mb-50 d-flex justify-content-between">
+        <Col sm="6">
+          <div className="d-flex align-items-center">
+            <Label for="sort-select">show</Label>
             <Input
-              className='dataTable-select'
-              type='select'
-              id='sort-select'
+              className="dataTable-select"
+              type="select"
+              id="sort-select"
               value={rowsPerPage}
               onChange={handlePerPage}
-              style={{ width: '70px' }}
+              style={{ width: "70px" }}
             >
               <option value={7}>7</option>
               <option value={10}>10</option>
@@ -103,24 +129,39 @@ const DataTableServerSide = () => {
               <option value={75}>75</option>
               <option value={100}>100</option>
             </Input>
-            <Label for='sort-select'>entries</Label>
+            <Label for="sort-select">entries</Label>
           </div>
+        </Col>
+        <Col sm="2">
+          <Button
+            color="primary "
+            onClick={() => setCenteredModal(!centeredModal)}
+          >
+            افزودن گروه
+          </Button>
+          {/* <EditTable setModal={setModal} modal={modal} courseId={courseId}/> */}
+          <CreateModal
+            courseId={courseId}
+            setCenteredModal={setCenteredModal}
+            centeredModal={centeredModal}
+          />
         </Col>
       </Row>
 
-      <div className='react-dataTable'>
-        <DataTable
-          columns={serverSideColumns}
+      <div className="react-dataTable">
+        {/* <DataTable
+          columns={serverSideColumns(openActionModal)}
           data={dataToRender}
           sortIcon={<ChevronDown size={10} />}
-          className='react-dataTable'
+          className="react-dataTable"
           pagination
           paginationServer
           paginationComponent={CustomPagination}
-        />
+        /> */}
+        <EditTable data={dataToRender} courseId={courseId}/>
       </div>
     </Card>
-  )
-}
+  );
+};
 
-export default memo(DataTableServerSide)
+export default memo(DataTableServerSide);

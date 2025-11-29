@@ -45,8 +45,6 @@ const EditStatus = ({ selectedCourse,centeredModal,setCenteredModal }) => {
                 
                 editStatusProductMutation.mutate(formData);
                 
-            //   setCenteredModal(!centeredModal)
-            console.log(values)
             }}
           >
             {({ handleSubmit }) => (

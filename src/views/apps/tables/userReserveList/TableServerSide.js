@@ -4,7 +4,7 @@ import { Formik, Form, Field } from "formik";
 // ** Images
 // import defaultpPic from "../../../../assets/images/defalt.png";
 // ** Icons Imports
-import { MoreVertical, Edit, CheckCircle , Search } from "react-feather";
+import { MoreVertical, Edit, CheckCircle , Search,XCircle  } from "react-feather";
 import {
   Button,
   Modal,
@@ -31,7 +31,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { GetAllUserReserveList, GetStudentReserveList } from "../../../../core/Services/api/GetUserList";
-import { postReserveAccept } from "../../../../core/Services/api/acceptReserve";
+import { deleteReserveAccept, postReserveAccept } from "../../../../core/Services/api/acceptReserve";
 import { useDebounce } from "use-debounce";
 import { getGroupList } from "../../../../core/Services/api/getGroup";
 import GroupTable from "../groupTable";
@@ -75,8 +75,17 @@ const TableServerSide = () => {
     setCenteredModal(!centeredModal)
   };
   const handleCloseModal = () => setSelectedItem(null);
-console.log("reserve",filteredUser)
-console.log("selectedItem",selectedItem)
+const queryClient = useQueryClient()
+const mutationDeleteReserve = useMutation({
+  mutationFn: (apiData) => deleteReserveAccept(apiData),
+  onError: (error) => {
+    toast.error("خطایی رخ داد");
+    console.log("error", error);
+  },
+  onSuccess: () =>{ toast.success("رزرو حذف شد")
+  queryClient.invalidateQueries(["courseStudentReserve"])
+},
+});
   return (
     <>
       <Table hover responsive>
@@ -113,9 +122,9 @@ console.log("selectedItem",selectedItem)
                           <CheckCircle  className="me-50" size={15} />{" "}
                           <span className="align-middle">تایید</span>
                         </DropdownItem>
-                        <DropdownItem onClick={() => handleEditTimeClick(item)}>
-                          <Edit className="me-50" size={15} />{" "}
-                          <span className="align-middle">ادیت زمان</span>
+                        <DropdownItem onClick={() => mutationDeleteReserve.mutate({ id: item.id })}>
+                          <XCircle  className="me-50" size={15} />{" "}
+                          <span className="align-middle">حذف</span>
                         </DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
