@@ -2,7 +2,7 @@
 import { Fragment, useState, useEffect } from 'react'
 
 // ** Shop Components
-import Sidebar from './Sidebar'
+// import Sidebar from './Sidebar'
 import Products from './Products'
 
 // ** Custom Components
@@ -50,7 +50,7 @@ const navigate =useNavigate()
         setActiveView={setActiveView}
         setSidebarOpen={setSidebarOpen}
       />
-      <Sidebar sidebarOpen={sidebarOpen} />
+      {/* <Sidebar sidebarOpen={sidebarOpen} /> */}
       <Button color='primary' style={{width:250}} onClick={()=>navigate("/apps/ecommerce/createCourse")}>
         افزودن دوره جدید +
       </Button>

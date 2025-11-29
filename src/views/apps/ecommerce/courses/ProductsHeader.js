@@ -1,180 +1,100 @@
-// ** Third Party Components
-import classnames from 'classnames'
-import { useState } from 'react'
-import { Menu, Grid, List } from 'react-feather'
-
-// ** Reactstrap Imports
+import { Menu } from "react-feather";
 import {
   Row,
   Col,
-  Button,
-  ButtonGroup,
-  DropdownItem,
-  DropdownMenu,
+  UncontrolledButtonDropdown,
   DropdownToggle,
-  UncontrolledButtonDropdown
-} from 'reactstrap'
-import { setCourseList, setSelectedFilter,setSelectedSort, setSelectedSortCol } from "../store";
-import { useDispatch, useSelector } from 'react-redux';
-import instance from '../../../../core/interseptor/Interseptor';
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+// 👈 اینجا getProducts را از Redux Slice وارد می‌کنیم
+import { setSelectedSort, setSelectedSortCol, getProducts } from "../store";
 
-// const [selectedSortOption,setSelectedSortOption]=useState("")
+// 👈 تابع getProducts را از props حذف می‌کنیم
+const ProductsHeader = ({ setSidebarOpen, store }) => {
+  const dispatch = useDispatch();
 
+  // Redux state
+  const selectedSort = useSelector((state) => state.ecommerce.selectedSort);
+  const selectedSortCol = useSelector((state) => state.ecommerce.selectedSortCol);
 
-const ProductsHeader = props => {
-const selectedFilter = useSelector((state) => state.ecommerce.selectedFilter);
-const selectedSort = useSelector((state) => state.ecommerce.selectedSort);
-const selectedSortCol = useSelector((state) => state.ecommerce.selectedSortCol);
+  // نمایش متن‌ها
+  const sortToggleText = { asc: "صعودی", desc: "نزولی" };
+  const sortColToggleText = { active: "فعال", cost: "قیمت" };
 
-  // ** Props
-  const { activeView, setActiveView, dispatch, getProducts, store, setSidebarOpen } = props
- 
-  const handleApi = async (filterId = selectedFilter, sort = selectedSort, sortCol = selectedSortCol) => {
-    dispatch(setSelectedFilter(filterId))
-    dispatch(setSelectedSort(sort))
-    dispatch(setSelectedSortCol(sortCol))
-  
-    let url = "";
-    let params = {
-      PageNumber: 1,
-      RowsOfPage: 10,
-      SortType: sort || null,
-      SortingCol: sortCol || null
-    };
-  
-    switch (filterId) {
-      case "all":
-        url = "/Course/CourseList";
-        break;
-      case "myCourse":
-        url = "/SharePanel/GetMyCourses";
-        break;
-      case "reserved":
-        url = "/SharePanel/GetMyCoursesReserve";
-        break;
-      case "paidCourse":
-        url = "/CoursePayment";
-        break;
-      default:
-        url = "/Course/CourseList";
-    }
-  
-    const response = await instance.get(url, { params });
-  
-    let mappedData = [];
-    let total = 0;
-  
-    if (filterId === "paidCourse") {
-      const payments = response.data || [];
-      const coursesGet = await instance.get("/Course/CourseList", { params: { PageNumber: 1, RowsOfPage: 1000 } });
-      const courses = coursesGet.data.courseDtos || [];
-  
-      mappedData = payments.map(payment => {
-        const course = courses.find(c => c.courseId === payment.courseId);
-        return {
-          id: payment.courseId,
-          name: course?.title,
-          image: course?.imageAddress || null,
-          price: payment.Paid,
-          fullName : course.fullName,
-          slug: payment.courseId,
-          paymentDate: payment.PeymentDate,
-        isExpire:course.isExpire,
-        active: course.active,
-        miniDescribe :course.miniDescribe
+  // تابع مشترک برای ارسال درخواست به API
+  const handleSort = (sortType = selectedSort, sortCol = selectedSortCol) => {
+    // 1. آپدیت Redux
+    dispatch(setSelectedSort(sortType));
+    dispatch(setSelectedSortCol(sortCol));
 
-        };
-      });
-  
-      total = mappedData.length;
-    } else {
-      mappedData = response.data.courseDtos?.map(course => ({
-        id: course.courseId,
-        name: course.title,
-        image: course.imageAddress,
-        price: course.cost,
-        fullName : course.fullName,
-        slug: course.courseId,
-        miniDescribe: course.miniDescribe,
-        active: course.active,
-        isExpire:course.isExpire,
-        
-      })) || [];
-      total = response.data.totalCount || mappedData.length;
-    }
-  
-    dispatch(setCourseList({ params, data: { mappedData, totalCount: total } }));
-  }
-  
-  // ** Sorting obj
-  const sortToggleText = {
-    'asc': 'صعودی',
-    'desc': 'نزولی',
-    'featured': 'Featured'
-  }
-  const sortColToggleText = {
-    'active': 'فعال',
-    'cost': 'قیمت',
-    'featured': 'Featured'
-  }
+    // 2. ارسال API با dispatch کردن Thunk (getProducts)
+    dispatch(
+      getProducts({
+        PageNumber: 1,
+        RowsOfPage: 10,
+        SortType: sortType, // مقادیر جدید
+        SortingCol: sortCol, // مقادیر جدید
+      })
+    );
+  };
 
   return (
-    <div className='ecommerce-header'>
+    <div className="ecommerce-header">
       <Row>
-        <Col sm='12'>
-          <div className='ecommerce-header-items'>
-            <div className='result-toggler'>
-              <button className='navbar-toggler shop-sidebar-toggler' onClick={() => setSidebarOpen(true)}>
-                <span className='navbar-toggler-icon d-block d-lg-none'>
+        <Col sm="12">
+          <div className="ecommerce-header-items">
+            <div className="result-toggler">
+              <button
+                className="navbar-toggler shop-sidebar-toggler"
+                onClick={() => setSidebarOpen(true)}
+              >
+                <span className="navbar-toggler-icon d-block d-lg-none">
                   <Menu size={14} />
                 </span>
               </button>
-              <span className='search-results'>{store.totalProducts} Results Found</span>
+              <span className="search-results">
+                {store.totalProducts} نتیجه پیدا شده
+              </span>
             </div>
-            <div className='view-options d-flex'>
-              <UncontrolledButtonDropdown className='dropdown-sort'>
-                <DropdownToggle className='text-capitalize me-1' color='primary' outline caret>
-                {sortToggleText[selectedSort] || 'Sort'}
+
+            <div className="view-options d-flex">
+              {/* Sort Type */}
+              <UncontrolledButtonDropdown className="dropdown-sort me-2">
+                <DropdownToggle color="primary" outline caret>
+                  {sortToggleText[selectedSort] || "مرتب‌سازی"}
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem
-                    className='w-100'
-                    onClick={() => handleApi(selectedFilter, "asc")}>
-                  
+                  <DropdownItem onClick={() => handleSort("asc", selectedSortCol)}>
                     صعودی
                   </DropdownItem>
-                  <DropdownItem
-                    className='w-100'
-                    onClick={() => handleApi(selectedFilter, "desc")}>
+                  <DropdownItem onClick={() => handleSort("desc", selectedSortCol)}>
                     نزولی
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledButtonDropdown>
-              <UncontrolledButtonDropdown className='dropdown-sort'>
-                <DropdownToggle className='text-capitalize me-1' color='primary' outline caret>
-                {sortColToggleText[selectedSortCol] || 'Sort'}
+
+              {/* Sort Column */}
+              <UncontrolledButtonDropdown className="dropdown-sort">
+                <DropdownToggle color="primary" outline caret>
+                  {sortColToggleText[selectedSortCol] || "ستون"}
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem
-                    className='w-100'
-                    onClick={() => handleApi(selectedFilter, selectedSort,"active")}>
-                  
+                  <DropdownItem onClick={() => handleSort(selectedSort, "active")}>
                     فعال
                   </DropdownItem>
-                  <DropdownItem
-                    className='w-100'
-                    onClick={() => handleApi(selectedFilter,selectedSort, "cost")}>
+                  <DropdownItem onClick={() => handleSort(selectedSort, "cost")}>
                     قیمت
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledButtonDropdown>
-             
             </div>
           </div>
         </Col>
       </Row>
     </div>
-  )
-}
+  );
+};
 
-export default ProductsHeader
+export default ProductsHeader;

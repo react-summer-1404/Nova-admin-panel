@@ -2,7 +2,6 @@
 import { Fragment } from 'react'
 
 // ** Product components
-import ProductCards from './ProductCards'
 import ProductsHeader from './ProductsHeader'
 import ProductsSearchbar from './ProductsSearchbar'
 import { useDispatch, useSelector } from 'react-redux'

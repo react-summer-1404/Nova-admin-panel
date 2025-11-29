@@ -27,6 +27,7 @@ const TableHover = (props) => {
           <th>عکس دوره</th>
           <th>عنوان</th>
           <th>توضیح کوتاه دوره</th>
+          <th>قیمت</th>
           <th> استاد دوره</th>
           <th>وضعیت</th>
           <th>وضعیت انقضا</th>
@@ -55,6 +56,9 @@ const TableHover = (props) => {
             
             <td>
             <p style={{ color: '#7367f0' }}>{item.miniDescribe}</p>
+            </td>
+            <td>
+            <p >{item.price}</p>
             </td>
             <td>
               <span>{item.fullName}</span>
