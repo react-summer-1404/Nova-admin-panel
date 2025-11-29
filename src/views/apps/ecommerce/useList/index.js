@@ -16,7 +16,7 @@ import {
 import { Search } from "react-feather";
 import TableProduct from "../../tables/productListTable/TableProduct";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../../../core/Services/api/getCourseList";
+import { getProductsCourse } from "../../../../core/Services/api/getCourseList";
 import { getUserList } from "../../../../core/Services/api/useSection/inedx";
 import { useDebounce } from "use-debounce";
 
@@ -40,7 +40,7 @@ function CourseUserList() {
     Query: debounceUser,
   };
   const { data: courses, isLoading } = useQuery({
-    queryFn: () => getProducts(apiParams),
+    queryFn: () => getProductsCourse(apiParams),
     queryKey: ["productsList", apiParams],
     refetchOnWindowFocus: false,
   });

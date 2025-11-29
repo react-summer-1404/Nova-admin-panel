@@ -20,16 +20,11 @@ const ProductsPage = props => {
   const store = useSelector(state => state.ecommerce)
 
   const {
-    // addToCart,
     activeView,
     sidebarOpen,
     getProducts,
-    // getCartItems,
-    // addToWishlist,
     setActiveView,
-    // deleteCartItem,
     setSidebarOpen,
-    deleteWishlistItem
   } = props
 
 

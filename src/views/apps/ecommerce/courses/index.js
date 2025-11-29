@@ -14,13 +14,14 @@ import { getProducts,   } from '../store'
 
 // ** Styles
 import '@styles/react/apps/app-ecommerce.scss'
-import { Button } from 'reactstrap'
+import { Button, Card } from 'reactstrap'
 import { useNavigate } from 'react-router-dom'
+import CoursesListTab from '../../components/tabs/CoursesListTab'
 
 const Shop = () => {
   // ** States
-  const [activeView, setActiveView] = useState('grid')
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  // const [activeView, setActiveView] = useState('grid')
+  // const [sidebarOpen, setSidebarOpen] = useState(false)
 const navigate =useNavigate()
   // ** Vars
   const dispatch = useDispatch()
@@ -41,16 +42,9 @@ const navigate =useNavigate()
   return (
     <Fragment>
       <Breadcrumbs title='دوره ها' data={[{ title: 'مدیریت دوره ها' }, { title: 'دوره ها' }]} />
-      <Products
-        store={store}
-        dispatch={dispatch}
-        activeView={activeView}
-        getProducts={getProducts}
-        sidebarOpen={sidebarOpen}
-        setActiveView={setActiveView}
-        setSidebarOpen={setSidebarOpen}
-      />
-      {/* <Sidebar sidebarOpen={sidebarOpen} /> */}
+           <CoursesListTab/>
+        
+      
       <Button color='primary' style={{width:250}} onClick={()=>navigate("/apps/ecommerce/createCourse")}>
         افزودن دوره جدید +
       </Button>

@@ -8,34 +8,28 @@ import {
   DropdownItem,
 } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
-// 👈 اینجا getProducts را از Redux Slice وارد می‌کنیم
 import { setSelectedSort, setSelectedSortCol, getProducts } from "../store";
+// import CoursesListTab from "../../components/tabs/CoursesListTab";
 
-// 👈 تابع getProducts را از props حذف می‌کنیم
-const ProductsHeader = ({ setSidebarOpen, store }) => {
+const ProductsHeader = ({  store }) => {
   const dispatch = useDispatch();
 
-  // Redux state
   const selectedSort = useSelector((state) => state.ecommerce.selectedSort);
   const selectedSortCol = useSelector((state) => state.ecommerce.selectedSortCol);
 
-  // نمایش متن‌ها
   const sortToggleText = { asc: "صعودی", desc: "نزولی" };
   const sortColToggleText = { active: "فعال", cost: "قیمت" };
 
-  // تابع مشترک برای ارسال درخواست به API
   const handleSort = (sortType = selectedSort, sortCol = selectedSortCol) => {
-    // 1. آپدیت Redux
     dispatch(setSelectedSort(sortType));
     dispatch(setSelectedSortCol(sortCol));
 
-    // 2. ارسال API با dispatch کردن Thunk (getProducts)
     dispatch(
       getProducts({
         PageNumber: 1,
         RowsOfPage: 10,
-        SortType: sortType, // مقادیر جدید
-        SortingCol: sortCol, // مقادیر جدید
+        SortType: sortType,   
+        SortingCol: sortCol,   
       })
     );
   };
@@ -48,7 +42,7 @@ const ProductsHeader = ({ setSidebarOpen, store }) => {
             <div className="result-toggler">
               <button
                 className="navbar-toggler shop-sidebar-toggler"
-                onClick={() => setSidebarOpen(true)}
+                // onClick={() => setSidebarOpen(true)}
               >
                 <span className="navbar-toggler-icon d-block d-lg-none">
                   <Menu size={14} />

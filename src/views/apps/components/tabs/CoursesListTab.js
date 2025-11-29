@@ -4,28 +4,26 @@ import { lazy } from "react";
 import { Fragment, useState } from "react";
 
 // ** Icons Imports
-import { MessageCircle, Box, Users,CreditCard,Globe,UserCheck ,Bookmark} from "react-feather";
+import {
+  MessageCircle,
+  Box,
+  Users,
+  CreditCard,
+  Globe,
+  UserCheck,
+  Bookmark,
+} from "react-feather";
 
 // ** Reactstrap Imports
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
-const DTAdvance = lazy(() => import("../../tables/data-tables/advance"));
-const DTAdvance2 = lazy(() => import("../../tables/data-tables-user/advance"));
-const DTAdvance3 = lazy(() =>
-  import("../../tables/data-tables-groups/advance")
-);
-const DTAdvance4 = lazy(() =>
-import("../../../apps/tables/data-tables-payment/advance")
-);
-const DTAdvance5 = lazy(() =>
-import("../../../apps/tables/data-tables-socialGroups/advance")
-);
-const DTAdvance6 = lazy(() =>
-import("../../../apps/tables/data-tables-mentors/advance")
-);
-const TableServerSide = lazy(() =>
-import("../../../apps/tables/userReserveList/TableServerSide")
-);
-const CoursesListTab = () => {
+import { useDispatch, useSelector } from "react-redux";
+import ProductsPage from "../../ecommerce/courses/Products";
+import { useQuery } from "@tanstack/react-query";
+import { getReserveListUsers } from "../../../../core/Services/api/CourseListApi";
+import { getProductsCourse } from "../../../../core/Services/api/getCourseList";
+import CourseReserveList from "../../tables/CourseReserveList";
+
+const CoursesListTab = (props) => {
   {
     /* payment table */
   }
@@ -38,9 +36,30 @@ const CoursesListTab = () => {
       setActive(tab);
     }
   };
+
+  const dispatch = useDispatch();
+
+  const store = useSelector((state) => state.ecommerce);
+
+  const {
+    getProducts,
+  } = props;
+const {data,isLoading}=useQuery({
+  queryKey:["getReserveListUsers"],
+  queryFn:getReserveListUsers
+})
+const {data:allProducts}=useQuery({
+  queryKey:["allProducts"],
+  queryFn:getProductsCourse
+})
+const courses = allProducts?.courseDtos || [];
+const reservedCourses = courses.filter(course =>
+  data?.some(p => p.courseId === course.courseId)
+);
+console.log("reserves",reservedCourses)
   return (
     <Fragment>
-      <Nav tabs >
+      <Nav tabs>
         <NavItem>
           <NavLink
             active={active === "1"}
@@ -49,7 +68,7 @@ const CoursesListTab = () => {
             }}
           >
             <MessageCircle size={18} />
-            <span className="align-middle">نظرات کاربران</span>
+            <span className="align-middle">همه دوره ها</span>
           </NavLink>
         </NavItem>
 
@@ -61,7 +80,7 @@ const CoursesListTab = () => {
             }}
           >
             <Users size={18} />
-            <span className="align-middle">دانشجویان این دوره</span>
+            <span className="align-middle">رزرو شده ها</span>
           </NavLink>
         </NavItem>
 
@@ -78,7 +97,7 @@ const CoursesListTab = () => {
         </NavItem>
 
         <NavItem>
-        <NavLink
+          <NavLink
             active={active === "3"}
             onClick={() => {
               toggle("3");
@@ -124,59 +143,60 @@ const CoursesListTab = () => {
             <span className="align-middle">منتور ها</span>
           </NavLink>
         </NavItem>
-
-      
       </Nav>
       <TabContent className="py-50" activeTab={active}>
         <TabPane tabId="1">
           {/* comment table */}
           <Suspense>
-            <DTAdvance />
+            <ProductsPage
+              store={store}
+              dispatch={dispatch}
+              getProducts={getProducts}
+            />
           </Suspense>
         </TabPane>
 
         <TabPane tabId="2">
           {/* students table */}
           <Suspense>
-            <DTAdvance2 />
+          <CourseReserveList data={reservedCourses} isLoading={isLoading}/>
           </Suspense>
         </TabPane>
 
         <TabPane tabId="3">
           {/* group table */}
           <Suspense>
-            <DTAdvance3 />
+            {/* <DTAdvance3 /> */}
           </Suspense>
         </TabPane>
 
         <TabPane tabId="4">
           {/* group table */}
           <Suspense>
-            <DTAdvance4 />
+            {/* <DTAdvance4 /> */}
           </Suspense>
         </TabPane>
 
         <TabPane tabId="5">
           {/*social group table */}
           <Suspense>
-            <DTAdvance5 />
+            {/* <DTAdvance5 /> */}
           </Suspense>
         </TabPane>
 
         <TabPane tabId="6">
           {/*mentors table */}
           <Suspense>
-            <DTAdvance6 />
+            {/* <DTAdvance6 /> */}
           </Suspense>
         </TabPane>
 
         <TabPane tabId="7">
           {/*reserve users table */}
           <Suspense>
-            <TableServerSide />
+            {/* <TableServerSide /> */}
           </Suspense>
         </TabPane>
-
       </TabContent>
     </Fragment>
   );

@@ -3,10 +3,11 @@ import { Search } from 'react-feather'
 
 // ** Reactstrap Imports
 import { Row, Col, InputGroup, Input, InputGroupText } from 'reactstrap'
+import { getProducts } from '../store';
 
 const ProductsSearchbar = props => {
   // ** Props
-  const { dispatch, getProducts, store } = props
+  const { dispatch, store } = props
 
   return (
     <div id='ecommerce-searchbar' className='ecommerce-searchbar'>
