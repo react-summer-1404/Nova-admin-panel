@@ -16,7 +16,7 @@ const ProductsSearchbar = props => {
           <InputGroup className='input-group-merge'>
             <Input
               className='search-product'
-              placeholder='Search Product'
+              placeholder='جستجو کنید ...'
               onChange={e => dispatch(getProducts({ ...store.params, Query: e.target.value }))}
             />
             <InputGroupText>

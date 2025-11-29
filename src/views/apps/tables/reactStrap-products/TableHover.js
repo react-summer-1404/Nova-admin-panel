@@ -21,7 +21,7 @@ const TableHover = (props) => {
   const { store, products, dispatch, activeView, getProducts } = props;
 
   return (
-    <Table hover responsive>
+    <Table hover responsive style={{marginTop:20}}>
       <thead>
         <tr>
           <th>عکس دوره</th>

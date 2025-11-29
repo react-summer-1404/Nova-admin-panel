@@ -7,7 +7,7 @@ import { Fragment, useState } from "react";
 import {
   MessageCircle,
   Grid,
-  Users,
+  List,
   CreditCard,
   Globe,
   UserCheck,
@@ -64,7 +64,7 @@ const CoursesListTab = (props) => {
   // console.log("pays",pays)
   return (
     <Fragment>
-      <Nav tabs>
+      <Nav tabs  fill style={{marginBottom:30}}>
         <NavItem>
           <NavLink
             active={active === "1"}
@@ -108,7 +108,7 @@ const CoursesListTab = (props) => {
               toggle("4");
             }}
           >
-            <Grid size={18} />
+            <List size={18} />
             <span className="align-middle">دوره های من </span>
           </NavLink>
         </NavItem>

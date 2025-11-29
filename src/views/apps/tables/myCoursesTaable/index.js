@@ -106,7 +106,7 @@ const MyCoursesTable = () => {
                 <InputGroup className="input-group-merge">
                   <Input
                     className="search-product"
-                    placeholder="Search Product"
+                    placeholder="جستجو کنید ..."
                     onChange={(e) => {
                       setSearch(e.target.value);
                     }}
