@@ -12,7 +12,7 @@ import classnames from 'classnames'
 // ** Reactstrap Imports
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 import TableHover from '../../tables/reactStrap-products/TableHover'
-
+import { getProducts } from '../store'
 const ProductsPage = props => {
   
   const dispatch = useDispatch()
@@ -22,7 +22,7 @@ const ProductsPage = props => {
   const {
     activeView,
     sidebarOpen,
-    getProducts,
+    
     setActiveView,
     setSidebarOpen,
   } = props
@@ -71,7 +71,7 @@ return new Array(arrLength).fill().map((item, index) => {
           store={store}
           dispatch={dispatch}
           activeView={activeView}
-          getProducts={getProducts}
+          // getProducts={getProducts}
           setActiveView={setActiveView}
           setSidebarOpen={setSidebarOpen}
         />
@@ -86,10 +86,8 @@ return new Array(arrLength).fill().map((item, index) => {
           <Fragment>
             <TableHover
               store={store}
-              dispatch={dispatch}
               activeView={activeView}
               products={store.products}
-              getProducts={getProducts}
 
             />
             <Pagination className='d-flex justify-content-center ecommerce-shop-pagination mt-2'>

@@ -1,11 +1,10 @@
 // ** Custom Components
-import AvatarGroup from "@components/avatar-group";
 import { Link } from "react-router-dom";
 
 // ** Images
 import defaultpPic from "../../../../assets/images/defalt.png";
 // ** Icons Imports
-import { MoreVertical, Edit, Trash } from "react-feather";
+import { MoreVertical, Edit, CheckCircle,XCircle,AlertOctagon ,Repeat} from "react-feather";
 
 // ** Reactstrap Imports
 import {
@@ -16,12 +15,42 @@ import {
   DropdownItem,
   DropdownToggle,
 } from "reactstrap";
+import { useMutation } from "@tanstack/react-query";
+import { editActiveCourse, editExpireCourse } from "../../../../core/Services/api/EditCourse";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { getProducts } from "../../ecommerce/store";
 
 const TableHover = (props) => {
-  const { store, products, dispatch, activeView, getProducts } = props;
+  const dispatch = useDispatch();
+  const { store, products, activeView } = props;
 
+  const editActiveMutation = useMutation({
+    mutationFn: (apiData) => editActiveCourse(apiData),
+    onSuccess: () => {
+      toast.success("تغییرات اعمال شد");
+      console.log("getProducts:", getProducts);
+      dispatch(getProducts(store.params));
+    },
+    onError: () => {
+      toast.error("خطایی رخ داد");
+      console.log("error", error);
+    },
+  });
+  const editExpireMutation = useMutation({
+    mutationFn: (apiData) => editExpireCourse(apiData),
+    onSuccess: () => {
+      toast.success("تغییرات اعمال شد");
+      console.log("getProducts:", getProducts);
+      dispatch(getProducts(store.params));
+    },
+    onError: () => {
+      toast.error("خطایی رخ داد");
+      console.log("error", error);
+    },
+  });
   return (
-    <Table hover responsive style={{marginTop:20}}>
+    <Table hover responsive style={{ marginTop: 20 }}>
       <thead>
         <tr>
           <th>عکس دوره</th>
@@ -38,27 +67,25 @@ const TableHover = (props) => {
         {products?.map((item) => (
           <tr key={item.id}>
             <td>
-            <Link to={`/apps/ecommerce/product-detail/${item.id}`}>
-
-              <img
-                className="me-75 rounded"
-                src={item.image || defaultpPic}
-                alt={item.name}
-                height="30"
-                width="30"
-              />
-            </Link>
-
+              <Link to={`/apps/ecommerce/product-detail/${item.id}`}>
+                <img
+                  className="me-75 rounded"
+                  src={item.image || defaultpPic}
+                  alt={item.name}
+                  height="30"
+                  width="30"
+                />
+              </Link>
             </td>
             {/* <Link to={`/apps/ecommerce/product-detail/${item.id}`}> */}
             <td className="fw-bold text-black">{item.name}</td>
             {/* </Link> */}
-            
+
             <td>
-            <p style={{ color: '#7367f0' }}>{item.miniDescribe}</p>
+              <p style={{ color: "#7367f0" }}>{item.miniDescribe}</p>
             </td>
             <td>
-            <p >{item.price}</p>
+              <p>{item.price}</p>
             </td>
             <td>
               <span>{item.fullName}</span>
@@ -76,16 +103,16 @@ const TableHover = (props) => {
             </td>
             <td>
               {item.isExpire ? (
-                <Badge pill color="light-danger" className="me-1" >
+                <Badge pill color="light-danger" className="me-1">
                   نامعتبر
                 </Badge>
               ) : (
                 <Badge pill color="light-success" className="me-1">
-                 معتبر
+                  معتبر
                 </Badge>
               )}
             </td>
-           
+
             <td>
               <UncontrolledDropdown>
                 <DropdownToggle
@@ -97,14 +124,57 @@ const TableHover = (props) => {
                   <MoreVertical size={15} />
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                    <Edit className="me-50" size={15} />{" "}
-                    <span className="align-middle">Edit</span>
-                  </DropdownItem>
-                  <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                    <Trash className="me-50" size={15} />{" "}
-                    <span className="align-middle">Delete</span>
-                  </DropdownItem>
+                  {item.active ? (
+                    <DropdownItem
+                      onClick={() =>
+                        editActiveMutation.mutate({
+                          active: false,
+                          id: item.id,
+                        })
+                      }
+                    >
+                      <XCircle className="me-50" size={15} />{" "}
+                      <span className="align-middle">غیر فعال کردن</span>
+                    </DropdownItem>
+                  ) : (
+                    <DropdownItem
+                      onClick={() =>
+                        editActiveMutation.mutate({
+                          active: true,
+                          id: item.id,
+                        })
+                      }
+                    >
+                      <CheckCircle className="me-50" size={15} />{" "}
+                      <span className="align-middle"> فعال کردن</span>
+                    </DropdownItem>
+                  )}
+                  {item.isExpire ? (
+                    <DropdownItem
+                      onClick={() =>
+                        editExpireMutation.mutate({
+                          active: false,
+                          id: item.id,
+                        })
+                      }
+                    >
+                      <Repeat className="me-50" size={15} />{" "}
+                      <span className="align-middle">فعال کردن مجدد</span>
+                    </DropdownItem>
+                  ) : (
+                    <DropdownItem
+                      onClick={() =>
+                        editExpireMutation.mutate({
+                          active: true,
+                          id: item.id,
+                        })
+                      }
+                    >
+                      <AlertOctagon className="me-50" size={15} />{" "}
+                      <span className="align-middle">منقضی کردن</span>
+                    </DropdownItem>
+                  )}
+                  
                 </DropdownMenu>
               </UncontrolledDropdown>
             </td>
