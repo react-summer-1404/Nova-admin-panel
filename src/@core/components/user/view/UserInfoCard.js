@@ -45,32 +45,32 @@ const genderOptions = [
 const MySwal = withReactContent(Swal)
 
 const UserInfoCard = ({ selectedUser }) => {
-  const defaultValues = {
-    userName: selectedUser?.userName || "",
-    lName: selectedUser?.lName || "",
-    fName: selectedUser?.fName || "",
-    gmail: selectedUser?.gmail|| "",
-    phoneNumber: selectedUser?.phoneNumber|| "",
-    gender : selectedUser?.gender ?? true,
-    active : selectedUser?.active ?? true,
-    id : selectedUser?.id || "",
-    recoveryEmail : selectedUser?.recoveryEmail ,
-    isDelete : selectedUser?.isDelete ?? false,
-    isTecher : selectedUser?.isTecher ?? false,
-    isStudent : selectedUser?.isStudent ?? false,
-    twoStepAuth : selectedUser?.twoStepAuth ?? false,
-    userAbout : selectedUser?.userAbout || "",
-    currentPictureAddress : selectedUser?.currentPictureAddress || "",
-    linkdinProfile : selectedUser?.linkdinProfile || "",
-    telegramLink : selectedUser?.telegramLink || "",
-    receiveMessageEvent : selectedUser?.receiveMessageEvent ?? false,
-    homeAdderess : selectedUser?.homeAdderess || "",
-    nationalCode : selectedUser?.nationalCode || "",
-    latitude : selectedUser?.latitude || "",
-    longitude : selectedUser?.longitude || "",
-    insertDate : selectedUser?.insertDate || "",
-    birthDay : selectedUser?.birthDay || "",
-  }
+  // const defaultValues = {
+  //   userName: selectedUser?.userName || "",
+  //   lName: selectedUser?.lName || "",
+  //   fName: selectedUser?.fName || "",
+  //   gmail: selectedUser?.gmail|| "",
+  //   phoneNumber: selectedUser?.phoneNumber|| "",
+  //   gender : selectedUser?.gender ?? true,
+  //   active : selectedUser?.active ?? true,
+  //   // id : selectedUser?.id || "",
+  //   // recoveryEmail : selectedUser?.recoveryEmail ,
+  //   // isDelete : selectedUser?.isDelete ?? false,
+  //   // isTecher : selectedUser?.isTecher ?? false,
+  //   // isStudent : selectedUser?.isStudent ?? false,
+  //   // twoStepAuth : selectedUser?.twoStepAuth ?? false,
+  //   // userAbout : selectedUser?.userAbout || "",
+  //   // currentPictureAddress : selectedUser?.currentPictureAddress || "",
+  //   // linkdinProfile : selectedUser?.linkdinProfile || "",
+  //   // telegramLink : selectedUser?.telegramLink || "",
+  //   // receiveMessageEvent : selectedUser?.receiveMessageEvent ?? false,
+  //   // homeAdderess : selectedUser?.homeAdderess || "",
+  //   // nationalCode : selectedUser?.nationalCode || "",
+  //   // latitude : selectedUser?.latitude || "",
+  //   // longitude : selectedUser?.longitude || "",
+  //   // insertDate : selectedUser?.insertDate || "",
+  //   // birthDay : selectedUser?.birthDay || "",
+  // }
 
   // ** State
   const [show, setShow] = useState(false)
@@ -81,14 +81,37 @@ const UserInfoCard = ({ selectedUser }) => {
   const {
     reset,
     control,
-    setError,
     handleSubmit,
-    formState: { errors }
-  } = useForm({defaultValues, mode: "onChange"});
+    formState: { errors, isValid }
+  } = useForm({defaultValues : {
+    userName: "",
+    lName: "",
+    fName: "",
+    gmail: "",
+    phoneNumber: "",
+    gender :true,
+    active : true,
+    birthDay : '',
+    insertDate: '',
+    role : '',
+  }, mode: "onChange"});
 
   useEffect(() => {
-    reset(defaultValues);
-  },[selectedUser]);
+    if (selectedUser) {
+      reset({
+        userName: selectedUser.userName || "",
+        lName: selectedUser.lName || "",
+        fName: selectedUser.fName || "",
+        gmail: selectedUser.gmail|| "",
+        phoneNumber: selectedUser.phoneNumber|| "",
+        gender : Boolean(selectedUser.gender) || false,
+        active : Boolean(selectedUser.active) ||  false,
+        birthDay : selectedUser.birthDay || "",
+        insertDate : selectedUser.insertDate || "",
+      });
+    }
+    
+  },[selectedUser, reset]);
 
   const {mutate: updateUser} = useUpdateUser({
     onSuccess : () => {      
@@ -99,28 +122,6 @@ const UserInfoCard = ({ selectedUser }) => {
         toast.error(error?.response?.data?.message || "خطا در ویرایش کاربر ")
     } 
   })
-  const validateForm = (data) => {
-    const isValid = Object.entries(data).every(([key, value]) =>{ 
-      if (typeof value === "string") return value.trim().length > 0;
-      if (typeof value === "boolean") return true;
-      return value !== null && value !== undefined;
-    });
-
-    if (!isValid){
-      for (const key in data) {
-        const value = data[key];
-        if (!value || (typeof value=== 'string' && value.trim().length === 0)) {
-          setError(key, {
-            type: 'manual',
-            message : 'این فیلد نمی تواند خالی باشد'
-          });
-        }
-      }      
-    }
-    return isValid;
-  }
-
-  // ** render user img
   const renderUserImg = () => {
     const picture = selectedUser?.currentPictureAddress;
     if (typeof picture === "string" && picture.trim().length > 0) {
@@ -156,15 +157,18 @@ const UserInfoCard = ({ selectedUser }) => {
   }
 
   const onSubmit = (formData) => {
-    if (!validateForm(formData)) {
-      toast.error('اطلاعات فرم معتبر نیست');
-      return;
-    }
+    const mappedRole = {
+      isStudent : String(formData.role === "student"),
+      isTecher : String(formData.role === "teacher"),
+    };
     const finalData = {
-      ...defaultValues,
       ...formData,
-      id : selectedUser.id
+      id : selectedUser.id,
+      gender : formData.gender === true,
+      active : formData.active === true,
+      ...mappedRole,
     }
+    console.log("sending :", finalData)
     updateUser(finalData);
   };
 
@@ -325,7 +329,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'نام الزامی است'}}
                   render={({ field }) => (
                     <>
-                    <Input {...field} defaultValue= {selectedUser?.fName} placeholder='نام را وارد کنید' />
+                    <Input {...field} placeholder='نام را وارد کنید' />
                     {errors.fName && <span>{errors.fName.message}</span>}
                     </>
                   )}
@@ -341,7 +345,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'نام خانوادگی الزامی است'}}
                   render={({ field }) => (
                     <>
-                    <Input {...field} defaultValue= {selectedUser?.lName} placeholder='نام خانوادگی را وارد کنید' />
+                    <Input {...field} placeholder='نام خانوادگی را وارد کنید' />
                     {errors.lName && <span>{errors.lName.message}</span>}
                     </>
                   )}
@@ -357,7 +361,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'نام کاربری الزامی است'}}
                   render={({ field }) => (
                     <>
-                      <Input {...field} defaultValue= {selectedUser?.userName} placeholder='نام کاربری را وارد کنید' />
+                      <Input {...field} placeholder='نام کاربری را وارد کنید' />
                       {errors.userName && <span>{errors.userName.message}</span>}
                     </>                  
                     )}
@@ -373,7 +377,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'ایمیل الزامی است'}}
                   render={({field}) => (
                     <>
-                    <Input {...field} defaultValue= {selectedUser?.gmail} placeholder='ایمیل را وارد کنید' />
+                    <Input {...field} placeholder='ایمیل را وارد کنید' />
                     {errors.gmail && <span>{errors.gmail.message}</span>}
                   </>
                   )}                  
@@ -387,9 +391,9 @@ const UserInfoCard = ({ selectedUser }) => {
                   name='active'
                   control={control}
                   render={({field}) => (
-                    <select {...field} className='form-control'>
+                    <select {...field} className='form-control' onChange={(e) => field.onChange(e.target.value === "true")}>
                       {statusOptions.map((opt) => (
-                        <option key={opt.value.toString()} value={opt.value}>
+                        <option key={opt.value.toString()} value={opt.value.toString()}>
                           {opt.label}
                         </option>
                       ))}                                    
@@ -405,9 +409,9 @@ const UserInfoCard = ({ selectedUser }) => {
                   name='gender'
                   control={control}
                   render={({field}) => (
-                    <select {...field} className='form-control'>
+                    <select {...field} className='form-control' onChange={(e) => field.onChange(e.target.value === "true")}> 
                       {genderOptions.map((opt) => (
-                        <option key={opt.value.toString()} value={opt.value}>
+                        <option key={opt.value.toString()} value={opt.value.toString()}>
                           {opt.label}
                         </option>
                       ))}                                    
@@ -425,13 +429,60 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'شماره موبایل الزامی است'}}
                   render={({field}) => (
                     <>
-                    <Input {...field} defaultValue= {selectedUser?.phoneNumber} placeholder='شماره موبایل را وارد کنید' />
+                    <Input {...field} placeholder='شماره موبایل را وارد کنید' />
                     {errors.phoneNumber && <span>{errors.phoneNumber.message}</span>}
                   </>
                   )}                  
                 />              
               </Col>
               <Col md={6} xs={12}>
+                <Label className='form-label' for='birthDay'>
+                  تاریخ تولد :
+                </Label>
+                <Controller
+                  name='birthDay'
+                  control={control}
+                  rules={{required: 'تارخ تولد الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} placeholder='شماره موبایل را وارد کنید' />
+                    {errors.birthDay && <span>{errors.birthDay.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='insertDate'>
+                  تاریخ درج:
+                </Label>
+                <Controller
+                  name='insertDate'
+                  control={control}
+                  render={({field}) => (
+                    <>
+                    <Input {...field} placeholder='تاریخ درج را وارد کنید' />
+                    {errors.insertDate && <span>{errors.insertDate.message}</span>}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='mappedRole'>
+                    نقش
+                </Label>
+                <Controller
+                  name='role'
+                  control={control}
+                  render={({field}) =>(        
+                    <select  id='mappedRole' className='form-control'
+                      {...field}>
+                      <option value='student'>دانش اموز </option>
+                      <option value='teacher'> معلم </option>
+                      </select>           
+                  )}
+                />        
+                </Col>
+              {/* <Col md={6} xs={12}>
                 <Label className='form-label' for='userAbout'>
                   درباره کاربر:
                 </Label>
@@ -447,22 +498,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   )}                  
                 />              
               </Col>
-              <Col md={6} xs={12}>
-                <Label className='form-label' for='insertDate'>
-                  تاریخ درج:
-                </Label>
-                <Controller
-                  name='insertDate'
-                  control={control}
-                  // rules={{required: 'شماره موبایل الزامی است'}}
-                  render={({field}) => (
-                    <>
-                    <Input {...field} defaultValue= {selectedUser?.insertDate?.slice(0,10)} placeholder='تاریخ درج را وارد کنید' />
-                    {errors.insertDate && <span>{errors.insertDate.message}</span>}
-                  </>
-                  )}                  
-                />              
-              </Col>
+              
               <Col md={6} xs={12}>
                 <Label className='form-label' for='nationalCode'>
                   کد ملی:
@@ -526,8 +562,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   </>
                   )}                  
                 />              
-              </Col>
-              
+              </Col>  */}             
               <Col xs={12} className='text-center mt-2 pt-50'>
                 <Button type='submit' className='me-1' color='primary'>
                   تایید و ارسال

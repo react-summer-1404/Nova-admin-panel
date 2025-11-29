@@ -62,8 +62,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
         const value = data[key];
         const isValid = value !== null && value !== undefined &&
         ( typeof value !== "string" || value.trim().length > 0) 
-        console.log(`${key} : ${isValid ? "ok" : "notOk"}`)
-              
+        console.log(`${key} : ${isValid ? "ok" : "notOk"}`)             
     }
     return
   } 
@@ -75,7 +74,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
     const mappedRole = {
       isStudent : String(data.role === "student"),
       isTeacher : String(data.role === "teacher"),
-      };
+    };
       const finalData ={
         ...data,
         ...mappedRole,
