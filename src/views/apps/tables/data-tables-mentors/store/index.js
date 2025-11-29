@@ -29,6 +29,7 @@ export const courseMentorSlice = createSlice({
       state.data = action.payload.map(item => ({
         id: item.id,
         courseId: item.courseId,
+        userId: item.userId,
         inserDate: item.inserDate,
         assistanceName:item.assistanceName,
       }))

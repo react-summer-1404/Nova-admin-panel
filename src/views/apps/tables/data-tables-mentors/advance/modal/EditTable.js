@@ -15,6 +15,7 @@ import {
   InputGroup,
   Input,
   InputGroupText,
+  Spinner,
 } from "reactstrap";
 
 // ** Reactstrap Imports
@@ -27,7 +28,7 @@ import {
   DropdownToggle,
 } from "reactstrap";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import {
   deleteGroup,
@@ -36,33 +37,42 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "../../store";
 import { Link } from "react-router-dom";
+import {
+  editMentor,
+  getMentorDetail,
+} from "../../../../../../core/Services/api/Mentor";
 // import { useSelector } from "react-redux";
 
-const EditTable = ({ data, courseId }) => {
+const EditTable = ({ data, courseId, store }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [centeredModal, setCenteredModal] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [detailId, setDetailId] = useState(false);
   const dispatch = useDispatch();
-  const teacherId = useSelector(
-    (state) => state.ecommerce.productDetail.teacherId
-  );
+
   const handleEditClick = (item) => {
     setSelectedItem(item);
     setCenteredModal(true);
   };
- 
-  const mutationEditSocialGroup = useMutation({
-    mutationFn: (apiData) => editGroup(apiData),
+  console.log(selectedItem);
+  const mutationEditMentor = useMutation({
+    mutationFn: (apiData) => editMentor(apiData),
     onError: (error) => {
       toast.error("خطایی رخ داد");
       console.log("error", error);
     },
     onSuccess: () => {
-      toast.success("گروه ویرایش شد");
+      toast.success("منتور انتخاب شد");
       dispatch(getData({ courseId }));
       setCenteredModal(!centeredModal);
     },
   });
-
+  const { data: detail,isLoading } = useQuery({
+    queryKey: ["detailMentor"],
+    queryFn: () => getMentorDetail(detailId),
+    enabled: !!detailId,
+    refetchOnWindowFocus: false,
+  });
   return (
     <>
       <Table hover responsive>
@@ -76,12 +86,16 @@ const EditTable = ({ data, courseId }) => {
         <tbody>
           {data?.map((item) => (
             <tr key={item.id}>
-              <td className="fw-bold text-black">{item.assistanceName}</td>
-              <td >
-               
-                {item.inserDate?.slice(0,10)}
-               
+              <td
+                className="fw-bold text-black"
+                onClick={() => {
+                  setModal(!modal);
+                  setDetailId(item.id);
+                }}
+              >
+                {item.assistanceName}
               </td>
+              <td>{item.inserDate?.slice(0, 10)}</td>
               <td>
                 <Button color="primary" onClick={() => handleEditClick(item)}>
                   <Edit className="me-50" size={15} />{" "}
@@ -92,6 +106,24 @@ const EditTable = ({ data, courseId }) => {
           ))}
         </tbody>
       </Table>
+      <Modal
+        isOpen={modal}
+        toggle={() => setModal(false)}
+        className="modal-dialog-centered"
+      >
+        <ModalHeader>جزئیات منتور</ModalHeader>
+        <ModalBody>
+          {isLoading ? (
+            <Spinner color="primary"/>
+          ) : detail ? (
+            <>
+              <p>تاریخ ثبت: {detail.inserDate?.slice(0, 10)}</p>
+            </>
+          ) : (
+            <p>اطلاعات یافت نشد</p>
+          )}
+        </ModalBody>
+      </Modal>
 
       {/* Modal */}
 
@@ -101,35 +133,35 @@ const EditTable = ({ data, courseId }) => {
         className="modal-dialog-centered"
       >
         <ModalHeader toggle={() => setCenteredModal(false)}>
-          ویرایش وضعیت
+          انتخاب منتور
         </ModalHeader>
 
         <ModalBody>
           {selectedItem && (
             <Formik
               initialValues={{
-                groupName: selectedItem.groupName,
-                groupLink: selectedItem.groupLink,
-                CourseId: courseId,
+                userId: selectedItem.userId,
+                courseId: courseId,
                 id: selectedItem.id,
               }}
               onSubmit={(values) => {
-                mutationEditSocialGroup.mutate(values);
-                console.log("values",values)
+                mutationEditMentor.mutate(values);
+                console.log("values", values);
               }}
             >
               {({ handleSubmit }) => (
                 <Form>
                   <Field
-                    name="groupName"
+                    as="select"
+                    name="userId"
                     className="form-control mb-1"
-                    placeholder="نام گروه'"
-                  />
-                  <Field
-                    name="groupLink"
-                    className="form-control mb-1"
-                    placeholder="لینک"
-                  />
+                  >
+                    {store?.map((s) => (
+                      <option key={s.id} value={s.userId}>
+                        {s.assistanceName}
+                      </option>
+                    ))}
+                  </Field>
 
                   <ModalFooter>
                     <Button color="primary" onClick={handleSubmit}>
