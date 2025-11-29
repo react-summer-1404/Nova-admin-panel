@@ -139,7 +139,6 @@ const closeActionModal = () => {
           >
             افزودن گروه
           </Button>
-          {/* <EditTable setModal={setModal} modal={modal} courseId={courseId}/> */}
           <CreateModal
             courseId={courseId}
             setCenteredModal={setCenteredModal}
@@ -149,15 +148,7 @@ const closeActionModal = () => {
       </Row>
 
       <div className="react-dataTable">
-        {/* <DataTable
-          columns={serverSideColumns(openActionModal)}
-          data={dataToRender}
-          sortIcon={<ChevronDown size={10} />}
-          className="react-dataTable"
-          pagination
-          paginationServer
-          paginationComponent={CustomPagination}
-        /> */}
+      
         <EditTable data={dataToRender} courseId={courseId}/>
       </div>
     </Card>

@@ -15,6 +15,7 @@ import DataTable from 'react-data-table-component'
 
 // ** Reactstrap Imports
 import { Card, CardHeader, CardTitle, Input, Label, Row, Col } from 'reactstrap'
+import EditTable from './modal/EditTable'
 
 const DataTableServerSide = () => {
   const dispatch = useDispatch()
@@ -109,7 +110,7 @@ const DataTableServerSide = () => {
       </Row>
 
       <div className='react-dataTable'>
-        <DataTable
+        {/* <DataTable
           columns={serverSideColumns}
           data={dataToRender}
           sortIcon={<ChevronDown size={10} />}
@@ -117,7 +118,8 @@ const DataTableServerSide = () => {
           pagination
           paginationServer
           paginationComponent={CustomPagination}
-        />
+        /> */}
+        <EditTable courseId={courseId} data={dataToRender}/>
       </div>
     </Card>
   )

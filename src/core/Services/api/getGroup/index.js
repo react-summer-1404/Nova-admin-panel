@@ -29,3 +29,12 @@ export const deleteGroup = async (formData) => {
   return response.data;
 };
 
+// social group
+export const createSocialGroup = async (apiData) => {
+  const response = await instance.post("/CourseSocialGroup", apiData);
+  return response.data;
+};
+export const editSocialGroup = async (apiData) => {
+  const response = await instance.put("/CourseSocialGroup", apiData);
+  return response.data;
+};
