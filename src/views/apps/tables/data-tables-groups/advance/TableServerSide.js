@@ -58,18 +58,7 @@ const DataTableServerSide = () => {
   const handlePagination = (page) => {
     setCurrentPage(page.selected + 1);
   };
-  const [actionModal, setActionModal] = useState(false);
-const [selectedRow, setSelectedRow] = useState(null);
-
-const openActionModal = (row) => {
-  setSelectedRow(row);
-  setActionModal(true);
-};
-
-const closeActionModal = () => {
-  setSelectedRow(null);
-  setActionModal(false);
-};
+ 
 
   // ** Custom Pagination
   const CustomPagination = () => {

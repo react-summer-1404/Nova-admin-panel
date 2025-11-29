@@ -2,7 +2,6 @@
 import { Fragment, useState, useEffect, memo } from 'react'
 
 // ** Table Columns
-import { serverSideColumns } from '../mentorData'
 
 // ** Store & Actions
 import { getData } from '../store'
@@ -14,8 +13,9 @@ import { ChevronDown } from 'react-feather'
 import DataTable from 'react-data-table-component'
 
 // ** Reactstrap Imports
-import { Card, CardHeader, CardTitle, Input, Label, Row, Col } from 'reactstrap'
+import { Card, CardHeader, CardTitle, Input, Label, Row, Col, Button } from 'reactstrap'
 import EditTable from './modal/EditTable'
+import CreateModal from './modal/CreateModal'
 
 const DataTableServerSide = () => {
   const dispatch = useDispatch()
@@ -24,6 +24,7 @@ const DataTableServerSide = () => {
   const newStore = store?.data?.filter(item=>item.courseId==courseId)
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
+  const [centeredModal, setCenteredModal] = useState(false)
 
   // ** Fetch data
   useEffect(() => {
@@ -84,10 +85,10 @@ const DataTableServerSide = () => {
         <CardTitle tag='h4'>منتور های دوره</CardTitle>
       </CardHeader>
 
-      <Row className='mx-0 mt-1 mb-50'>
+      <Row className='mx-0 mt-1 mb-50 d-flex justify-content-between'>
         <Col sm='6'>
           <div className='d-flex align-items-center'>
-            <Label for='sort-select'>show</Label>
+            <Label for='sort-select'></Label>
             <Input
               className='dataTable-select'
               type='select'
@@ -103,21 +104,27 @@ const DataTableServerSide = () => {
               <option value={75}>75</option>
               <option value={100}>100</option>
             </Input>
-            <Label for='sort-select'>entries</Label>
+            <Label for='sort-select'></Label>
           </div>
+        </Col>
+        <Col sm='2'>
+        <Button
+            color="primary "
+            onClick={() => setCenteredModal(!centeredModal)}
+          >
+            افزودن منتور
+          </Button>
+          <CreateModal
+            courseId={courseId}
+            setCenteredModal={setCenteredModal}
+            centeredModal={centeredModal}
+            store={store}
+          />
         </Col>
       </Row>
 
       <div className='react-dataTable'>
-        {/* <DataTable
-          columns={serverSideColumns}
-          data={dataToRender}
-          sortIcon={<ChevronDown size={10} />}
-          className='react-dataTable'
-          pagination
-          paginationServer
-          paginationComponent={CustomPagination}
-        /> */}
+
         <EditTable courseId={courseId} data={dataToRender} store={store?.data}/>
       </div>
     </Card>
