@@ -40,7 +40,7 @@ const TabsIcons = () => {
   };
   return (
     <Fragment>
-      <Nav tabs >
+      <Nav pills>
         <NavItem>
           <NavLink
             active={active === "7"}

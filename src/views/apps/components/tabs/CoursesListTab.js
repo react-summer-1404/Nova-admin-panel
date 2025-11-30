@@ -64,7 +64,7 @@ const CoursesListTab = (props) => {
   // console.log("pays",pays)
   return (
     <Fragment>
-      <Nav tabs  fill style={{marginBottom:30}}>
+      <Nav  pills justified style={{marginBottom:30}}>
         <NavItem>
           <NavLink
             active={active === "1"}

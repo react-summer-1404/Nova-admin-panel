@@ -13,12 +13,7 @@ export default [
     icon: <User size={20} />,
     navLink: "/list",
   },
-  {
-    id: "buildings",
-    title: "ساختمان ها ",
-    icon: <Home size={20} />,
-    navLink: "/building",
-  },
+  
   {
     id: "secondPage",
     title: "Second Page",
@@ -104,5 +99,11 @@ export default [
     title: "دپارتمان",
     icon: <Briefcase  size={12} />,
     navLink: "/apps/ecommerce/Department",
+  },
+  {
+    id: "buildings",
+    title: "ساختمان ها ",
+    icon: <Home size={20} />,
+    navLink: "/building",
   },
 ];
