@@ -6,6 +6,7 @@ import BlankLayout from "@layouts/BlankLayout";
 import VerticalLayout from "@src/layouts/VerticalLayout";
 import HorizontalLayout from "@src/layouts/HorizontalLayout";
 import LayoutWrapper from "@src/@core/layouts/components/layout-wrapper";
+// import '@src/@fake-db';
 
 // ** Route Components
 import PublicRoute from "@components/routes/PublicRoute";
@@ -36,6 +37,25 @@ const Sample = lazy(() => import("../../pages/Sample"));
 const UsersList = lazy(() => import("../../@core/components/user/list"));
 const UserView = lazy(() => import("../../@core/components/user/view"));
 const Buildings = lazy(() => import("../../@core/components/Building/list"));
+const EcommerceShop = lazy(() => import('../../views/apps/ecommerce/courses'))
+const EcommerceDetail = lazy(() => import('../../views/apps/ecommerce/detail'))
+const EcommerceCheckout = lazy(() => import('../../views/apps/ecommerce/checkout'))
+const TechManagement = lazy(() => import('../../views/apps/ecommerce/techManagement'))
+const StatusManagement = lazy(() => import('../../views/apps/ecommerce/statusManagement'))
+const LevelManagement = lazy(() => import('../../views/apps/ecommerce/levelMangement'))
+const CourseUserList = lazy(() => import('../../views/apps/ecommerce/useList'))
+const ClassManagement = lazy(() => import('../../views/apps/ecommerce/classManagement'))
+const TermManagement = lazy(() => import('../../views/apps/ecommerce/termManagement'))
+const TasksManagement = lazy(() => import('../../views/apps/ecommerce/TasksManagement'))
+const Department = lazy(() => import('../../views/apps/department'))
+
+
+const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
+const DTAdvance2 = lazy(() => import('../../views/apps/tables/data-tables-user/advance'))
+const DTAdvance3 = lazy(() => import('../../views/apps/tables/data-tables-groups/advance'))
+const DTAdvance4 = lazy(() => import('../../views/apps/tables/data-tables-payment/advance'))
+const DTAdvance5 = lazy(() => import('../../views/apps/tables/data-tables-socialGroups/advance'))
+const DTAdvance6 = lazy(() => import('../../views/apps/tables/data-tables-mentors/advance'))
 
 // ** Merge Routes
 const Routes = [
@@ -96,6 +116,116 @@ const Routes = [
     meta: {
       layout: "blank",
     },
+  },
+  
+  
+  {
+    element: <EcommerceShop />,
+    path: '/apps/ecommerce/courses',
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+ 
+  {
+    path: '/apps/ecommerce/product-detail',
+    meta: {
+      className: '/apps/ecommerce/product-detail'
+    }
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance2 />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance3 />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance4 />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance5 />
+  },
+  {
+    path: '/datatables/advance',
+    element: <DTAdvance6 />
+  },
+  {
+    path: '/apps/ecommerce/product-detail/:id',
+    element: <EcommerceDetail />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/createCourse',
+    element: <EcommerceCheckout />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/techManagement',
+    element: <TechManagement />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/statusManagement',
+    element: <StatusManagement />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/levelManagement',
+    element: <LevelManagement />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/useList',
+    element: <CourseUserList />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/classList',
+    element: <ClassManagement />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/termList',
+    element: <TermManagement />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/taskList',
+    element: <TasksManagement />,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/apps/ecommerce/Department',
+    element: <Department />,
+    meta: {
+      className: 'ecommerce-application'
+    }
   },
   {
     path: "*",
