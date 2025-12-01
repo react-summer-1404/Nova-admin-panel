@@ -55,10 +55,11 @@ const EditModal = ({isOpen, toggle, data}) => {
     const onSubmit = (formdata) => {
         const finalData = {
         ...formdata,
-        id : formdata.id,
+        id : data?.id,
         floor : Number(formdata.floor),
         active : formdata.active === true
     };
+        console.log("ایدی ساختمان", data?.id);
         console.log("sending :", finalData);
         updateBuilding(finalData);
         toggle();

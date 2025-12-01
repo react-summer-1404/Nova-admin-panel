@@ -1,6 +1,6 @@
 import React from 'react'
 import { useBuildingDetail } from '../../../core/Hook/useQUserApi'
-import { Button, Col, Label, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 
 const DetailModal = ({toggle, isOpen, buildingId}) => {
     const {data} = useBuildingDetail(buildingId);
