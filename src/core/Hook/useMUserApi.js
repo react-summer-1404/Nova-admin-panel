@@ -29,6 +29,7 @@ export const useDeleteUser = (onSuccess) =>
         mutationFn: async (id) => {
         const response = await DeleteUser(id);
         console.log("delete user response ==>", response);
+        onSuccess
         },
     });
 

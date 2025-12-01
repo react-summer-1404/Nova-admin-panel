@@ -263,11 +263,11 @@ const InvoiceList = () => {
         )
       );
       toast.success(
-        variables.active ? 'ساختمان فعال شد' : 'ساختمان غیر فعال شد'
+        variables.active ? 'ساختمان غیر فعال شد' : 'ساختمان فعال شد'
       )
     },
     onError : () => {
-      toast.error('خطا ئر تغییر وضعیت ساختمان');
+      toast.error('خطا در تغییر وضعیت ساختمان');
     }
 });
 

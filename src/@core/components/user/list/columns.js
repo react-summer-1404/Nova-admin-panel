@@ -123,32 +123,23 @@ export const columns = ({handleDelete}) => [
     name: 'عملیات',
     minWidth: '80px',
     cell: row => (
-      <div className='column-action'>
-        <UncontrolledDropdown>
-          <DropdownToggle tag='div' className='btn btn-sm'>
-            <MoreVertical size={14} className='cursor-pointer' />
-          </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem
-              
-              className='w-100'
-                       
-            >
-              <FileText size={14} className='me-50' />
-              <span className='align-middle'>جزییات</span>
-            </DropdownItem>
-            <DropdownItem tag={Link} to= {`user/edit/${row.id}`}>
-              <Archive size={14} className='me-50' />
-              <span className='align-middle'>ویرایش</span>
-            </DropdownItem>
-            <DropdownItem
-              onClick={() => handleDelete(row)} className='w-100'
-            >
-              <Trash2 size={14} className='me-50' />
-              <span className='align-middle'>حذف</span>
-            </DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
+      // <div className='column-action'>
+      //   <UncontrolledDropdown>
+      //     <DropdownToggle tag='div' className='btn btn-sm'>
+      //       <MoreVertical size={14} className='cursor-pointer' />
+      //     </DropdownToggle>
+      //     <DropdownMenu>
+      //       <DropdownItem
+      //         onClick={() => handleDelete(row)} className='w-100'
+      //       >
+      //         <Trash2 size={14} className='me-50' />
+      //         <span className='align-middle'>حذف</span>
+      //       </DropdownItem>
+      //     </DropdownMenu>
+      //   </UncontrolledDropdown>
+      // </div>
+      <div onClick={() => handleDelete(row)} className='w-100'>
+        <Trash2 size={14} className='me-50' />
       </div>
     )
   }
