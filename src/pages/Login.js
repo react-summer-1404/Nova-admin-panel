@@ -2,7 +2,7 @@
 import { useSkin } from "@hooks/useSkin";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { Field, Formik, Form, ErrorMessage } from "formik";
+import { Field, Formik, Form, ErrorMessage } from 'formik'
 
 // ** Icons Imports
 import { Facebook, Twitter, Mail, GitHub } from "react-feather";

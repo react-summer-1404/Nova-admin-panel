@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider,QueryClient } from "@tanstack/react-query";
 
 // ** Router Import
 import Router from "./router/Router";

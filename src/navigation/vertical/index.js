@@ -1,5 +1,8 @@
 import { Mail, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User } from "react-feather";
+// ** Navigation imports
+import pages from "./pages"
 
+// ** Merge & Export
 export default [
   {
     id: "home",
@@ -106,4 +109,5 @@ export default [
     icon: <Home size={20} />,
     navLink: "/building",
   },
+  ...pages
 ];
