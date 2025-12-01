@@ -1,4 +1,4 @@
-import { Mail, Home, Airplay, Circle,Users, User } from "react-feather";
+import { Mail, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User } from "react-feather";
 
 export default [
   {
@@ -13,12 +13,7 @@ export default [
     icon: <User size={20} />,
     navLink: "/list",
   },
-  {
-    id: "buildings",
-    title: "ساختمان ها ",
-    icon: <Home size={20} />,
-    navLink: "/building",
-  },
+  
   {
     id: "secondPage",
     title: "Second Page",
@@ -29,7 +24,6 @@ export default [
     id: "smaplePage",
     title: "Sample Page",
     icon: <Airplay size={20} />,
-    // navLink: "/sample",
     children: [
       {
         id: "invoiceList",
@@ -38,5 +32,78 @@ export default [
         navLink: "/apps/invoice/list",
       },
     ],
+  },
+  {
+    id: "eCommerce",
+    title: "مدیریت دوره ها",
+    icon: <BookOpen size={20} />,
+    children: [
+      {
+        id: "shop",
+        title: "لیست دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/courses",
+      },
+      {
+        id: "checkout",
+        title: "ساخت دوره",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/createCourse",
+      },
+      {
+        id: "techList",
+        title: " تکنولوژی دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/techManagement",
+      },
+      {
+        id: "statusList",
+        title: " وضعیت دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/statusManagement",
+      },
+      {
+        id: "statusList",
+        title: " سطح دوره ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/levelManagement",
+      },
+      {
+        id: "statusList",
+        title: "لیست کاربران",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/useList",
+      },
+      {
+        id: "classList",
+        title: "لیست کلاس ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/classList",
+      },
+      {
+        id: "classList",
+        title: "ترم ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/termList",
+      },
+      {
+        id: "TermList",
+        title: "  تسک ها",
+        icon: <Circle size={12} />,
+        navLink: "/apps/ecommerce/TaskList",
+      },
+    ],
+  },
+  {
+    id: "departmentList",
+    title: "دپارتمان",
+    icon: <Briefcase  size={12} />,
+    navLink: "/apps/ecommerce/Department",
+  },
+  {
+    id: "buildings",
+    title: "ساختمان ها ",
+    icon: <Home size={20} />,
+    navLink: "/building",
   },
 ];
