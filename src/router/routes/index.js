@@ -56,6 +56,11 @@ const DTAdvance3 = lazy(() => import('../../views/apps/tables/data-tables-groups
 const DTAdvance4 = lazy(() => import('../../views/apps/tables/data-tables-payment/advance'))
 const DTAdvance5 = lazy(() => import('../../views/apps/tables/data-tables-socialGroups/advance'))
 const DTAdvance6 = lazy(() => import('../../views/apps/tables/data-tables-mentors/advance'))
+const BlogList = lazy(() => import('./../../views/pages/blogs/list/index'))
+const BlogEdit = lazy(() => import('../../views/pages/blogs/addBlogs/index'))
+const BlogDetails = lazy(() => import('../../views/pages/blogs/details/index'))
+const Comments = lazy(() => import('../../views/pages/comments/index'))
+
 
 // ** Merge Routes
 const Routes = [
@@ -109,6 +114,30 @@ const Routes = [
     meta: {
       layout: "blank",
     },
+  },
+  {
+    path: '/pages/blog/list',
+    element: <BlogList />
+  },
+  {
+    path: '/pages/blog/detail/:id',
+    element: <BlogDetails />
+  },
+  {
+    path: '/pages/blog/detail',
+    element: <Navigate to='/pages/blog/detail/1' />
+  },
+  {
+    path: '/pages/blog/edit/:id',
+    element: <BlogEdit />
+  },
+  {
+    path: '/pages/blog/edit',
+    element: <Navigate to='/pages/blog/edit/1' />
+  },
+  {
+    path: '/pages/comments',
+    element: <Comments />
   },
   {
     path: "/error",
