@@ -366,7 +366,7 @@ const InvoiceList = () => {
             </DropdownToggle>
             <DropdownMenu end>
               <DropdownItem className='w-100' onClick={() => {setSelectedRow(row.id);
-                 setShowDetailModal(true)}}>
+                setShowDetailModal(true)}}>
                 <FileText size={14} className='me-50' />
                 جزئیات
               </DropdownItem>
