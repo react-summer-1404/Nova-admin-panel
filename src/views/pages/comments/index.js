@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Fragment, useState, useEffect } from "react";
 
 // ** Instance
-import instance from './../../../core/interseptor/Interseptor';
+import instance from "./../../../core/interseptor/Interseptor";
 
 // ** Third Party Components
 import classnames from "classnames";
@@ -15,6 +15,7 @@ import { selectThemeColors } from "@utils";
 // ** Custom Components
 import Sidebar from "../blogs/BlogSidebar";
 import Avatar from "@components/avatar";
+import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
 
 // ** Reactstrap Imports
 import {
@@ -38,154 +39,158 @@ import {
 // ** Styles
 import "@styles/base/pages/page-blog.scss";
 import { useDebounce } from "use-debounce";
-import Tables from "../../tables/reactstrap";
+import Tables from "../../tables/reactstrap/blogTable";
+import CommentTables from "../../tables/reactstrap/commentTable";
 
+// ** Icons
 
-const sortOption1 = [
-  { value: { col: "insertDate", type: "DESC" }, label: "جدیدترین" },
-  { value: { col: "insertDate", type: "ASC" }, label: "قدیمی ترین ها" },
-  { value: { col: "currentView", type: "DESC" }, label: "پربازدیدترین ها" },
-  { value: { col: "newsRate", type: "DESC" }, label: "محبوب ترین ها" },
+// const sortOption1 = [
+//   { value: { col: "insertDate", type: "DESC" }, label: "جدیدترین" },
+//   { value: { col: "insertDate", type: "ASC" }, label: "قدیمی ترین ها" },
+// ];
+
+// const sortOption2 = [
+//   { value: { col: "currentView", type: "DESC" }, label: "پربازدیدترین ها" },
+//   { value: { col: "newsRate", type: "DESC" }, label: "محبوب ترین ها" },
+// ];
+
+const sortType = [
+  { label: "ascending", key: "asc" },
+  { label: "Descending", key: "desc" },
 ];
 
-const BlogList = () => {
+const sortCol1 = [
+  { key: "Approved", label: "تایید شده" },
+  { key: "Pending", label: "تایید نشده" },
+];
+const sortCol2 = [{ key: "Approved", label: "تعداد ریپلای" }];
+const sortCol3 = [
+  { key: "Approved", label: "تایید شده" },
+  { key: "Pending", label: "تایید نشده" },
+];
+
+const Comments = () => {
   // ** States
   const [data, setData] = useState(null);
-  const [blogId, detBlogId] = useState(null);
+  const [commentId, detCommentId] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [rowsOfthePage, setRowsOfthePage] = useState(10);
-  const [selectedSort, setSelectedSort] = useState(sortOption1[0]);
+  const [selectedSort, setSelectedSort] = useState();
   const [searchInput, setSearchInput] = useState("");
   const [searchDelay] = useDebounce(searchInput, 500);
 
   const apiParams = {
-    NewsCategoryId: blogId,
+    NewsCategoryId: commentId,
     RowsOfPage: rowsOfthePage,
     PageNumber: pageNumber,
     Query: searchDelay,
-    SortType: selectedSort?.value?.type,
-    SortingCol: selectedSort?.value?.col,
+    SortType: selectedSort?.sortType?.key,
+    SortingCol: selectedSort?.sortCol?.key,
   };
 
   useEffect(() => {
     instance
-      .get("/News/AdminNewsFilterList", { params: apiParams })
+      .get("/Course/CommentManagment", { params: apiParams })
       .then((res) => {
         console.log(res.data);
         setData(res.data);
       });
   }, [searchDelay, selectedSort]);
 
-  const badgeColorsArr = {
-    Quote: "light-info",
-    Fashion: "light-primary",
-    Gaming: "light-danger",
-    Video: "light-warning",
-    Food: "light-success",
-  };
-  const renderRenderList = () => {
-    return data?.news?.map((item) => {
-      const renderTags = () => {
-        const tags = item?.keyword?.split(" ");
-        return tags.map((tag, index) => {
-          return (
-            <a key={index} href="/" onClick={(e) => e.preventDefault()}>
-              <Badge
-                className={classnames({
-                  "me-50": index !== item?.keyword?.length - 1,
-                })}
-                color={badgeColorsArr[tag]}
-                pill
-              >
-                {tag}
-              </Badge>
-            </a>
-          );
-        });
-      };
+  const tableHeaderList = [
+    "کاربر",
+    "عنوان کامنت",
+    "توضیحات کامنت",
+    "نام دوره",
+    "وضعیت",
+    "پاسخ ها",
+    "عملیات",
+  ];
 
-      return (
-        <Col key={item.title} md="6">
-          <Card>
-            <Link to={`/pages/blog/detail/${item.id}`}>
-              <CardImg
-                className="img-fluid"
-                src={item.currentImageAddress || HandleImgError}
-                onError={(e) => (e.target.src = HandleImgError)}
-                alt={item.title}
-                top
-              />
-            </Link>
-            <CardBody>
-              <CardTitle tag="h4">
-                <Link
-                  className="blog-title-truncate text-body-heading"
-                  to={`/pages/blog/detail/${item.id}`}
-                >
-                  {item.title}
-                </Link>
-              </CardTitle>
-              <div className="d-flex">
-                <Avatar
-                  className="me-50"
-                  img={item.addUserProfileImage}
-                  imgHeight="24"
-                  imgWidth="24"
-                />
-                <div>
-                  <small className="text-muted me-25">by</small>
-                  <small>
-                    <a
-                      className="text-body"
-                      href="/"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      {item.addUserFullName}
-                    </a>
-                  </small>
-                  <span className="text-muted ms-50 me-25">|</span>
-                  <small className="text-muted">{item.updateDate}</small>
-                </div>
-              </div>
-              <div className="my-1 py-25">{renderTags()}</div>
-              <CardText className="blog-content-truncate">
-                {item.miniDescribe}
-              </CardText>
-              <hr />
-              <div className="d-flex justify-content-between align-items-center">
-                <Link to={`/pages/blog/detail/${item.id}`}>
-                  <MessageSquare size={15} className="text-body me-50" />
-                  <span className="text-body fw-bold">
-                    {item.comment} Comments
-                  </span>
-                </Link>
-                <Link className="fw-bold" to={`/pages/blog/detail/${item.id}`}>
-                  Read More
-                </Link>
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      );
-    });
-  };
+  console.log(data?.comments[0]?.accept);
+  const approvedCommentCount = data?.comments?.filter(
+    (appc) => appc.accept === true
+  )?.length;
+
+  const notApprovedCommentCount = data?.comments?.filter(
+    (nappc) => nappc.accept === false
+  ).length;
 
   return (
     <Fragment>
-      <Row className="w-50 content-header row">
-        <Col className="mb-1" md="6" sm="12">
+      <Row className="w-100 content-header row">
+        <Col className="d-flex gap-2 justify-content-between">
+          {/* Stats With Icons Horizontal */}
+          <StatsHorizontal
+            icon={<Icon.Send size={21} />}
+            color="primary"
+            stats={data?.totalCount}
+            statTitle="مجموع نظرات"
+          />
+
+          <StatsHorizontal
+            icon={<Icon.Check size={21} />}
+            color="success"
+            stats={approvedCommentCount}
+            statTitle="نظرات تایید شده"
+          />
+
+          <StatsHorizontal
+            icon={<Icon.XCircle size={21} />}
+            color="danger"
+            stats={notApprovedCommentCount}
+            statTitle="نظرات تایید نشده"
+          />
+
+          {/* Stats With Icons Horizontal */}
+        </Col>
+      </Row>
+      <Row className="w-100 content-header row">
+        <Col className="mb-1" md="4" sm="4">
           <Label className="form-label">مرتب سازی بر اساس</Label>
           <Select
             theme={selectThemeColors}
             className="react-select"
             classNamePrefix="select"
-            defaultValue={sortOption1[1]}
+            // defaultValue={sortOption1[1]}
             value={selectedSort}
             onChange={(option) => {
               setSelectedSort(option);
             }}
             name="clear"
-            options={sortOption1}
+            options={sortCol1}
+            isClearable
+          />
+        </Col>
+        <Col className="mb-1" md="4" sm="4">
+          <Label className="form-label">مرتب سازی بر اساس</Label>
+          <Select
+            theme={selectThemeColors}
+            className="react-select"
+            classNamePrefix="select"
+            // defaultValue={sortOption2[1]}
+            value={selectedSort}
+            onChange={(option) => {
+              setSelectedSort(option);
+            }}
+            name="clear"
+            options={sortCol2}
+            isClearable
+          />
+        </Col>
+        <Col className="mb-1" md="4" sm="4">
+          <Label className="form-label">مرتب سازی بر اساس</Label>
+          <Select
+            theme={selectThemeColors}
+            className="react-select"
+            classNamePrefix="select"
+            // defaultValue={sortOption2[1]}
+            value={selectedSort}
+            onChange={(option) => {
+              setSelectedSort(option);
+            }}
+            name="clear"
+            options={sortCol3}
             isClearable
           />
         </Col>
@@ -205,19 +210,23 @@ const BlogList = () => {
             </InputGroupText>
           </InputGroup>
         </div>
-        <div className="content-detached content-left">
+        <div className="content-detached">
           <div className="content-body">
             {data !== null ? (
               <div className="blog-list-wrapper">
-                <Tables blogId={blogId} blogsData={data}/>
+                <CommentTables
+                  apiData={data}
+                  dataId={commentId}
+                  thList={tableHeaderList}
+                />
               </div>
             ) : null}
           </div>
         </div>
       </div>
-      <Sidebar blogId={blogId} blogsData={data}/>
+      {/* <Sidebar blogId={blogId} blogsData={data} /> */}
     </Fragment>
   );
 };
 
-export default BlogList;
+export default Comments;

@@ -24,7 +24,7 @@ export default [
             navLink: "/pages/blog/detail",
           },
           {
-            id: "blogEdit",
+            id: "addBlogs",
             title: "افزودن اخبار و مقالات",
             permissions: ["admin", "editor"],
             navLink: "/pages/blog/edit",

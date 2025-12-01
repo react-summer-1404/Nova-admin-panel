@@ -34,7 +34,7 @@ const ForgotPassword = lazy(() => import("../../pages/ForgotPassword"));
 const Error = lazy(() => import("../../pages/Error"));
 const Sample = lazy(() => import("../../pages/Sample"));
 const BlogList = lazy(() => import('./../../views/pages/blogs/list/index'))
-const BlogEdit = lazy(() => import('../../views/pages/blogs/edit/index'))
+const BlogEdit = lazy(() => import('../../views/pages/blogs/addBlogs/index'))
 const BlogDetails = lazy(() => import('../../views/pages/blogs/details/index'))
 const Comments = lazy(() => import('../../views/pages/comments/index'))
 

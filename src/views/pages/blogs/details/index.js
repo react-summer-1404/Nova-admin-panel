@@ -52,6 +52,7 @@ import cmtImg from "@src/assets/images/portrait/small/avatar-s-6.jpg";
 import { useParams } from "react-router-dom";
 import EditUserExample from "../../../modal-examples/EditBlog";
 import EditBlogExample from "../../../modal-examples/EditBlog";
+import BlogDetailSidebar from "./BlogDetailSidebar";
 
 const BlogDetails = () => {
   // ** States
@@ -178,7 +179,6 @@ const BlogDetails = () => {
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="d-flex align-items-center">
                           <div className="d-flex align-items-cente">
-                            <EditBlogExample />
                             {/* <a href="/" onClick={(e) => e.preventDefault()}>
                               <div className="text-body align-middle">
                                 {data.news?.bookmarked}
@@ -224,7 +224,7 @@ const BlogDetails = () => {
             ) : null}
           </div>
         </div>
-        <Sidebar />
+        <BlogDetailSidebar />
       </div>
     </Fragment>
   );

@@ -2,8 +2,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import {
   Card,
-  CardHeader,
-  CardTitle,
   CardBody,
   Row,
   Col,
@@ -25,7 +23,6 @@ const MultipleColumnForm = ({blogId}) => {
   // console.log(blogId)
   if(blogId) {
     instance.get(`/News/${blogId}`).then(res => {
-      console.log(res.data)
       setInitialData(res.data)})
   }
  },[blogId])

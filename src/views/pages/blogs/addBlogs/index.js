@@ -5,10 +5,7 @@ import { Fragment } from 'react'
 import { Row, Col } from 'reactstrap'
 
 // ** Demo Components
-import WizardModern from './WizardModern'
-import WizardVertical from './WizardVertical'
-import AddBlogsWizardHorizontal from './AddBlogsWizardHorizontal'
-import WizardModernVertical from './WizardModernVertical'
+import AddBlogsWizardHorizontal from './../../../forms/wizard/AddBlogsWizardHorizontal';
 
 // ** Custom Components
 import BreadCrumbs from '@components/breadcrumbs'
