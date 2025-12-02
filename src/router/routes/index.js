@@ -49,7 +49,6 @@ const TermManagement = lazy(() => import('../../views/apps/ecommerce/termManagem
 const TasksManagement = lazy(() => import('../../views/apps/ecommerce/TasksManagement'))
 const Department = lazy(() => import('../../views/apps/department'))
 
-
 const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
 const DTAdvance2 = lazy(() => import('../../views/apps/tables/data-tables-user/advance'))
 const DTAdvance3 = lazy(() => import('../../views/apps/tables/data-tables-groups/advance'))
@@ -86,14 +85,14 @@ const Routes = [
     element: <Buildings />,
     path: '/building'
   },
-  {
-    path: "/sample",
-    element: <Sample />,
-  },
-  {
-    path: "/second-page",
-    element: <SecondPage />,
-  },
+  // {
+  //   path: "/sample",
+  //   element: <Sample />,
+  // },
+  // {
+  //   path: "/second-page",
+  //   element: <SecondPage />,
+  // },
   {
     path: "/login",
     element: <Login />,
