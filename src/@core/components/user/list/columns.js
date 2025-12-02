@@ -30,18 +30,22 @@ const renderClient = row => {
 const renderRole = role => {
   const roleObj = {
     student: {
+      label : "دانش اموز",
       class : 'text-primary',
       icon: User
     },
     teacher: {
+      label:"معلم" ,
       class : 'text-success',
       icon: BookOpen
     },
     SuperAdmin: {
+      label: "مدیر کل",
       class : 'text-warning',
       icon: Shield
     },
     admin: {
+      label: "مدیر",
       class : 'text-danger',
       icon: Slack
     }
@@ -49,11 +53,12 @@ const renderRole = role => {
 
   const Icon = roleObj[role] ?.icon || User
   const iconClass = roleObj[role] ?.class || "text-secondary"
+  const label = roleObj[role]?.label || "نامشخص"
 
   return (
-    <span key={role} className ='text-truncate text-capitalize align-middle'>
-      <Icon size={18} className ={`${iconClass} me-50`} />
-      {role}
+    <span key={role} className ='d-inline-flex align-items-center me-1' style={{whiteSpace:'nowrap'}}>
+      <Icon size={16} className ={iconClass} />
+      <span className='fw-bold ms-1'> {label}</span>
     </span>
   )
 }
@@ -61,7 +66,6 @@ const renderRole = role => {
 const statusObj = {  
   true: 'light-success',
   false: 'light-warning',
-  // inactive: 'light-secondary'
 }
 
 export const columns = ({handleDelete}) => [
@@ -91,7 +95,7 @@ export const columns = ({handleDelete}) => [
     sortable: true,
     minWidth: '390px',
     sortField: 'roles',
-    selector: row => row.roles.join(", "),
+    // selector: row => row.roles.join(", "),
     cell: row => (
     <div className='d-flex, flex-column'>
       {row.roles.map(role => renderRole(role))}
@@ -123,21 +127,6 @@ export const columns = ({handleDelete}) => [
     name: 'عملیات',
     minWidth: '80px',
     cell: row => (
-      // <div className='column-action'>
-      //   <UncontrolledDropdown>
-      //     <DropdownToggle tag='div' className='btn btn-sm'>
-      //       <MoreVertical size={14} className='cursor-pointer' />
-      //     </DropdownToggle>
-      //     <DropdownMenu>
-      //       <DropdownItem
-      //         onClick={() => handleDelete(row)} className='w-100'
-      //       >
-      //         <Trash2 size={14} className='me-50' />
-      //         <span className='align-middle'>حذف</span>
-      //       </DropdownItem>
-      //     </DropdownMenu>
-      //   </UncontrolledDropdown>
-      // </div>
       <div onClick={() => handleDelete(row)} className='w-100'>
         <Trash2 size={14} className='me-50' />
       </div>
