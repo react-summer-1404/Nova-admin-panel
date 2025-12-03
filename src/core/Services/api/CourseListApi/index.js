@@ -4,7 +4,7 @@ export const getReserveListUsers = async () => {
   return response.data;
 };
 export const listCoursePayment = async () => {
-  const response = await instance.get("/CoursePayment");
+  const response = await instance.get("/CoursePayment/ListOfWhoIsPay");
   return response.data;
 };
 export const listMyCourse = async (apiParams) => {
