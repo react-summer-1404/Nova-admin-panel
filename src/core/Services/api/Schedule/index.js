@@ -26,16 +26,6 @@ export const AddSchedualSingle = async (currentCurseId, apiData) => {
   );
   return response.data;
 };
-export const AddSchedualSingle = async (currentCurseId, apiData) => {
-  const response = await instance.post(
-    "/Schedual/AddSchedualSingle/",
-    apiData,
-    {
-      params: { currentCurseId }
-    }
-  );
-  return response.data;
-};
 export const EditSchedualSingle = async ( apiData) => {
   const response = await instance.put(
     "/Schedual/LockToRiase",
