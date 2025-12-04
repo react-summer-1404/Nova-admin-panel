@@ -23,39 +23,6 @@ const CommentColumns = [
     },
 ]
 
-const acceptActionColumns = {
-    name : "اقدام " ,
-        selector : row =>(
-            <div className='d-flex gap-1'>
-                <span  onClick={() => handleNotImplemented("حذف",row.id)}>
-                    حذف <Delete size={15}/>
-                </span>
-                <span  onClick={() => handleNotImplemented("رد",row.id)}>
-                    رد <Edit3 size={15}/>
-                </span>
-            </div>
-        ),
-        // button : true
-};
-
-const pendingActionColumns = {
-    name : "اقدام " ,
-        selector : row =>(
-            <div className='d-flex gap-1'>
-                <span onClick={() => handleNotImplemented("حذف",row.id)}> 
-                    حذف <Delete size={15}/>
-                </span>
-                <span onClick={() => handleNotImplemented("پذیرش",row.id)}> 
-                    پذیرش <Edit3 size={15}/>
-                </span>
-            </div>
-        ),
-        
-}
-
-const acceptedColumns = [...CommentColumns, acceptActionColumns];
-const pendingColumns = [...CommentColumns, pendingActionColumns]
-
 const CommentTable = ({userId}) => {
 
     const {
@@ -85,20 +52,19 @@ const CommentTable = ({userId}) => {
         return <p>در حال بارگذازی نظرات ... </p>
 
 return (
-    <>
+    <div style={{display :"flex", flexFlow: "column", gap:"35px"}}>
     <DataTable
         title = "لیست کامنت های تایید شده"
-        columns={acceptedColumns}
+        columns={CommentColumns}
         data={accepted}
         
     />
     <DataTable
         title = "لیست کامنت های تایید نشده"
-        columns={pendingColumns}
-        data={pending}
-        
+        columns={CommentColumns}
+        data={pending}        
     />
-    </>
+    </div>
 )
 }
 
