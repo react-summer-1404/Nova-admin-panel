@@ -1,11 +1,15 @@
-import React from 'react'
-
+import React from "react";
+import AdminScheduleTable from "./components/table/AdminScheduleTable/";
+import { useState } from "react";
+import DatePickerComponent from "./components/DatePickerComponent";
 const AdminSchedule = () => {
+  const [picker, setPicker] = useState(new Date());
   return (
     <div>
-      AdminSchedule
+      <DatePickerComponent picker={picker} setPicker={setPicker} />
+      <AdminScheduleTable picker={picker}/>
     </div>
-  )
-}
+  );
+};
 
-export default AdminSchedule
+export default AdminSchedule;
