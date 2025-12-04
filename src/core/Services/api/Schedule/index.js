@@ -26,7 +26,7 @@ export const AddSchedualSingle = async (currentCurseId, apiData) => {
   );
   return response.data;
 };
-export const EditSchedualSingle = async ( apiData) => {
+export const EditSchedualSingle = async (apiData) => {
   const response = await instance.put(
     "/Schedual/LockToRiase",
     apiData,

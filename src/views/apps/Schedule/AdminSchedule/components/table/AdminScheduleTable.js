@@ -1,99 +1,117 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { getAdminSchedules } from "../../../../../../core/Services/api/Schedule";
-import { Badge, Button, DropdownItem, DropdownMenu, DropdownToggle, Spinner, UncontrolledDropdown } from "reactstrap";
+import {
+  EditSchedualSingle,
+  getAdminSchedules,
+} from "../../../../../../core/Services/api/Schedule";
+import {
+  Badge,
+  Button,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Spinner,
+  UncontrolledDropdown,
+} from "reactstrap";
 import { Table } from "reactstrap";
 import { Edit, MoreVertical } from "react-feather";
-import DatePickerComponent from "../DatePickerComponent";
+import toast from "react-hot-toast";
 
-const AdminScheduleTable = ({picker}) => {
- 
-   const apiParams = {
-  startDate: picker[0],
-  endDate: picker[1],
-};
+const AdminScheduleTable = ({ isLoading, apiParams, data }) => {
+  const [selected, setSelected] = useState("");
+  const queryClient = useQueryClient();
+  console.log("selected", selected);
 
-const { data, isLoading } = useQuery({
-  queryKey: ["getAdminSchedules", apiParams],
-  queryFn: () => getAdminSchedules(apiParams),
-});
+  const editAp = useMutation({
+    mutationFn: (apiData) => EditSchedualSingle(apiData),
+    onSuccess: () => {
+      toast.success("وضعیت تغییر کرد");
+      queryClient.invalidateQueries(["getAdminSchedules", apiParams]);
+    },
+    onError: (error) => {
+      const msg = error?.response?.data?.message;
+      toast.error(msg);
+      console.log("error======>", error);
+    },
+  });
   return (
     <>
-
-        <div className="content-body">
+      <div className="content-body">
         <Table hover responsive>
-            <thead>
+          <thead>
+            <tr>
+              <th>ساعت شروع</th>
+              <th>ساعت پایان </th>
+              <th>تاریخ شروع</th>
+              <th>حالت حضور</th>
+              <th>اقدام</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {isLoading ? (
               <tr>
-                <th>ساعت شروع</th>
-                <th>ساعت پایان </th>
-                <th>تاریخ شروع</th>
-                <th>حالت حضور</th>
-                <th>اقدام</th>
+                <td colSpan="4" className="d-flex justify-content-center">
+                  <Spinner color="primary" />
+                </td>
               </tr>
-            </thead>
+            ) : (
+              data?.map((item) => {
+                return (
+                  <tr key={item.id}>
+                    <td>{item.startTime}</td>
 
-            <tbody>
-              {isLoading ? (
-                <tr>
-                  <td colSpan="4" className="d-flex justify-content-center">
-                    <Spinner color="primary" />
-                  </td>
-                </tr>
-              ) : (
-                data?.map((item) => {
-                    
-                      
-                  return (
-                    <tr key={item.id}>
-                      <td >{item.startTime}</td>
+                    <td>
+                      <p>{item.endTime}</p>
+                    </td>
+                    <td>
+                      <p>{item.startDate?.slice(0, 10)}</p>
+                    </td>
 
-                      <td>
-                        <p >{item.endTime}</p>
-                      </td>
-                      <td>
-                        <p >{item.startDate?.slice(0,10)}</p>
-                      </td>
+                    <td>
+                      {item.AP ? (
+                        <Badge color="light-success">میتواند</Badge>
+                      ) : (
+                        <Badge color="light-danger">نمیتواند</Badge>
+                      )}
+                    </td>
 
-                      <td>
-                        {item.AP ? (
-                          <Badge color="light-success">AP</Badge>
-                        ) : (
-                          <Badge color="light-danger">AP</Badge>
-                        )}
-                      </td>
-
-                      <td>
+                    <td>
                       <UncontrolledDropdown>
-                      <DropdownToggle
-                        className="icon-btn hide-arrow"
-                        color="transparent"
-                        size="sm"
-                        caret
-                      >
-                        <MoreVertical size={15} />
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        <DropdownItem onClick={() => handleEditClick(item)}>
-                          <Edit className="me-50" size={15} />
-                          <span className="align-middle">ادیت ترم</span>
-                        </DropdownItem>
-                        <DropdownItem onClick={() => handleEditTimeClick(item)}>
-                          <Edit className="me-50" size={15} />
-                          <span className="align-middle">ادیت زمان</span>
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                      </td>
-                    </tr>
-                  );
-                })
-              )}
-              
-            </tbody>
-          </Table>
-        </div>
-      
-
+                        <DropdownToggle
+                          className="icon-btn hide-arrow"
+                          color="transparent"
+                          size="sm"
+                          caret
+                          onClick={() => setSelected(item)}
+                        >
+                          <MoreVertical size={15} />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem
+                            onClick={() =>
+                              editAp.mutate({ active: !item.AP, id: item.id })
+                            }
+                          >
+                            <Edit className="me-50" size={15} />
+                            تغییر وضعیت
+                          </DropdownItem>
+                          <DropdownItem
+                            onClick={() => handleEditTimeClick(item)}
+                          >
+                            <Edit className="me-50" size={15} />
+                            <span className="align-middle">ادیت زمان</span>
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </Table>
+      </div>
     </>
   );
 };

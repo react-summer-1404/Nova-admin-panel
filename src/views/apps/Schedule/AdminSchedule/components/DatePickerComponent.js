@@ -9,7 +9,7 @@ const DatePickerComponent = ({setPicker,picker}) => {
     console.log("object",picker)
 
   return (
-    <div>
+    <div className='w-50'>
   
     <div style={{marginBottom:20}}>
       <Label className='form-label' for='range-picker'>
