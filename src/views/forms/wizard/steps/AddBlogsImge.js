@@ -8,46 +8,69 @@ import { ArrowLeft, ArrowRight } from "react-feather";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 // ** Api Import
 import { CreateNewsApi } from "./../../../../core/Services/api/News/CreateNews/index";
 
 // ** Reactstrap Imports
-import { Label, Row, Col, Button } from "reactstrap";
+import { Label, Row, Col, Button, Input } from "reactstrap";
 
-const AddBlogMainInfo = ({ stepper,setFormData }) => {
+const AddBlogMainInfo = ({ stepper, setFormData,formData }) => {
   // Form Validation
-   const validationSchema = yup.object({
-      GoogleDescribe: yup
-        .string()
-        .min(70, "توضیحات گوگل نمیتواند کمتر 70 کاراکتر باشد")
-        .max(150, "توضیحات گوگل نمیتواند بیشتر از 150 کاراکتر باشد")
-        .required("پرکردن این فیلد ضروری است"),
-      Keyword: yup
-        .string()
-        .min(10, "کلمات کلیدی نمیتواند کمتر از 10 کاراکتر باشد")
-        .max(300, "کلمات کلیدی نمیتواند بیشتر از 300 کاراکتر باشد")
-        .required("پرکردن این فیلد ضروری است"),
-      GoogleTitle: yup.string().required("پرکردن این فیلد ضروری است"),
-    });
+  const validationSchema = yup.object({
+    Image: yup.mixed().required("فیلد عکس خالی است"),
+  });
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isError, isSuccess } = useMutation({
     mutationFn: CreateNewsApi,
   });
 
- const handleSubmit = async () => {
-  const formdata = new FormData();
+  const handleSubmit = async () => {
+    const finalData = new FormData();
 
-  Object.entries(formdata).forEach(([key,value])=> { formdata.append(key,value)}) 
-    // const formData = new FormData();
-    // formData.append("Title", values.Title);
-    // formData.append("MiniDescribe", values.MiniDescribe);
-    // formData.append("Describe", values.Describe);
+    Object.entries(formData).forEach(([key, value]) => {
+      finalData.append(key, value);
+    });
 
-    // await mutateAsync(formData);
-    await mutateAsync(formdata)
+    const handleSuccess = () => {
+      return MySwal.fire({
+        title: "Good job!",
+        text: "You clicked the button!",
+        icon: "success",
+        customClass: {
+          confirmButton: "btn btn-primary",
+        },
+        buttonsStyling: false,
+      });
+    };
+
+    const handleError = () => {
+      return MySwal.fire({
+        title: "Error!",
+        text: " You clicked the button!",
+        icon: "error",
+        customClass: {
+          confirmButton: "btn btn-primary",
+        },
+        buttonsStyling: false,
+      });
+    };
+    for (let pair of finalData.entries()) {
+    console.log(pair[0] + ":", pair[1]);
+  }
+
+    await mutateAsync(finalData);
     // stepper.next()
-    
+    const MySwal = withReactContent(Swal);
+    if (isSuccess) {
+      handleSuccess;
+    }
+    if(isError) {
+      handleError
+    }
+    console.log("FINAL FORM DATA:", formData);
     console.log(mutateAsync);
   };
   return (
@@ -60,95 +83,59 @@ const AddBlogMainInfo = ({ stepper,setFormData }) => {
       </div>
       <Formik
         initialValues={{
-          GoogleTitle: "",
-          GoogleDescribe: "",
-          Keyword: "",
+          Image: null,
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form>
-          <Row>
-            <Col md="6" className="mb-1 d-flex flex-column">
-              <Label className="form-label" for="GoogleTitle">
-                عنوان گوگل
-              </Label>
-              <Field
-                type="text"
-                className="p-1"
-                name="GoogleTitle"
-                id="GoogleTitle"
-                placeholder="عنوان گوگل را وارد کنید ..."
-              />
-              <ErrorMessage
-                name="GoogleTitle"
-                className="text-danger"
-                component={"span"}
-              />
-            </Col>
-            <Col md="6" className="mb-1 d-flex flex-column">
-              <Label className="form-label" for="GoogleDescribe">
-                توضیح گوگل
-              </Label>
-              <Field
-                type="text"
-                className="p-1"
-                name="GoogleDescribe"
-                id="GoogleDescribe"
-                placeholder=" توضیحات گوگل را وارد کنید ..."
-              />
-              <ErrorMessage
-                name="GoogleDescribe"
-                className="text-danger"
-                component={"span"}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md="6" className="mb-1 d-flex flex-column">
-              <Label className="form-label" for="Keyword">
-                کلمات کلیدی
-              </Label>
-              <Field
-                type="textarea"
-                className="mb-1 p-1"
-                name="Keyword"
-                id="Keyword"
-                rows="3"
-                placeholder=" کلمات کلیدی را وارد کنید ..."
-              />
-              <ErrorMessage
-                name="Keyword"
-                className="text-danger"
-                component={"span"}
-              />
-            </Col>
-          </Row>
-          <div className="d-flex justify-content-between">
-            <Button color="secondary" className="btn-prev" outline disabled>
-              <ArrowLeft
-                size={14}
-                className="align-middle me-sm-25 me-0"
-              ></ArrowLeft>
-              <span className="align-middle d-sm-inline-block d-none">
-                قبلی
-              </span>
-            </Button>
-            <Button
-              type="submit"
-              color="primary"
-              className="btn-next"
-            >
-              <span className="align-middle d-sm-inline-block d-none">
-                بعدی
-              </span>
-              <ArrowRight
-                size={14}
-                className="align-middle ms-sm-25 ms-0"
-              ></ArrowRight>
-            </Button>
-          </div>
-        </Form>
+        {({ setFieldValue }) => (
+          <Form>
+            <Row>
+              <Col md="6" className="mb-1 d-flex flex-column">
+                <Label className="form-label" for="Image">
+                  انتخاب تصویر
+                </Label>
+                <Input
+                  className="p-1"
+                  type="file"
+                  id="Image"
+                  name="Image"
+                  onChange={(e) => {
+                    const file = e.currentTarget.files[0];
+                    setFieldValue("Image", file);
+                    setFormData((prev) => ({ ...prev, Image: file }));
+                  }}
+                />
+                <ErrorMessage
+                  name="Image"
+                  className="text-danger"
+                  component={"span"}
+                />
+              </Col>
+            </Row>
+            <Row></Row>
+            <div className="d-flex justify-content-between">
+              <Button color="secondary" className="btn-prev" outline disabled>
+                <ArrowLeft
+                  size={14}
+                  className="align-middle me-sm-25 me-0"
+                ></ArrowLeft>
+                <span className="align-middle d-sm-inline-block d-none">
+                  قبلی
+                </span>
+              </Button>
+              <Button type="submit" color="primary" className="btn-next">
+                <span className="align-middle d-sm-inline-block d-none">
+                  ثبت خبر
+                </span>
+                <ArrowRight
+                  size={14}
+                  className="align-middle ms-sm-25 ms-0"
+                ></ArrowRight>
+              </Button>
+            </div>
+          </Form>
+        )}
       </Formik>
     </Fragment>
   );

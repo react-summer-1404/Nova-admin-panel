@@ -38,7 +38,7 @@ const AddBlogsWizardHorizontal = () => {
       content: <AddBlogsSlider stepper={stepper} setFormData={setFormData}/>,
     },
     {
-      id: "blog-addSlider",
+      id: "blog-addImage",
       title: "تصویر و تایید",
       subtitle: "انتخاب تصویر و ثبت نهایی",
       content: <AddBlogsImge stepper={stepper} setFormData={setFormData} formData={formData}/>,

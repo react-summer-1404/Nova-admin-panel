@@ -36,10 +36,12 @@ const TableBasic = ({ dataId, apiData, thList, title }) => {
   const [editId, setEditId] = useState(null);
   const [blogId, setBlogId] = useState();
   const [blogState, setBlogState] = useState([]);
+  const [blogs, setBlogs] = useState(apiData?.news || []);
 
-  const onChange = (e) => {
-    setSelectedFile(e.target.file[0]);
-  };
+useEffect(() => {
+  setBlogs(apiData?.news || []);
+}, [apiData]);
+
 
   // Handle Blogs State
   useEffect(() => {
@@ -47,9 +49,6 @@ const TableBasic = ({ dataId, apiData, thList, title }) => {
     if (saveBlogState) {
       setBlogState(JSON.parse(saveBlogState));
     }
-    // else{
-
-    // }
   }, [apiData]);
 
   const handleBlogState = (index) => {
@@ -66,7 +65,8 @@ const TableBasic = ({ dataId, apiData, thList, title }) => {
   })
 
   const handleDeleteBlogs = (id) => {
-
+    const filteredData = apiData.news.filter((item) => item.id !== id);
+    setBlogState(filteredData.map(() => true));
   }
 
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const TableBasic = ({ dataId, apiData, thList, title }) => {
           })}
         </tr>
       </thead>
-      {apiData?.news?.map((item, index) => {
+      {blogs?.map((item, index) => {
         return (
           <tbody>
             <tr>
@@ -154,7 +154,7 @@ const TableBasic = ({ dataId, apiData, thList, title }) => {
                         </Button>
                       </ModalFooter>
                     </Modal>
-                    <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
+                    <DropdownItem onClick={() => handleDeleteBlogs(item.id)}>
                       <Trash className="me-50" size={15} />{" "}
                       <span className="align-middle">حذف</span>
                     </DropdownItem>

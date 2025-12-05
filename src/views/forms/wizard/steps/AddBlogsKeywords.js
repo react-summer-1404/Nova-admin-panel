@@ -36,12 +36,6 @@ const AddBlogMainInfo = ({ stepper,setFormData }) => {
   });
 
  const handleSubmit = async (values) => {
-    // const formData = new FormData();
-    // formData.append("Title", values.Title);
-    // formData.append("MiniDescribe", values.MiniDescribe);
-    // formData.append("Describe", values.Describe);
-
-    // await mutateAsync(formData);
     setFormData(prev => ({...prev,...values}))
     stepper.next()
     
@@ -57,7 +51,7 @@ const AddBlogMainInfo = ({ stepper,setFormData }) => {
       </div>
       <Formik
         initialValues={{
-          GoogleTitle: "",
+          googleTitle: "",
           GoogleDescribe: "",
           Keyword: "",
         }}
