@@ -38,6 +38,14 @@ const ProductsPage = props => {
       dispatch(getProducts({ ...store.params, page: val }))
     }
   }
+  // dispatch(
+  //   getProducts({
+  //     PageNumber: 1,
+  //     RowsOfPage: 10,
+  //     SortType: sortType,   
+  //     SortingCol: sortCol,   
+  //   })
+  // );
 
   // ** Render pages
   const renderPageItems = () => {

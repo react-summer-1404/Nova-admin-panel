@@ -24,7 +24,7 @@ const CoursePayMentList = ({ data, isLoading }) => {
       ? notAcceptedList
       : data;
   
-
+console.log("datapay",data)
   return (
     <>
       <div className="content-detached content-right">
@@ -55,7 +55,8 @@ const CoursePayMentList = ({ data, isLoading }) => {
             <thead>
               <tr>
                 <th>نام دانشجو</th>
-                <th>نام دوره</th>
+                <th>مبلغ </th>
+                <th>تاریخ پرداخت</th>
                 <th>وضعیت</th>
                 <th>اقدام</th>
               </tr>
@@ -74,10 +75,13 @@ const CoursePayMentList = ({ data, isLoading }) => {
                       
                   return (
                     <tr key={item.id}>
-                      <td className="fw-bold text-black">{item.studentId}</td>
+                      <td className="fw-bold text-black">{item.studentName}</td>
 
                       <td>
-                        <p style={{ color: "#7367f0" }}>{item.courseId}</p>
+                        <p style={{ color: "#7367f0" }}>{item.Paid}</p>
+                      </td>
+                      <td>
+                        <p >{item.PeymentDate?.slice(0,10)}</p>
                       </td>
 
                       <td>

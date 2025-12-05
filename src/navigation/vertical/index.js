@@ -17,25 +17,25 @@ export default [
     navLink: "/list",
   },
   
-  {
-    id: "secondPage",
-    title: "Second Page",
-    icon: <Mail size={20} />,
-    navLink: "/second-page",
-  },
-  {
-    id: "smaplePage",
-    title: "Sample Page",
-    icon: <Airplay size={20} />,
-    children: [
-      {
-        id: "invoiceList",
-        title: "List",
-        icon: <Circle size={12} />,
-        navLink: "/apps/invoice/list",
-      },
-    ],
-  },
+  // {
+  //   id: "secondPage",
+  //   title: "Second Page",
+  //   icon: <Mail size={20} />,
+  //   navLink: "/second-page",
+  // },
+  // {
+  //   id: "smaplePage",
+  //   title: "Sample Page",
+  //   icon: <Airplay size={20} />,
+  //   children: [
+  //     {
+  //       id: "invoiceList",
+  //       title: "List",
+  //       icon: <Circle size={12} />,
+  //       navLink: "/apps/invoice/list",
+  //     },
+  //   ],
+  // },
   {
     id: "eCommerce",
     title: "مدیریت دوره ها",
@@ -97,6 +97,7 @@ export default [
       },
     ],
   },
+  ...pages,
   {
     id: "departmentList",
     title: "دپارتمان",
@@ -109,5 +110,5 @@ export default [
     icon: <Home size={20} />,
     navLink: "/building",
   },
-  ...pages
+  
 ];

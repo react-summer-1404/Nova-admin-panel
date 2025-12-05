@@ -58,7 +58,7 @@ const CoursesListTab = (props) => {
     refetchOnWindowFocus:false
 
   });
-  
+  // console.log("data",pays)
   // const courses = allProducts?.courseDtos || [];
   // const reservedCourses = courses?.find((item) =>item.courseId == data.courseId);
   // console.log("pays",pays)
