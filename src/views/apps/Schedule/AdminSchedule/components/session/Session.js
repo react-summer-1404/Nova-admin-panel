@@ -15,6 +15,7 @@ import { getSessionDetails } from "../../../../../../core/Services/api/session/S
 import { useState } from "react";
 import HomeWork from "./homeWork/HomeWork";
 import AddFile from "./file/AddFile";
+import FileShow from "./FileShow";
 
 const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
   const [showHmModal, setShowHmModal] = useState(false);
@@ -27,7 +28,7 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
     queryKey: ["getSessionDetails", apiParams],
     queryFn: () => getSessionDetails(apiParams),
   });
-// console.log("sessionDetail",sessionDetail?.sessionFileDtos?.[3])
+  // console.log("sessionDetail",sessionDetail?.sessionFileDtos?.[3])
 
   return (
     <div>
@@ -51,16 +52,28 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
                 </div>
                 <div className="d-flex gap-1 align-items-center">
                   <h5> تاریخ ثبت :</h5>
-                  <p>{sessionDetail?.sessionFileDtos?.insertDate?.slice(0,10)}</p>
+                  <p>
+                    {sessionDetail?.sessionFileDtos?.[0]?.insertDate?.slice(
+                      0,
+                      10
+                    )}
+                  </p>
                 </div>
               </CardBody>
             </Card>
             <div className="d-flex flex-column gap-1">
               <Card>
-                <CardBody>{sessionDetail?.sessionFileDtos?.sessionFileDtos?(sessionDetail.sessionFileDtos?.fileAddress):(<p>فایلی وجود ندارد !</p>)}</CardBody>
+              <CardBody style={{ height: "350px" }}>
+  <FileShow files={sessionDetail?.sessionFileDtos} />
+</CardBody>
+
               </Card>
               <div className="d-flex flex-column gap-1">
-                <Button color="primary" className="w-100" onClick={() => setShowFileModal(!showFileModal)}>
+                <Button
+                  color="primary"
+                  className="w-100"
+                  onClick={() => setShowFileModal(!showFileModal)}
+                >
                   افزودن فایل +
                 </Button>
                 <div className="d-flex gap-2 w-100">
