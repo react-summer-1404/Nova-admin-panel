@@ -19,7 +19,7 @@ const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
   const [selected, setSelected] = useState("");
   const [centralModal, setCentralModal] = useState(false);
   const queryClient = useQueryClient();
-  // console.log("selected", selected);
+  console.log("selected", selected);
 
   const editAp = useMutation({
     mutationFn: (apiData) => EditSchedualSingle(apiData),

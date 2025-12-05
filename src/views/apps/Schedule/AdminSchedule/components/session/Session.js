@@ -27,6 +27,7 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
     queryKey: ["getSessionDetails", apiParams],
     queryFn: () => getSessionDetails(apiParams),
   });
+// console.log("sessionDetail",sessionDetail?.sessionFileDtos?.[3])
 
   return (
     <div>
@@ -50,7 +51,7 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
                 </div>
                 <div className="d-flex gap-1 align-items-center">
                   <h5> تاریخ ثبت :</h5>
-                  <p>{sessionDetail?.sessionFileDtos?.insertDate?.slice(0,10)}</p>
+                  <p>{sessionDetail?.sessionFileDtos?.[3]?.insertDate?.slice(0,10)}</p>
                 </div>
               </CardBody>
             </Card>

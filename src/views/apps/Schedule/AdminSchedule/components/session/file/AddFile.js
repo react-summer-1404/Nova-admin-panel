@@ -18,8 +18,9 @@ import {
   ModalHeader,
   ModalBody,
 } from "reactstrap";
+import FileUpload from "./FileUpload";
 
-const AddFile = ({ showFileModal, setShowFileModal }) => {
+const AddFile = ({ showFileModal, setShowFileModal ,ScheduleId}) => {
   const [active, setActive] = useState("1");
 
   const toggle = (tab) => {
@@ -65,13 +66,9 @@ const AddFile = ({ showFileModal, setShowFileModal }) => {
           </Nav>
           <TabContent className="py-50" activeTab={active}>
             <TabPane tabId="1">
-              {/* all course table */}
+              {/* upload file */}
               <Suspense>
-                {/* <ProductsPage
-                store={store}
-                dispatch={dispatch}
-                getProducts={getProducts}
-              /> */}
+              <FileUpload ScheduleId={ScheduleId}/>
               </Suspense>
             </TabPane>
 
