@@ -11,3 +11,7 @@ export const getSessionHomeWorks = async (apiParams) => {
   });
   return response.data;
 };
+export const addMainHomework = async (apiData) => {
+  const response = await instance.post("/Session/AddSessionHomeWork",apiData);
+  return response.data;
+};

@@ -18,11 +18,12 @@ import AddHomeWork from "./AddHomeWork";
 
 const HomeWork = ({ showHmModal, setShowHmModal, ScheduleId }) => {
     const [selectedHw ,setSelectedHw] =useState("")
+    const [showModal ,setShowModal] =useState(false)
   const apiParams = {
     SessionId: ScheduleId,
   };
   const { data: homeWorkList, isLoading } = useQuery({
-    queryKey: ["getSessionHomeWorks"],
+    queryKey: ["getSessionHomeWorks",apiParams],
     queryFn: () => getSessionHomeWorks(apiParams),
   });
 
@@ -89,7 +90,7 @@ const HomeWork = ({ showHmModal, setShowHmModal, ScheduleId }) => {
                             <span className="align-middle">نمایش جلسه</span> */}
                             </DropdownItem>
                           </DropdownMenu>
-                        </UncontrolledDropdown>{" "}
+                        </UncontrolledDropdown>
                        
                       </td>
                     </tr>
@@ -98,8 +99,8 @@ const HomeWork = ({ showHmModal, setShowHmModal, ScheduleId }) => {
               </tbody>
             </Table>
           </div>
-          <Button color="primary">افزودن تکلیف </Button>
-          <AddHomeWork ScheduleId={ScheduleId}/>
+          <Button color="primary" onClick={()=>setShowModal(!showModal)}>افزودن تکلیف </Button>
+          <AddHomeWork ScheduleId={ScheduleId} setShowModal={setShowModal} showModal={showModal} apiParams={apiParams}/>
         </ModalBody>
       </Modal>
 
