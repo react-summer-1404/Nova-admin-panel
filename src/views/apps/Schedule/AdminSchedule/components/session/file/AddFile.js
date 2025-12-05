@@ -19,6 +19,7 @@ import {
   ModalBody,
 } from "reactstrap";
 import FileUpload from "./FileUpload";
+import UploadURL from "./UploadURL";
 
 const AddFile = ({ showFileModal, setShowFileModal ,ScheduleId}) => {
   const [active, setActive] = useState("1");
@@ -73,13 +74,9 @@ const AddFile = ({ showFileModal, setShowFileModal ,ScheduleId}) => {
             </TabPane>
 
             <TabPane tabId="2">
-              {/* reserve table */}
+              {/* URl upload  */}
               <Suspense>
-                {/* <CourseReserveList
-                data={data}
-                isLoading={isLoading}
-                courseId={courseId}
-              /> */}
+                <UploadURL ScheduleId={ScheduleId}/>
               </Suspense>
             </TabPane>
           </TabContent>

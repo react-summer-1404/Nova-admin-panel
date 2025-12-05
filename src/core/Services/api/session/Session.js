@@ -23,3 +23,20 @@ export const addSessionFile = async (formData) => {
   });
   return response.data;
 };
+
+export const addSessionFileWithUrl = async (apiParams) => {
+  console.log("sending params:", apiParams);
+
+  const response = await instance.post(
+    "/Session/AddSessionFileWithUrl",
+    {},   
+    {
+      params: {
+        SessionId: apiParams.SessionId,
+        Url: apiParams.Url,
+      },
+    }
+  );
+
+  return response.data;
+};
