@@ -1,9 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
-import {
-  EditSchedualSingle,
-  getAdminSchedules,
-} from "../../../../../../core/Services/api/Schedule";
+import { EditSchedualSingle } from "../../../../../../core/Services/api/Schedule";
 import {
   Badge,
   Button,
@@ -17,7 +14,7 @@ import { Table } from "reactstrap";
 import { Edit, MoreVertical } from "react-feather";
 import toast from "react-hot-toast";
 
-const AdminScheduleTable = ({ isLoading, apiParams, data }) => {
+const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
   const [selected, setSelected] = useState("");
   const queryClient = useQueryClient();
   console.log("selected", selected);
@@ -40,6 +37,7 @@ const AdminScheduleTable = ({ isLoading, apiParams, data }) => {
         <Table hover responsive>
           <thead>
             <tr>
+              <th>نام گروه</th>
               <th>ساعت شروع</th>
               <th>ساعت پایان </th>
               <th>تاریخ شروع</th>
@@ -57,8 +55,12 @@ const AdminScheduleTable = ({ isLoading, apiParams, data }) => {
               </tr>
             ) : (
               data?.map((item) => {
+                const foundedItem = groups?.find(
+                  (g) => g.id == item.courseGroupId
+                );
                 return (
                   <tr key={item.id}>
+                    <td className="text-black fw-bold">{foundedItem?.groupName}</td>
                     <td>{item.startTime}</td>
 
                     <td>

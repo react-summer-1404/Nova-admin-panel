@@ -27,7 +27,7 @@ const AdminSchedule = () => {
     <div>
       <div className="d-flex justify-content-between align-items-center">
         <DatePickerComponent picker={picker} setPicker={setPicker} />
-        <Button  style={{ height: 40 ,width:300}} onClick={() => setModal(!modal)}>
+        <Button  color="primary" style={{ height: 40 ,width:300}} onClick={() => setModal(!modal)}>
           افزودن بازه زمانی +
         </Button>
         <Create modal={modal} setModal={setModal} data={groupData} />
@@ -37,6 +37,7 @@ const AdminSchedule = () => {
         isLoading={isLoading}
         apiParams={apiParams}
         data={data}
+        groups={groupData}
       />
     </div>
   );

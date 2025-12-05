@@ -16,13 +16,11 @@ export const getStudentSchedulesDetail = async (SchedualId) => {
   return response.data;
 };
 
-export const AddSchedualSingle = async (currentCurseId, apiData) => {
+export const AddSchedualSingle = async (apiData) => {
   const response = await instance.post(
     "/Schedual/AddSchedualSingle/",
     apiData,
-    {
-      params: { currentCurseId }
-    }
+   
   );
   return response.data;
 };
