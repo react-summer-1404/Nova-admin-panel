@@ -15,3 +15,11 @@ export const addMainHomework = async (apiData) => {
   const response = await instance.post("/Session/AddSessionHomeWork",apiData);
   return response.data;
 };
+export const addSessionFile = async (formData) => {
+  const response = await instance.post("/Session/AddSessionFile",formData,{
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
