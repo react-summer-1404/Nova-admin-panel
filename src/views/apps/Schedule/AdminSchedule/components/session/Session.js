@@ -15,7 +15,6 @@ import { getSessionDetails } from "../../../../../../core/Services/api/session/S
 import { useState } from "react";
 import HomeWork from "./homeWork/HomeWork";
 import AddFile from "./file/AddFile";
-import FileShow from "./FileShow";
 
 const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
   const [showHmModal, setShowHmModal] = useState(false);
@@ -42,7 +41,7 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
         </ModalHeader>
 
         <ModalBody>
-          <div className="d-flex justify-content-between ">
+          <div className="d-flex justify-content-between gap-2">
             {/* <div></div> */}
             <Card className="w-50">
               <CardBody>
@@ -63,10 +62,25 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
             </Card>
             <div className="d-flex flex-column gap-1">
               <Card>
-              <CardBody style={{ height: "350px" }}>
-  <FileShow files={sessionDetail?.sessionFileDtos} />
-</CardBody>
-
+                <CardBody>
+                  {sessionDetail?.sessionFileDtos &&
+                  sessionDetail.sessionFileDtos.length > 0 ? (
+                    sessionDetail.sessionFileDtos.map((file) => (
+                      <img
+                        key={file.id}
+                        src={file.fileAddress}
+                        alt="file"
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          margin: "5px",
+                        }}
+                      />
+                    ))
+                  ) : (
+                    <p>فایلی وجود ندارد !</p>
+                  )}
+                </CardBody>
               </Card>
               <div className="d-flex flex-column gap-1">
                 <Button
@@ -76,18 +90,16 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
                 >
                   افزودن فایل +
                 </Button>
-                <div className="d-flex gap-2 w-100">
+               
                   <Button
                     color="warning"
-                    className="w-50"
+                    className="w-100"
                     onClick={() => setShowHmModal(!showHmModal)}
                   >
                     تکلیف
                   </Button>
-                  <Button color="secondary" className="w-50">
-                    dkl
-                  </Button>
-                </div>
+                 
+               
               </div>
             </div>
           </div>
