@@ -7,7 +7,7 @@ import {
     UpdateUser,
 } from "../Services/api/GetUserList";
 import { ActiveDeactiveBuilding, CreateBuilding, UpdateBuilding } from "../Services/api/Building";
-import { data } from "jquery";
+
 
 
 export const useCreateUser = ({ onSuccess, onError }) =>
