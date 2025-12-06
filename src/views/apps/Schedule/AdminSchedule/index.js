@@ -1,5 +1,5 @@
 import React from "react";
-import AdminScheduleTable from "./components/table/AdminScheduleTable/";
+import AdminScheduleTable from "./components/table/AdminScheduleTable";
 import { useState } from "react";
 import DatePickerComponent from "./components/DatePickerComponent";
 import { Button } from "reactstrap";

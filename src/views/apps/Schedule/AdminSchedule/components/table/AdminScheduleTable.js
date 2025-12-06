@@ -13,9 +13,11 @@ import {
 import { Table } from "reactstrap";
 import { Edit, MoreVertical } from "react-feather";
 import toast from "react-hot-toast";
+import Session from "../session/Session";
 
 const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
   const [selected, setSelected] = useState("");
+  const [centralModal, setCentralModal] = useState(false);
   const queryClient = useQueryClient();
   console.log("selected", selected);
 
@@ -99,10 +101,10 @@ const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
                             تغییر وضعیت
                           </DropdownItem>
                           <DropdownItem
-                            onClick={() => handleEditTimeClick(item)}
+                            onClick={() => setCentralModal(!centralModal)}
                           >
                             <Edit className="me-50" size={15} />
-                            <span className="align-middle">ادیت زمان</span>
+                            <span className="align-middle">نمایش جلسه</span>
                           </DropdownItem>
                         </DropdownMenu>
                       </UncontrolledDropdown>
@@ -113,6 +115,8 @@ const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
             )}
           </tbody>
         </Table>
+        <Session centralModal={centralModal} setCentralModal={setCentralModal} ScheduleId={selected?.id}/>
+
       </div>
     </>
   );
