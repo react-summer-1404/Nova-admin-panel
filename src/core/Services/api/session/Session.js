@@ -26,7 +26,7 @@ export const addSessionFile = async (formData) => {
 
 export const addSessionFileWithUrl = async (apiParams) => {
   console.log("sending params:", apiParams);
-
+  
   const response = await instance.post(
     "/Session/AddSessionFileWithUrl",
     {},   
@@ -36,7 +36,13 @@ export const addSessionFileWithUrl = async (apiParams) => {
         Url: apiParams.Url,
       },
     }
-  );
-
+    );
+    
+  return response.data;
+};
+export const deleteSession = async (apiData) => {
+  const response = await instance.delete("/Session/DeleteSessionFile", {
+    data: apiData, 
+  });
   return response.data;
 };

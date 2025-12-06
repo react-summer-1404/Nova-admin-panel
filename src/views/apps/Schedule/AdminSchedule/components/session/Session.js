@@ -1,23 +1,24 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import {
   Button,
-  Label,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Card,
   CardBody,
+  Badge,
 } from "reactstrap";
-import { getSessionDetails } from "../../../../../../core/Services/api/session/Session";
+import {
+  deleteSession,
+  getSessionDetails,
+} from "../../../../../../core/Services/api/session/Session";
 import { useState } from "react";
 import HomeWork from "./homeWork/HomeWork";
 import AddFile from "./file/AddFile";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper-bundle.css";
-
 import SwiperCore, {
   Lazy,
   Virtual,
@@ -28,10 +29,14 @@ import SwiperCore, {
   EffectCube,
   EffectCoverflow,
 } from "swiper";
+import toast from "react-hot-toast";
 
 const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
   const [showHmModal, setShowHmModal] = useState(false);
   const [showFileModal, setShowFileModal] = useState(false);
+  const [selectedImg, setSelectedImg] = useState("");
+  const queryClient = useQueryClient();
+  console.log("sele", selectedImg?.id);
   SwiperCore.use([
     Navigation,
     Pagination,
@@ -43,13 +48,6 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
     Virtual,
   ]);
 
-  const params = {
-    effect: "fade",
-    navigation: true,
-    pagination: {
-      clickable: true,
-    },
-  };
   const apiParams = {
     SessionId: ScheduleId,
   };
@@ -57,8 +55,19 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
     queryKey: ["getSessionDetails", apiParams],
     queryFn: () => getSessionDetails(apiParams),
   });
-  // console.log("sessionDetail",sessionDetail?.sessionFileDtos?.[3])
-
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deleteSession(id),
+    onSuccess: () => {
+      toast.success("عکس مورد نظر حذف شد");
+      queryClient.invalidateQueries(["getSessionDetails", apiParams]);
+    },
+    onError: (error) => {
+      console.log("error====>", error);
+      const msg = error?.response?.data?.message;
+      toast.error(msg);
+    },
+  });
+ 
   return (
     <div>
       <Modal
@@ -72,7 +81,6 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
 
         <ModalBody>
           <div className="d-flex justify-content-between  flex-column ">
-            {/* <div></div> */}
             <Card>
               <CardBody>
                 <div className="d-flex gap-1 align-items-center">
@@ -100,13 +108,28 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
                       pagination={{ clickable: true }}
                     >
                       {sessionDetail.sessionFileDtos.map((file) => (
-                        <SwiperSlide>
-                          <div>
+                        <SwiperSlide key={file.id }>
+                          <div style={{ position: "relative" }}>
                             <img
                               src={file.fileAddress}
                               alt="file"
                               style={{ width: "100%", height: 150 }}
                             />
+                            <Badge
+                               onClick={() => {
+                                deleteMutation.mutate({ sessionFileId: file.id });
+                              }}
+                              style={{
+                                position: "absolute",
+                                top: 5,
+                                right: 5,
+                                cursor: "pointer",
+                              }}
+                              pill
+                              color="danger"
+                            >
+                              حذف
+                            </Badge>
                           </div>
                         </SwiperSlide>
                       ))}
