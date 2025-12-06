@@ -6,7 +6,6 @@ import { Fragment } from 'react'
 import '@styles/react/libs/flatpickr/flatpickr.scss'
 
 const DatePickerComponent = ({setPicker,picker}) => {
-    console.log("object",picker)
 
   return (
     <div className='w-50'>

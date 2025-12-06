@@ -15,11 +15,41 @@ import { getSessionDetails } from "../../../../../../core/Services/api/session/S
 import { useState } from "react";
 import HomeWork from "./homeWork/HomeWork";
 import AddFile from "./file/AddFile";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/swiper-bundle.css";
+
+import SwiperCore, {
+  Lazy,
+  Virtual,
+  Autoplay,
+  Navigation,
+  Pagination,
+  EffectFade,
+  EffectCube,
+  EffectCoverflow,
+} from "swiper";
 
 const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
   const [showHmModal, setShowHmModal] = useState(false);
   const [showFileModal, setShowFileModal] = useState(false);
+  SwiperCore.use([
+    Navigation,
+    Pagination,
+    EffectFade,
+    EffectCube,
+    EffectCoverflow,
+    Autoplay,
+    Lazy,
+    Virtual,
+  ]);
 
+  const params = {
+    effect: "fade",
+    navigation: true,
+    pagination: {
+      clickable: true,
+    },
+  };
   const apiParams = {
     SessionId: ScheduleId,
   };
@@ -41,9 +71,9 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
         </ModalHeader>
 
         <ModalBody>
-          <div className="d-flex justify-content-between gap-2">
+          <div className="d-flex justify-content-between  flex-column ">
             {/* <div></div> */}
-            <Card className="w-50">
+            <Card>
               <CardBody>
                 <div className="d-flex gap-1 align-items-center">
                   <h5>عنوان جلسه :</h5>
@@ -62,21 +92,25 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
             </Card>
             <div className="d-flex flex-column gap-1">
               <Card>
-                <CardBody>
-                  {sessionDetail?.sessionFileDtos &&
-                  sessionDetail.sessionFileDtos.length > 0 ? (
-                    sessionDetail.sessionFileDtos.map((file) => (
-                      <img
-                        key={file.id}
-                        src={file.fileAddress}
-                        alt="file"
-                        style={{
-                          width: "100px",
-                          height: "100px",
-                          margin: "5px",
-                        }}
-                      />
-                    ))
+                <CardBody style={{ width: "100%", height: 200 }}>
+                  {sessionDetail?.sessionFileDtos?.length > 0 ? (
+                    <Swiper
+                      style={{ width: "100%" }}
+                      navigation
+                      pagination={{ clickable: true }}
+                    >
+                      {sessionDetail.sessionFileDtos.map((file) => (
+                        <SwiperSlide>
+                          <div>
+                            <img
+                              src={file.fileAddress}
+                              alt="file"
+                              style={{ width: "100%", height: 150 }}
+                            />
+                          </div>
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
                   ) : (
                     <p>فایلی وجود ندارد !</p>
                   )}
@@ -90,16 +124,14 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
                 >
                   افزودن فایل +
                 </Button>
-               
-                  <Button
-                    color="warning"
-                    className="w-100"
-                    onClick={() => setShowHmModal(!showHmModal)}
-                  >
-                    تکلیف
-                  </Button>
-                 
-               
+
+                <Button
+                  color="warning"
+                  className="w-100"
+                  onClick={() => setShowHmModal(!showHmModal)}
+                >
+                  تکلیف
+                </Button>
               </div>
             </div>
           </div>
@@ -113,6 +145,7 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
             setShowFileModal={setShowFileModal}
             showFileModal={showFileModal}
             ScheduleId={ScheduleId}
+            apiParams={apiParams}
           />
         </ModalBody>
       </Modal>

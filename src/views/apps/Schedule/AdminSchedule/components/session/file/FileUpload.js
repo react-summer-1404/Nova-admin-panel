@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Input, Button } from "reactstrap";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addSessionFile } from "../../../../../../../core/Services/api/session/Session";
 import toast from "react-hot-toast";
 
-const FileUpload = ({ ScheduleId }) => {
+const FileUpload = ({ ScheduleId,apiParams }) => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const queryClient = useQueryClient();
 
   const uploadFileMutation = useMutation({
     mutationFn: (formData) => addSessionFile(formData),
@@ -22,11 +23,17 @@ const FileUpload = ({ ScheduleId }) => {
     formData.append("SessionFiles", file);
     formData.append("SessionId", ScheduleId);
 
-    toast.promise(uploadFileMutation.mutateAsync(formData), {
-      loading: "در حال آپلود...",
-      success: <b>آپلود شد!</b>,
-      error: <b>آپلود ناموفق!</b>,
-    });
+    toast.promise(
+      uploadFileMutation.mutateAsync(formData),
+      {
+        loading: "در حال آپلود...",
+        success: () => {
+          queryClient.invalidateQueries(["getSessionDetails",apiParams]);
+          return "آپلود با موفقیت انجام شد";
+        },
+        error: "آپلود ناموفق!"
+      }
+    );
   };
 
   return (
@@ -62,7 +69,9 @@ const FileUpload = ({ ScheduleId }) => {
         )}
       </div>
 
-      <Button color="primary" onClick={handleUpload}></Button>
+      <Button color="primary" onClick={handleUpload}>
+        آپلود فایل
+      </Button>
     </div>
   );
 };

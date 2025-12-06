@@ -21,7 +21,7 @@ import {
 import FileUpload from "./FileUpload";
 import UploadURL from "./UploadURL";
 
-const AddFile = ({ showFileModal, setShowFileModal ,ScheduleId}) => {
+const AddFile = ({ showFileModal, setShowFileModal ,ScheduleId,apiParams}) => {
   const [active, setActive] = useState("1");
 
   const toggle = (tab) => {
@@ -69,7 +69,7 @@ const AddFile = ({ showFileModal, setShowFileModal ,ScheduleId}) => {
             <TabPane tabId="1">
               {/* upload file */}
               <Suspense>
-              <FileUpload ScheduleId={ScheduleId}/>
+              <FileUpload ScheduleId={ScheduleId} apiParams={apiParams}/>
               </Suspense>
             </TabPane>
 
