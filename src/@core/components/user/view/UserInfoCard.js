@@ -169,7 +169,7 @@ const UserInfoCard = ({ selectedUser }) => {
       isStudent : formData.role === "student",
     }
     console.log("sending :", finalData)
-    updateUser(finalData);
+    updateUser({id:selectedUser.id,data:finalData});
   };
 
   const handleSuspendedClick = () => {
