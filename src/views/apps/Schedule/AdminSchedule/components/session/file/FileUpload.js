@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addSessionFile } from "../../../../../../../core/Services/api/session/Session";
 import toast from "react-hot-toast";
 
-const FileUpload = ({ ScheduleId,apiParams }) => {
+const FileUpload = ({ ScheduleId, apiParams }) => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const queryClient = useQueryClient();
@@ -23,24 +23,21 @@ const FileUpload = ({ ScheduleId,apiParams }) => {
     formData.append("SessionFiles", file);
     formData.append("SessionId", ScheduleId);
 
-    toast.promise(
-      uploadFileMutation.mutateAsync(formData),
-      {
-        loading: "در حال آپلود...",
-        success: () => {
-          queryClient.invalidateQueries(["getSessionDetails",apiParams]);
-          return "آپلود با موفقیت انجام شد";
-        },
-        error: "آپلود ناموفق!"
-      }
-    );
+    toast.promise(uploadFileMutation.mutateAsync(formData), {
+      loading: "در حال آپلود...",
+      success: () => {
+        queryClient.invalidateQueries(["getSessionDetails", apiParams]);
+        return "آپلود با موفقیت انجام شد";
+      },
+      error: "آپلود ناموفق!",
+    });
   };
 
   return (
     <div className="d-flex flex-column gap-2">
       <Input
         type="file"
-        accept="image/*"
+        accept=".pdf,image/*,video/*"
         onChange={(e) => {
           const selectedFile = e.target.files[0];
           setFile(selectedFile);

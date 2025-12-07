@@ -107,7 +107,7 @@ const Session = ({ setCentralModal, centralModal, ScheduleId }) => {
                       navigation
                       pagination={{ clickable: true }}
                     >
-                      {sessionDetail.sessionFileDtos.map((file) => (
+                      {sessionDetail?.sessionFileDtos?.map((file) => (
                         <SwiperSlide key={file.id }>
                           <div style={{ position: "relative" }}>
                             <img
