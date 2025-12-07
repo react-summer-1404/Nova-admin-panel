@@ -41,7 +41,7 @@ function ScheduleUserList() {
   };
   const { data: users, isLoading } = useQuery({
     queryFn: () => getStudentSchedules(userApiParams),
-    queryKey: ["UserSchedules", apiParams],
+    queryKey: ["UserSchedules", userApiParams],
   });
 
   const { data: userList, isLoading: loading } = useUserList(apiParams)

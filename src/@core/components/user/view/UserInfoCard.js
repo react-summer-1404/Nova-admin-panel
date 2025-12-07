@@ -45,32 +45,6 @@ const genderOptions = [
 const MySwal = withReactContent(Swal)
 
 const UserInfoCard = ({ selectedUser }) => {
-  // const defaultValues = {
-  //   userName: selectedUser?.userName || "",
-  //   lName: selectedUser?.lName || "",
-  //   fName: selectedUser?.fName || "",
-  //   gmail: selectedUser?.gmail|| "",
-  //   phoneNumber: selectedUser?.phoneNumber|| "",
-  //   gender : selectedUser?.gender ?? true,
-  //   active : selectedUser?.active ?? true,
-  //   // id : selectedUser?.id || "",
-  //   // recoveryEmail : selectedUser?.recoveryEmail ,
-  //   // isDelete : selectedUser?.isDelete ?? false,
-  //   // isTecher : selectedUser?.isTecher ?? false,
-  //   // isStudent : selectedUser?.isStudent ?? false,
-  //   // twoStepAuth : selectedUser?.twoStepAuth ?? false,
-  //   // userAbout : selectedUser?.userAbout || "",
-  //   // currentPictureAddress : selectedUser?.currentPictureAddress || "",
-  //   // linkdinProfile : selectedUser?.linkdinProfile || "",
-  //   // telegramLink : selectedUser?.telegramLink || "",
-  //   // receiveMessageEvent : selectedUser?.receiveMessageEvent ?? false,
-  //   // homeAdderess : selectedUser?.homeAdderess || "",
-  //   // nationalCode : selectedUser?.nationalCode || "",
-  //   // latitude : selectedUser?.latitude || "",
-  //   // longitude : selectedUser?.longitude || "",
-  //   // insertDate : selectedUser?.insertDate || "",
-  //   // birthDay : selectedUser?.birthDay || "",
-  // }
 
   // ** State
   const [show, setShow] = useState(false)
@@ -169,7 +143,7 @@ const UserInfoCard = ({ selectedUser }) => {
       isStudent : formData.role === "student",
     }
     console.log("sending :", finalData)
-    updateUser({id:selectedUser.id,data:finalData});
+    updateUser({id:finalData.id,data:finalData});
   };
 
   const handleSuspendedClick = () => {
@@ -481,88 +455,7 @@ const UserInfoCard = ({ selectedUser }) => {
                       </select>           
                   )}
                 />        
-                </Col>
-              {/* <Col md={6} xs={12}>
-                <Label className='form-label' for='userAbout'>
-                  درباره کاربر:
-                </Label>
-                <Controller
-                  name='userAbout'
-                  control={control}
-                  // rules={{required: 'شماره موبایل الزامی است'}}
-                  render={({field}) => (
-                    <>
-                    <Input {...field} defaultValue= {selectedUser?.userAbout} placeholder='درباره کاربر را وارد کنید' />
-                    {errors.userAbout && <span>{errors.userAbout.message}</span>}
-                  </>
-                  )}                  
-                />              
-              </Col>
-              
-              <Col md={6} xs={12}>
-                <Label className='form-label' for='nationalCode'>
-                  کد ملی:
-                </Label>
-                <Controller
-                  name='nationalCode'
-                  control={control}
-                  // rules={{required: 'شماره موبایل الزامی است'}}
-                  render={({field}) => (
-                    <>
-                    <Input {...field} defaultValue= {selectedUser?.nationalCode} placeholder='کد ملی را وارد کنید' />
-                    {errors.nationalCode && <span>{errors.nationalCode.message}</span>}
-                  </>
-                  )}                  
-                />              
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className='form-label' for='linkdinProfile'>
-                لینکدین :
-                </Label>
-                <Controller
-                  name='linkdinProfile'
-                  control={control}
-                  // rules={{required: 'شماره موبایل الزامی است'}}
-                  render={({field}) => (
-                    <>
-                    <Input {...field} defaultValue= {selectedUser?.linkdinProfile} placeholder='لینکدین را وارد کنید' />
-                    {errors.linkdinProfile && <span>{errors.linkdinProfile.message}</span>}
-                  </>
-                  )}                  
-                />              
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className='form-label' for='latitude'>
-                عرض جغرافیایی :
-                </Label>
-                <Controller
-                  name='latitude'
-                  control={control}
-                  // rules={{required: 'شماره موبایل الزامی است'}}
-                  render={({field}) => (
-                    <>
-                    <Input {...field} defaultValue= {selectedUser?.latitude} placeholder='عرض جغرافیایی را وارد کنید' />
-                    {errors.latitude && <span>{errors.latitude.message}</span>}
-                  </>
-                  )}                  
-                />              
-              </Col>
-              <Col md={6} xs={12}>
-                <Label className='form-label' for='longitude'>
-                طول جغرافیایی :
-                </Label>
-                <Controller
-                  name='longitude'
-                  control={control}
-                  // rules={{required: 'شماره موبایل الزامی است'}}
-                  render={({field}) => (
-                    <>
-                    <Input {...field} defaultValue= {selectedUser?.longitude} placeholder='طول جغرافیایی را وارد کنید' />
-                    {errors.longitude && <span>{errors.longitude.message}</span>}
-                  </>
-                  )}                  
-                />              
-              </Col>  */}             
+                </Col>     
               <Col xs={12} className='text-center mt-2 pt-50'>
                 <Button type='submit' className='me-1' color='primary'>
                   تایید و ارسال

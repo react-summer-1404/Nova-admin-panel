@@ -24,7 +24,7 @@ export const useUpdateUser = ({ onSuccess, onError }) => {
         onError,
     });
 };
-export const useDeleteUser = (onSuccess) =>
+export const useDeleteUser = ({onSuccess,onError}) =>
     useMutation({
         mutationFn: async (id) => {
         const response = await DeleteUser(id);
