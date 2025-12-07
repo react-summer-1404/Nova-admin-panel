@@ -56,7 +56,7 @@ const UserInfoCard = ({ selectedUser }) => {
     reset,
     control,
     handleSubmit,
-    formState: { errors, isValid }
+    formState: { errors}
   } = useForm({defaultValues : {
     id : "",
     userName: "",
@@ -303,8 +303,8 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'نام الزامی است'}}
                   render={({ field }) => (
                     <>
-                    <Input {...field} placeholder='نام را وارد کنید' />
-                    {errors.fName && <span>{errors.fName.message}</span>}
+                    <input id='fName' {...field} className={`form-control ${errors.fName ? "is-invalid" : ""}`} type='text' placeholder='نام را وارد کنید' />
+                    {errors.fName && <span className='text-danger'>{errors.fName.message}</span>}
                     </>
                   )}
                 />
@@ -319,8 +319,8 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'نام خانوادگی الزامی است'}}
                   render={({ field }) => (
                     <>
-                    <Input {...field} placeholder='نام خانوادگی را وارد کنید' />
-                    {errors.lName && <span>{errors.lName.message}</span>}
+                    <input id='lName' {...field} className={`form-control ${errors.lName ? "is-invalid" : ""}`} type='text' placeholder='نام خانوادگی را وارد کنید' />
+                    {errors.lName && <span className='text-danger'>{errors.lName.message}</span>}
                     </>
                   )}
                 />
@@ -335,8 +335,8 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'نام کاربری الزامی است'}}
                   render={({ field }) => (
                     <>
-                      <Input {...field} placeholder='نام کاربری را وارد کنید' />
-                      {errors.userName && <span>{errors.userName.message}</span>}
+                      <input id='userName' {...field} className={`form-control ${errors.userName ? "is-invalid" : ""}`} type='text' placeholder='نام کاربری را وارد کنید' />
+                      {errors.userName && <span className='text-danger'>{errors.userName.message}</span>}
                     </>                  
                     )}
                 />
@@ -351,8 +351,8 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'ایمیل الزامی است'}}
                   render={({field}) => (
                     <>
-                    <Input {...field} placeholder='ایمیل را وارد کنید' />
-                    {errors.gmail && <span>{errors.gmail.message}</span>}
+                    <input  id='gmail' {...field} className={`form-control ${errors.gmail ? "is-invalid" : ""}`} type='text' placeholder='ایمیل را وارد کنید' />
+                    {errors.gmail && <span className='text-danger'>{errors.gmail.message}</span>}
                   </>
                   )}                  
                 />
@@ -364,8 +364,9 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Controller
                   name='active'
                   control={control}
+                  rules={{required: 'وضعیت الزامی است'}}
                   render={({field}) => (
-                    <select {...field} className='form-control' onChange={(e) => field.onChange(e.target.value === "true")}>
+                    <select id='active' {...field} className={`form-control ${errors.active ? "is-invalid" : ""}`} onChange={(e) => field.onChange(e.target.value === "true")}>
                       {statusOptions.map((opt) => (
                         <option key={opt.value.toString()} value={opt.value.toString()}>
                           {opt.label}
@@ -374,6 +375,7 @@ const UserInfoCard = ({ selectedUser }) => {
                     </select>
                   )}
               />
+              {errors.active && <span className='text-danger'>{errors.active.message}</span>}
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='gender'>
@@ -382,8 +384,9 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Controller
                   name='gender'
                   control={control}
+                  rules={{required: 'جنسیت الزامی است'}}
                   render={({field}) => (
-                    <select {...field} className='form-control' onChange={(e) => field.onChange(e.target.value === "true")}> 
+                    <select id='gender' {...field} className={`form-control ${errors.gender ? "is-invalid" : ""}`} onChange={(e) => field.onChange(e.target.value === "true")}> 
                       {genderOptions.map((opt) => (
                         <option key={opt.value.toString()} value={opt.value.toString()}>
                           {opt.label}
@@ -392,6 +395,7 @@ const UserInfoCard = ({ selectedUser }) => {
                     </select>
                   )}
               />
+              {errors.gender && <span className='text-danger'>{errors.gender.message}</span>}
               </Col>
               <Col md={6} xs={12}>
                 <Label className='form-label' for='phoneNumber'>
@@ -403,8 +407,8 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'شماره موبایل الزامی است'}}
                   render={({field}) => (
                     <>
-                    <Input {...field} placeholder='شماره موبایل را وارد کنید' />
-                    {errors.phoneNumber && <span>{errors.phoneNumber.message}</span>}
+                    <input id='phoneNumber' {...field} className={`form-control ${errors.gender ? "is-invalid" : ""}`} type='text' placeholder='شماره موبایل را وارد کنید' />
+                    {errors.phoneNumber && <span className='text-danger'>{errors.phoneNumber.message}</span>}
                   </>
                   )}                  
                 />              
@@ -419,8 +423,8 @@ const UserInfoCard = ({ selectedUser }) => {
                   rules={{required: 'تارخ تولد الزامی است'}}
                   render={({field}) => (
                     <>
-                    <Input {...field} placeholder='شماره موبایل را وارد کنید' />
-                    {errors.birthDay && <span>{errors.birthDay.message}</span>}
+                    <input id='birthDay' type='text' {...field} className={`form-control ${errors.birthDay ? "is-invalid" : ""}`} placeholder='شماره موبایل را وارد کنید' />
+                    {errors.birthDay && <span className='text-danger'>{errors.birthDay.message}</span>}
                   </>
                   )}                  
                 />              
@@ -432,10 +436,11 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Controller
                   name='insertDate'
                   control={control}
+                  rules={{required: 'تاریخ الزامی است'}}
                   render={({field}) => (
                     <>
-                    <Input {...field} placeholder='تاریخ درج را وارد کنید' />
-                    {errors.insertDate && <span>{errors.insertDate.message}</span>}
+                    <input id='insertDate' type='text' {...field} className={`form-control ${errors.insertDate ? "is-invalid" : ""}`} placeholder='تاریخ درج را وارد کنید' />
+                    {errors.insertDate && <span className='text-danger'>{errors.insertDate.message}</span>}
                   </>
                   )}                  
                 />              
@@ -447,14 +452,16 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Controller
                   name='role'
                   control={control}
+                  rules={{required: 'نقش الزامی است'}}
                   render={({field}) =>(        
-                    <select  id='role' className='form-control'
+                    <select  id='role' className={`form-control ${errors.role ? "is-invalid" : ""}`}
                       {...field}>
                       <option value='student'>دانش اموز </option>
                       <option value='teacher'> معلم </option>
                       </select>           
                   )}
-                />        
+                /> 
+                {errors.role && <span className='text-danger'>{errors.role.message}</span>}       
                 </Col>     
               <Col xs={12} className='text-center mt-2 pt-50'>
                 <Button type='submit' className='me-1' color='primary'>
