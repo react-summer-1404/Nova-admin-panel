@@ -14,13 +14,15 @@ import { Table } from "reactstrap";
 import { Edit, MoreVertical } from "react-feather";
 import toast from "react-hot-toast";
 import Session from "../session/Session";
+import ReactPaginate from "react-paginate";
 
 const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
   const [selected, setSelected] = useState("");
   const [centralModal, setCentralModal] = useState(false);
   const queryClient = useQueryClient();
   console.log("selected", selected);
-
+const [perPage,setPerPage]=useState(10)
+const [currentPage,setCurrentPage]=useState(1)
   const editAp = useMutation({
     mutationFn: (apiData) => EditSchedualSingle(apiData),
     onSuccess: () => {
@@ -33,6 +35,47 @@ const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
       console.log("error======>", error);
     },
   });
+
+  
+  const handlePerPage = (e) => {
+    const newPerPage = parseInt(e.target.value);
+    setPerPage(newPerPage);
+    setCurrentPage(1); 
+  };
+  
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
+  
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={''}
+      nextLabel={''}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+  
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  )
   return (
     <>
       <div className="content-body">
@@ -56,7 +99,7 @@ const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
                 </td>
               </tr>
             ) : (
-              data?.map((item) => {
+              dataToRender?.map((item) => {
                 const foundedItem = groups?.find(
                   (g) => g.id == item.courseGroupId
                 );
@@ -115,6 +158,7 @@ const AdminScheduleTable = ({ isLoading, apiParams, data, groups }) => {
             )}
           </tbody>
         </Table>
+        <CustomPagination/>
         <Session centralModal={centralModal} setCentralModal={setCentralModal} ScheduleId={selected?.id}/>
 
       </div>
