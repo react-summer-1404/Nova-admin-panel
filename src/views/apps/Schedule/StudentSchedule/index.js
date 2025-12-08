@@ -117,6 +117,7 @@ function ScheduleUserList() {
             data={users}
             isLoading={loading}
             selectedId={selectedId}
+            userApiParams={userApiParams}
           />
         </Col>
       </Row>
