@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 const FileUpload = ({ ScheduleId, apiParams }) => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [fileType, setFileType] = useState(null);
+
   const queryClient = useQueryClient();
 
   const uploadFileMutation = useMutation({
@@ -33,16 +35,29 @@ const FileUpload = ({ ScheduleId, apiParams }) => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+
+    setFileType(selectedFile.type);
+
+    if (selectedFile.type.startsWith("image/")) {
+      setPreview(URL.createObjectURL(selectedFile));
+    } else if (selectedFile.type === "application/pdf") {
+      setPreview(selectedFile.name);
+    } else if (selectedFile.type.startsWith("video/")) {
+      setPreview(URL.createObjectURL(selectedFile));
+    } else {
+      setPreview(selectedFile.name);
+    }
+  };
+
   return (
     <div className="d-flex flex-column gap-2">
       <Input
         type="file"
         accept=".pdf,image/*,video/*"
-        onChange={(e) => {
-          const selectedFile = e.target.files[0];
-          setFile(selectedFile);
-          setPreview(selectedFile ? URL.createObjectURL(selectedFile) : null);
-        }}
+        onChange={handleFileChange}
         style={{ width: 200, height: 50 }}
       />
 
@@ -56,12 +71,24 @@ const FileUpload = ({ ScheduleId, apiParams }) => {
           padding: 5,
         }}
       >
-        {preview && (
+        {preview && fileType?.startsWith("image/") && (
           <img
             src={preview}
             alt="preview"
             className="img-fluid rounded"
             style={{ maxHeight: "100%" }}
+          />
+        )}
+
+        {preview && fileType === "application/pdf" && (
+          <p className="text-center fw-bold text-primary">{preview}</p>
+        )}
+
+        {preview && fileType?.startsWith("video/") && (
+          <video
+            src={preview}
+            controls
+            style={{ maxHeight: "100%", maxWidth: "100%" }}
           />
         )}
       </div>
