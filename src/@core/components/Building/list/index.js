@@ -282,8 +282,8 @@ const InvoiceList = () => {
     setCurrentPage(1);
   };
 
-  const handlePagination = (page) => {
-    setCurrentPage(page);
+  const handlePagination = (perPage) => {
+    setCurrentPage(perPage);
   };
 
   const CustomPagination = () => {
@@ -304,7 +304,7 @@ const InvoiceList = () => {
         nextClassName={"page-item next"}
         previousLinkClassName={"page-link"}
         previousClassName={"page-item prev"}
-        onPageChange={(page) => handlePagination(page)}
+        onPageChange={(page) => handlePagination(page.selected + 1)}
         forcePage={currentPage !== 0 ? currentPage - 1 : 0}
         containerClassName={"pagination react-paginate justify-content-end p-1"}
       />
@@ -399,8 +399,7 @@ const InvoiceList = () => {
           <DataTable
             noHeader
             pagination
-            sortServer
-            paginationServer
+            sortServer           
             subHeader={true}
             columns={columns}
             responsive={true}

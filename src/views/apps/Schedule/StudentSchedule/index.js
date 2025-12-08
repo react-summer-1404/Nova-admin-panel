@@ -20,7 +20,6 @@ import { useUserList } from "../../../../core/Hook/useQUserApi";
 import { getStudentSchedules } from "../../../../core/Services/api/Schedule";
 import UserModelTable from "../../tables/scheduleUserModalTable/UserModalTable";
 import ScheduleUserListTable from "../../tables/scheduleUserListTable/scheduleUserListTable";
-import DatePickerComponent from "../AdminSchedule/components/DatePickerComponent";
 
 function ScheduleUserList() {
   const [centeredModal, setCenteredModal] = useState(false);
@@ -29,54 +28,80 @@ function ScheduleUserList() {
   const [debounceProduct] = useDebounce(searchProduct, 500);
   const [searchUser, setSearchUser] = useState("");
   const [debounceUser] = useDebounce(searchUser, 500);
-  const [picker, setPicker] = useState(new Date());
+  const [perPage, setPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const apiParams = {
-    PageNumber: 1,
-    RowsOfPage: 1000,
+    PageNumber: perPage,
+    RowsOfPage: currentPage,
     Query: debounceProduct,
   };
   const userApiParams = {
+    
     StudentId: selectedId,
-    startDate: picker[0],
-    endDate: picker[1],
+    
   };
   const { data: users, isLoading } = useQuery({
     queryFn: () => getStudentSchedules(userApiParams),
     queryKey: ["UserSchedules", userApiParams],
   });
 
-  const { data: userList, isLoading: loading } = useUserList(apiParams);
+  const { data: userList, isLoading: loading } = useUserList(apiParams)
   const current = userList?.listUser;
+
+  // const handlePerPage = (e) => {
+  //   setPerPage(parseInt(e.target.value));
+  //   setCurrentPage(1);
+  // };
+
+  // const handlePagination = (perPage) => {
+  //   setCurrentPage(perPage);
+  // };
+
+  // const CustomPagination = () => {
+  //   const count = Number((data?.length / perPage).toFixed(0));
+
+  //   return (
+  //     <ReactPaginate
+  //       nextLabel=""
+  //       breakLabel="..."
+  //       previousLabel=""
+  //       pageCount={count || 1}
+  //       activeClassName="active"
+  //       breakClassName="page-item"
+  //       pageClassName={"page-item"}
+  //       breakLinkClassName="page-link"
+  //       nextLinkClassName={"page-link"}
+  //       pageLinkClassName={"page-link"}
+  //       nextClassName={"page-item next"}
+  //       previousLinkClassName={"page-link"}
+  //       previousClassName={"page-item prev"}
+  //       onPageChange={(page) => handlePagination(page.selected + 1)}
+  //       forcePage={currentPage !== 0 ? currentPage - 1 : 0}
+  //       containerClassName={"pagination react-paginate justify-content-end p-1"}
+  //     />
+  //   );
+  // };
+
+  // const dataToRender = () => {
+  //   if (!current || current.length ===0) return [];
+  //   const filtered = current?.filter((b) =>
+  //     b?.fName?.toLowerCase().includes(value.toLowerCase())
+  //   );
+  //   return filtered?.slice((currentPage - 1) * perPage, currentPage * perPage);
+  // };
+
   return (
     <div>
       <Row className="d-flex justify-content-between align-items-center">
-        {/* <Col sm="6">
-          <InputGroup className="input-group-merge">
-            <Input
-              className="search-product"
-              placeholder="جستجو کاربران..."
-              onChange={(e) => setSearchUser(e.target.value)}
-              value={searchUser}
-            />
-            <InputGroupText>
-              <Search className="text-muted" size={14} />
-            </InputGroupText>
-          </InputGroup>
-        </Col> */}
-      
-          <div className="d-flex justify-content-between align-items-center">
-            <DatePickerComponent picker={picker} setPicker={setPicker} />
-
-            <Button
-              color="primary"
-              style={{ height: 40 ,width:300}}
-              onClick={() => setCenteredModal(!centeredModal)}
-            >
-              انتخاب کاربر
-            </Button>
-          </div>
-
+        <Col xl="3" md="4" sm="6">
+          <Button
+            color="primary"
+            style={{ width: "100%" }}
+            onClick={() => setCenteredModal(!centeredModal)}
+          >
+            انتخاب کاربر
+          </Button>
           <Modal
             isOpen={centeredModal}
             toggle={() => setCenteredModal(!centeredModal)}
@@ -100,15 +125,20 @@ function ScheduleUserList() {
               </InputGroup>
               <UserModelTable
                 data={current}
+                pagination
+                responsive
+                // data ={dataToRender}
                 isLoading={isLoading}
                 selectedId={selectedId}
                 setSelectedId={setSelectedId}
                 centeredModal={centeredModal}
                 setCenteredModal={setCenteredModal}
+                // paginationComponent = {CustomPagination}
+                // handlePerPage = {handlePerPage}
               />
             </ModalBody>
           </Modal>
- 
+        </Col>
       </Row>
 
       <Row>
@@ -117,7 +147,6 @@ function ScheduleUserList() {
             data={users}
             isLoading={loading}
             selectedId={selectedId}
-            userApiParams={userApiParams}
           />
         </Col>
       </Row>

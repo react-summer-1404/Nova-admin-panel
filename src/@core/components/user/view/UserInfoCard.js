@@ -68,7 +68,8 @@ const UserInfoCard = ({ selectedUser }) => {
     active : true,
     birthDay : '',
     insertDate: '',
-    role : '',
+    isTecher: false,
+    isStudent:false,
   }, mode: "onChange"});
 
   useEffect(() => {
@@ -84,7 +85,8 @@ const UserInfoCard = ({ selectedUser }) => {
         active : Boolean(selectedUser.active) ||  false,
         birthDay : selectedUser.birthDay || "",
         insertDate : selectedUser.insertDate || "",
-        role : selectedUser.isTecher? "teacher":"student"
+        isTecher : Boolean(selectedUser.isTecher) || false,
+        isStudent : Boolean(selectedUser.isStudent) || false,
       });
     }
     
@@ -139,8 +141,8 @@ const UserInfoCard = ({ selectedUser }) => {
       id : selectedUser.id,
       gender : formData.gender === true,
       active : formData.active === true,
-      isTecher : formData.role === "teacher",
-      isStudent : formData.role === "student",
+      isTecher : formData.isTecher,
+      isStudent : formData.isStudent ,
     }
     console.log("sending :", finalData)
     updateUser({id:finalData.id,data:finalData});
@@ -420,10 +422,10 @@ const UserInfoCard = ({ selectedUser }) => {
                 <Controller
                   name='birthDay'
                   control={control}
-                  rules={{required: 'تارخ تولد الزامی است'}}
+                  rules={{required: 'تاریخ تولد الزامی است'}}
                   render={({field}) => (
                     <>
-                    <input id='birthDay' type='text' {...field} className={`form-control ${errors.birthDay ? "is-invalid" : ""}`} placeholder='شماره موبایل را وارد کنید' />
+                    <input id='birthDay' type='text' {...field} className={`form-control ${errors.birthDay ? "is-invalid" : ""}`} placeholder=' تاریخ تولد را وارد کنید' />
                     {errors.birthDay && <span className='text-danger'>{errors.birthDay.message}</span>}
                   </>
                   )}                  
@@ -446,6 +448,38 @@ const UserInfoCard = ({ selectedUser }) => {
                 />              
               </Col>
               <Col md={6} xs={12}>
+                <Label className='form-label' for='insertDate'>
+                معلم:
+                </Label>
+                <Controller
+                  name='isTecher'
+                  control={control}
+                  // rules={{required: 'تاریخ الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <input id='isTecher' type='checkbox' {...field}  />
+                    {/* {errors.isTecher && <span className='text-danger'>{errors.isTecher.message}</span>} */}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              <Col md={6} xs={12}>
+                <Label className='form-label' for='insertDate'>
+                  دانش اموز :
+                </Label>
+                <Controller
+                  name='isStudent'
+                  control={control}
+                  // rules={{required: 'تاریخ الزامی است'}}
+                  render={({field}) => (
+                    <>
+                    <input id='isStudent' type='checkbox' {...field} />
+                    {/* {errors.isTecher && <span className='text-danger'>{errors.isTecher.message}</span>} */}
+                  </>
+                  )}                  
+                />              
+              </Col>
+              {/* <Col md={6} xs={12}>
                 <Label className='form-label' for='role'>
                     نقش
                 </Label>
@@ -462,7 +496,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   )}
                 /> 
                 {errors.role && <span className='text-danger'>{errors.role.message}</span>}       
-                </Col>     
+                </Col>      */}
               <Col xs={12} className='text-center mt-2 pt-50'>
                 <Button type='submit' className='me-1' color='primary'>
                   تایید و ارسال
