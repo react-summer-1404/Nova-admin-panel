@@ -13,10 +13,6 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
-import {
-  createGroup,
-  createSocialGroup,
-} from "../../../../../../core/Services/api/getGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { getData } from "../../store";
 import { Label } from "recharts";

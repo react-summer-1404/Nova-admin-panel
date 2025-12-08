@@ -109,10 +109,12 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
           <Controller
             name='firstName'
             control={control}
+            rules={{required:'نام الزامی است'}}
             render={({field}) => (
-              <input id='firstName' className='form-control' type='text' placeholder='نام را وارد کنید' invalid={errors.firstName && true} {...field}/>
+              <input id='firstName' className ={`form-control ${errors.firstName ? "is-invalid" : ""}`} type='text' placeholder='نام را وارد کنید' {...field}/>
             )}
           />
+          {errors.firstName && <span className='text-danger'>{errors.firstName.message}</span>}
         </div>
         <div className ='mb-1'>
           <Label className ='form-label' for='lastName'>
@@ -121,10 +123,12 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
           <Controller
             name='lastName'
             control={control}
+            rules={{required:'نام خانوادگی الزامی است'}}
             render={({field}) => (
-              <input id='lastName' className='form-control' type='text' placeholder='نام خانوادگی را وارد کنید' invalid={errors.lastName && true} {...field}/>
+              <input id='lastName' className={`form-control ${errors.lastName ? "is-invalid" : ""}`} type='text' placeholder='نام خانوادگی را وارد کنید' {...field}/>
             )}
           />
+        {errors.lastName && <span className='text-danger'>{errors.lastName.message}</span>}
         </div>
         <div className ='mb-1'>
           <Label className='form-label' for='gmail'>
@@ -133,10 +137,12 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
           <Controller
             name='gmail'
             control={control}
+            rules={{required:'ایمیل الزامی است'}}
             render={({field}) => (
-              <input id='gmail' className='form-control' type='text' placeholder='ایمیل را وارد کنید' invalid={errors.gmail && true} {...field}/>
+              <input id='gmail' className = {`form-control ${errors.gmail ? "is-invalid" : ""}`} type='text' placeholder='ایمیل را وارد کنید' {...field}/>
             )}
           />
+          {errors.gmail && <span className='text-danger'>{errors.gmail.message}</span>}
           <FormText color='muted'>از حروف اعداد و نقطه استفاده کنید</FormText>
         </div>
         <div className ='mb-1'>
@@ -146,10 +152,12 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
           <Controller
             name='phoneNumber'
             control={control}
+            rules={{required:'شماره تلفن الزامی است'}}
             render={({field}) => (
-              <input id='phoneNumber' className='form-control' type='text' placeholder='شماره تلفن را وارد کنید' invalid={errors.phoneNumber && true} {...field}/>
+              <input id='phoneNumber' className={`form-control ${errors.phoneNumber ? "is-invalid" : ""}`} type='text' placeholder='شماره تلفن را وارد کنید' {...field}/>
             )}
           />
+          {errors.phoneNumber && <span className='text-danger'>{errors.phoneNumber.message}</span>}
         </div>
         <div className ='mb-1'>
           <Label className='form-label' for='password'>
@@ -158,10 +166,12 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
           <Controller
             name='password'
             control={control}
+            rules={{required:'رمز الزامی است'}}
             render={({field}) => (
-              <input id='password' className='form-control' type='text' placeholder='رمز را وارد کنید' invalid={errors.password && true} {...field}/>
+              <input id='password' className={`form-control ${errors.password ? "is-invalid" : ""}`} type='text' placeholder='رمز را وارد کنید' {...field}/>
             )}
           />
+          {errors.password && <span className='text-danger'>{errors.password.message}</span>}
         </div>
         <div className ='mb-1'>
         <Label className='form-label' for='mappedRole'>
@@ -170,14 +180,16 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
         <Controller
           name='role'
           control={control}
+          rules={{required:'نقش الزامی است'}}
           render={({field}) =>(        
-            <select  id='mappedRole' className='form-control'
+            <select  id='mappedRole' className={`form-control ${errors.password ? "is-invalid" : ""}`}
               {...field}>
               <option value='student'>دانش اموز </option>
               <option value='teacher'> معلم </option>
               </select>           
           )}
-        />        
+        />   
+        {errors.role && <span className='text-danger'>{errors.role.message}</span>}
         </div>
         
         <Button type='submit' className='me-1' color='primary' onClick={() => handleCreate(data)}>

@@ -52,18 +52,9 @@ const Product = ({ selectedCourse }) => {
 
   // ** Hook
   const {
-    reset,
-    control,
     setError,
-    handleSubmit,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      // username: selectedCourse.username,
-      // lastName: selectedCourse.fullName.split(' ')[1],
-      // title: selectedCourse?.title || ""
-    },
-  });
+  } = useForm();
 
   // ** render user img
 
@@ -81,13 +72,7 @@ const Product = ({ selectedCourse }) => {
     }
   };
 
-  const handleReset = () => {
-    reset({
-      // username: selectedCourse.username,
-      // lastName: selectedCourse.fullName.split(' ')[1],
-      // title: selectedCourse?.title || ""
-    });
-  };
+
   const apiParams = {
     id: selectedCourse.id,
     active: !active,
@@ -141,6 +126,10 @@ const Product = ({ selectedCourse }) => {
         });
       }
     });
+
+
+
+    
   };
 
   return (
@@ -201,9 +190,6 @@ const Product = ({ selectedCourse }) => {
               </li>
               <li className="mb-75">
                 <span className="fw-bolder me-25">وضعیت:</span>
-                {/* <Badge className='text-capitalize' color={statusColors[selectedCourse.status]}>
-                    {selectedCourse.statusName}
-                  </Badge> */}
 
                 <span>{selectedCourse?.statusName}</span>
               </li>
@@ -213,14 +199,7 @@ const Product = ({ selectedCourse }) => {
                   {selectedCourse?.capacity}
                 </span>
               </li>
-              {/* <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Tax ID:</span>
-                  <span>Tax-{selectedCourse.contact.substr(selectedCourse.contact.length - 4)}</span>
-                </li>
-                <li className='mb-75'>
-                  <span className='fw-bolder me-25'>Contact:</span>
-                  <span>{selectedCourse.contact}</span>
-                </li> */}
+
               <li className="mb-75">
                 <span className="fw-bolder me-25">تاریخ شروع:</span>
                 <span>{selectedCourse?.startTime?.slice(0, 10)}</span>
@@ -274,7 +253,11 @@ const Product = ({ selectedCourse }) => {
           />
         </CardBody>
       </Card>
-      <EditCourse show={show} setShow={setShow}  selectedCourse={selectedCourse}/>
+      <EditCourse
+        show={show}
+        setShow={setShow}
+        selectedCourse={selectedCourse}
+      />
     </Fragment>
   );
 };

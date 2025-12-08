@@ -35,6 +35,7 @@ import '@styles/react/libs/react-select/_react-select.scss'
 import '@styles/react/libs/tables/react-dataTable-component.scss'
 import { useUserList } from '../../../../core/Hook/useQUserApi'
 import { useDeleteUser } from '../../../../core/Hook/useMUserApi'
+import toast from 'react-hot-toast'
 
 
 
@@ -212,9 +213,15 @@ const total = data?.totalCount || 0
     setSortColumn(column.sortField)
   }
 
-  const {mutate: deleteUser, onSuccess} = useDeleteUser(() => {
-    onSuccess.toast.success("کاربر با موفقیت حذف شد در انتظار تایید توسط مدیران " )
-    refetch()
+  const {mutate: deleteUser} = useDeleteUser({
+    onSuccess : ()=> {
+      toast.success("کاربر با موفقیت حذف شد در انتظار تایید توسط مدیران " )
+
+    },
+    onError : () => {
+      toast.error("شما به این روت دسترسی ندارید")
+    }
+    
   })
 
   const handleDelete = (row) => {

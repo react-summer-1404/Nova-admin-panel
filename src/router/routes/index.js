@@ -48,6 +48,8 @@ const ClassManagement = lazy(() => import('../../views/apps/ecommerce/classManag
 const TermManagement = lazy(() => import('../../views/apps/ecommerce/termManagement'))
 const TasksManagement = lazy(() => import('../../views/apps/ecommerce/TasksManagement'))
 const Department = lazy(() => import('../../views/apps/department'))
+const AdminSchedule = lazy(() => import('../../views/apps/Schedule/AdminSchedule'))
+const StudentSchedule = lazy(() => import('../../views/apps/Schedule/StudentSchedule'))
 
 const DTAdvance = lazy(() => import('../../views/apps/tables/data-tables/advance'))
 const DTAdvance2 = lazy(() => import('../../views/apps/tables/data-tables-user/advance'))
@@ -260,6 +262,21 @@ const Routes = [
       className: 'ecommerce-application'
     }
   },
+  {
+    path: '/schedule/adminSchedule',
+    element: <AdminSchedule/>,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+  {
+    path: '/schedule/studentSchedule',
+    element: <StudentSchedule/>,
+    meta: {
+      className: 'ecommerce-application'
+    }
+  },
+
   {
     path: "*",
     element: <Error />,
