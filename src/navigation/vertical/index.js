@@ -1,4 +1,4 @@
-import { Mail, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User } from "react-feather";
+import { Clock, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User } from "react-feather";
 // ** Navigation imports
 import pages from "./pages"
 
@@ -98,6 +98,26 @@ export default [
     ],
   },
   ...pages,
+  {
+    id:"schedules",
+    title:"مدیریت  بازه های زمانی",
+    icon:<Clock size={12}/>,
+    navLink: "/schedule",
+    children:[
+      {
+        id: "AdminSchedule",
+        title: "بازه زمانی ادمین",
+        icon: <Circle size={12} />,
+        navLink: "/schedule/adminSchedule",
+      },
+      {
+        id: "StudentSchedule",
+        title: "بازه زمانی کاربر",
+        icon: <Circle size={12} />,
+        navLink: "/schedule/studentSchedule",
+      },
+    ]
+  },
   {
     id: "departmentList",
     title: "دپارتمان",
