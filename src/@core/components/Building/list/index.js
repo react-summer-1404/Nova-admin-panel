@@ -157,7 +157,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                         placeholder="نام ساختمان را وارد کنید"
                       />
                       {errors.buildingName && (
-                        <span>{errors.buildingName.message}</span>
+                        <span className='text-danger'>{errors.buildingName.message}</span>
                       )}
                     </>
                   )}
@@ -177,7 +177,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                         {...field}                        
                         placeholder=" طبقه را وارد کنید"
                       />
-                      {errors.floor && <span>{errors.floor.message}</span>}
+                      {errors.floor && <span className='text-danger'>{errors.floor.message}</span>}
                     </>
                   )}
                 />
@@ -197,7 +197,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                         
                         placeholder=" عرض جغرافیایی را وارد کنید"
                       />
-                      {errors.latitude && <span>{errors.latitude.message}</span>}
+                      {errors.latitude && <span className='text-danger'>{errors.latitude.message}</span>}
                     </>
                   )}
                 />
@@ -217,7 +217,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                         
                         placeholder="طول جغرافیایی را وارد کنید"
                       />
-                      {errors.longitude && <span>{errors.longitude.message}</span>}
+                      {errors.longitude && <span className='text-danger'>{errors.longitude.message}</span>}
                     </>
                   )}
                 />

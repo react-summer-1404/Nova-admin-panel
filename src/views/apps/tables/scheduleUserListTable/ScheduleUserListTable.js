@@ -8,8 +8,16 @@ import defaultpPic from "../../../../assets/images/defalt.png";
 // ** Reactstrap Imports
 import { Table, Spinner } from "reactstrap";
 import { Alert } from "reactstrap";
+import { useQuery } from "@tanstack/react-query";
+import { getGroupList } from "../../../../core/Services/api/getGroup";
 
 const ScheduleUserListTable = ({ data, isLoading, selectedId }) => {
+    const {data:groups}=useQuery({
+        queryKey:["getGroupList2"],
+        queryFn:getGroupList
+    })
+    const cr =groups?.courseGroupDtos
+    console.log("edkjef",groups)
     if (!selectedId) {
         return (
             <div className="text-center p-4">
@@ -53,22 +61,24 @@ const ScheduleUserListTable = ({ data, isLoading, selectedId }) => {
                 </tr>
             </thead>
             <tbody>
-                {data?.map((item) => (
-                <tr key={item.id}>
-                    <td className="fw-bold text-black">
-                        {/* {index + 1} */}
-                    </td>
-    
-                    <td className="fw-bold text-black">
-                    <span>{item.startTime}</span>
-                    <span style={{ marginLeft: 8, marginRight: 8 }}>
-                        {item.endTime}
-                    </span>
-                    </td>
-    
-                    <td className="fw-bold text-black">{item.startDate}</td>
-                </tr>
-                ))}
+                {data?.map((item) =>{
+                    const foundedItem =cr?.find((g)=>g.id==item.courseGroupId)
+                    console.log("first",foundedItem)
+                    return(
+                        <tr key={item.id}>
+                            <td className="fw-bold text-black">
+                                <p>{foundedItem?.groupName}</p>
+                            </td>            
+                            <td className="fw-bold text-black">
+                            <span>{item.startTime}</span>                            
+                            </td>
+                            <td>
+                                {item.endTime}
+                            </td>
+                            <td className="fw-bold text-black">{item.startDate?.slice(0,10)}</td>
+                        </tr>
+                        )
+                } )}
             </tbody>
             </Table>
         </>
