@@ -22,6 +22,7 @@ import Session from "../../Schedule/AdminSchedule/components/session/Session";
 import { Edit, MoreVertical } from "react-feather";
 import { EditSchedualSingle } from "../../../../core/Services/api/Schedule";
 import toast from "react-hot-toast";
+import ReactPaginate from "react-paginate";
 
 const ScheduleUserListTable = ({
   data,
@@ -33,6 +34,8 @@ const ScheduleUserListTable = ({
   const [centralModal, setCentralModal] = useState(false);
   const queryClient = useQueryClient();
   console.log("selected", selected);
+  const [perPage,setPerPage]=useState(10)
+  const [currentPage,setCurrentPage]=useState(1)
 
   const editAp = useMutation({
     mutationFn: (apiData) => EditSchedualSingle(apiData),
@@ -80,7 +83,39 @@ const ScheduleUserListTable = ({
       </div>
     );
   }
-
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
+  
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={''}
+      nextLabel={''}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+  
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  )
   return (
     <>
       <Table hover responsive>
@@ -95,7 +130,7 @@ const ScheduleUserListTable = ({
           </tr>
         </thead>
         <tbody>
-          {data?.map((item) => {
+          {dataToRender?.map((item) => {
             const foundedItem = cr?.find((g) => g.id == item.courseGroupId);
             console.log("first", foundedItem);
             return (
@@ -151,6 +186,8 @@ const ScheduleUserListTable = ({
           })}
         </tbody>
       </Table>
+      <CustomPagination/>
+
       <Session
         centralModal={centralModal}
         setCentralModal={setCentralModal}

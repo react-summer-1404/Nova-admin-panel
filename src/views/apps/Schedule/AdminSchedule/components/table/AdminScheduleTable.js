@@ -37,11 +37,7 @@ const [currentPage,setCurrentPage]=useState(1)
   });
 
   
-  const handlePerPage = (e) => {
-    const newPerPage = parseInt(e.target.value);
-    setPerPage(newPerPage);
-    setCurrentPage(1); 
-  };
+
   
   const handlePagination = (pageNumber) => {
     setCurrentPage(pageNumber);

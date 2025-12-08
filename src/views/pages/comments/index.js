@@ -13,7 +13,7 @@ import Select from "react-select";
 import { selectThemeColors } from "@utils";
 
 // ** Custom Components
-import Sidebar from "../blogs/BlogSidebar";
+// import Sidebar from "../blogs/BlogSidebar";
 import Avatar from "@components/avatar";
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
 
@@ -39,7 +39,7 @@ import {
 // ** Styles
 import "@styles/base/pages/page-blog.scss";
 import { useDebounce } from "use-debounce";
-import Tables from "../../tables/reactstrap/blogTable";
+// import Tables from "../../tables/reactstrap/blogTable";
 import CommentTables from "../../tables/reactstrap/commentTable";
 
 // ** Icons
