@@ -6,44 +6,147 @@ import { useParams, Link } from "react-router-dom";
 // import { getUser } from '../store'
 import { useSelector, useDispatch } from "react-redux";
 
+// import Apis
+import { GetNewsCategories } from "../../../../core/Services/api/News/GetNewsCategories/index";
+
+// ** Custom Components
+import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
+
 // ** Reactstrap Imports
-import { Row, Col, Alert } from "reactstrap";
+import {
+  Row,
+  Col,
+  Alert,
+  InputGroupText,
+  Input,
+  InputGroup,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 
-import instance from "../../../../core/interseptor/Interseptor";
-
-// ** News View Components
+// ** User View Components
+// import BlogsDetailTab from './../../../apps/components/tabs/BlogsDetailTab'
+// import PlanCard from './PlanCard'
 import BlogsDetailInfoCard from "../../../apps/components/cards/BlogsDetailInfoCard";
-import BlogsDetailTab from "../../../apps/components/tabs/BlogsDetailTab";
 
 // ** Styles
 import "@styles/react/apps/app-users.scss";
+import NewsCategoryManagmentTables from "../../../apps/components/table/blogTable/newsCategoryManagmentTableComponents";
+import { Book, Search } from "react-feather";
+import { useQuery } from "@tanstack/react-query";
+import NewsCategoryManagmentInputGroup from "../../../forms/form-elements/input-groups/InputGroupBasic.js";
 
-const BlogDetails = () => {
+const NewsCategoryManagment = () => {
+  // ** Store Vars
+  // const store = useSelector(state => state.users)
+  // const dispatch = useDispatch()
+
   // ** Hooks
   const { id } = useParams();
+
+  // ** Get suer on mount
+  // useEffect(() => {
+  //   dispatch(getUser(parseInt(id)))
+  // }, [dispatch])
+
   const [active, setActive] = useState("1");
+  const [addCategoryModal, setAddCategoryModal] = useState(false);
+
   const toggleTab = (tab) => {
     if (active !== tab) {
       setActive(tab);
     }
   };
 
+  const { data } = useQuery({
+    queryKey: ["newsCategories"],
+    queryFn: GetNewsCategories,
+  });
+  const [categories, setCategories] = useState([]);
+  const [newsCategoryId, setNewsCategoryId] = useState(data?.id);
+  useEffect(() => {
+    if (data) {
+      setCategories(data);
+    }
+  }, [data]);
+
+  const NewsCategoryManagmentThList = ["نام دسته بندی", "عنوان گوگل", "عملیات"];
+
   return (
-    <>
-      <div className="app-user-view">
-        <Row>
-          <Col xl="4" lg="5" xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
-            <BlogsDetailInfoCard />
-          </Col>
-          <Col xl="8" lg="7" xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
-            <BlogsDetailTab active={active} toggleTab={toggleTab} />
-          </Col>
-        </Row>
-      </div>
-    </>
+    <div className="app-user-view">
+      <Row>
+        <Col xl="4" lg="5" xs={{ order: 1 }} md={{ order: 0, size: 5 }}>
+          <StatsHorizontal
+            icon={<Book size={21} />}
+            color="primary"
+            stats={categories?.length}
+            statTitle="مجموع دسته بندی ها"
+          />
+          <Button.Ripple
+            className="w-100"
+            color="primary"
+            onClick={() => {
+              setAddCategoryModal(!addCategoryModal);
+            }}
+          >
+            افزودن دسته بندی خبر
+          </Button.Ripple>
+          <Modal
+            isOpen={addCategoryModal}
+            toggle={() => setAddCategoryModal(!addCategoryModal)}
+          >
+            <ModalHeader toggle={() => setAddCategoryModal(!addCategoryModal)}>
+              ویرایش دسته بندی
+            </ModalHeader>
+            <ModalBody>
+              <Col sm="12">
+                <NewsCategoryManagmentInputGroup newsCategoryId={newsCategoryId} setNewsCategoryId={setNewsCategoryId}  />
+              </Col>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                color="primary"
+                onClick={() => setAddCategoryModal(!addCategoryModal)}
+              >
+                ثبت تغییرات
+              </Button>
+            </ModalFooter>
+          </Modal>
+        </Col>
+        <Col xl="8" lg="7" xs={{ order: 0 }} md={{ order: 1, size: 7 }}>
+          <InputGroup className="input-group-merge">
+            <Input
+              placeholder="جستوجو کنید ..."
+              //   value={searchInput}
+              //   onChange={(e) => {
+              //     setSearchInput(e.target.value);
+              //   }}
+            />
+            <InputGroupText>
+              <Search size={14} />
+            </InputGroupText>
+          </InputGroup>
+          <NewsCategoryManagmentTables
+            thList={NewsCategoryManagmentThList}
+            apiData={categories}
+            dataId={newsCategoryId}
+          />
+        </Col>
+      </Row>
+    </div>
+    // ) : (
+    //   <Alert color='danger'>
+    //     <h4 className='alert-heading'>User not found</h4>
+    //     <div className='alert-body'>
+    //       User with id: {id} doesn't exist. Check list of all Users: <Link to='/apps/user/list'>Users List</Link>
+    //     </div>
+    //   </Alert>
   );
 };
-export default BlogDetails;
+export default NewsCategoryManagment;
 
 // // ** React Imports
 // import { Fragment, useState, useEffect } from "react";
@@ -97,10 +200,16 @@ export default BlogDetails;
 // // ** Images
 // import { useParams } from "react-router-dom";
 // import BlogDetailSidebar from "./BlogDetailSidebar";
-// import Tabs from './../../../apps/components/tabs/index';
-// import UserTabs from './../../../../@core/components/user/view/Tabs';
-// import BlogsDetailTab from './../../../apps/components/tabs/BlogsDetailTab';
-// import instance from "./../../../../core/interseptor/Interseptor";
+// import Tabs from "./../../../apps/components/tabs/index";
+// import UserTabs from "./../../../../@core/components/user/view/Tabs";
+// import BlogsDetailTab from "./../../../apps/components/tabs/BlogsDetailTab";
+// import { Book } from "react-feather";
+// import { Search } from "react-feather";
+// import NewsCategoryManagmentTab from "./NewsCategoryManagmentTab";
+// import Tables from "../../../apps/components/table/blogTable";
+// import { CreateNewsCategoryApi } from "../../../../core/Services/api/News/CreateNewsCategory";
+// import NewsCategoryManagmentTables from "../../../apps/components/table/blogTable/newsCategoryManagmentTableComponents";
+// import { GetNewsCategories } from "../../../../core/Services/api/News/GetNewsCategories";
 
 // const BlogDetails = () => {
 //   // ** States
@@ -121,6 +230,24 @@ export default BlogDetails;
 //     Gaming: "light-danger",
 //     Video: "light-warning",
 //     Food: "light-success",
+//   };
+
+//   const renderTags = () => {
+//     return detailItems?.keyword?.split(" ").map((tag, index) => {
+//       return (
+//         <a key={index} href="/" onClick={(e) => e.preventDefault()}>
+//           <Badge
+//             className={classnames({
+//               "me-50": index !== detailItems?.keyword?.length - 1,
+//             })}
+//             color={badgeColorsArr[tag]}
+//             pill
+//           >
+//             {tag}
+//           </Badge>
+//         </a>
+//       );
+//     });
 //   };
 
 //   return (

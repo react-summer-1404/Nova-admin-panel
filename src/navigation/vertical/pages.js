@@ -17,24 +17,19 @@ export default [
             permissions: ["admin", "editor"],
             navLink: "/pages/blog/list",
           },
-          // {
-          //   id: "blogDetail",
-          //   title: "جزِیات اخبار و مقالات",
-          //   permissions: ["admin", "editor"],
-          //   navLink: "/pages/blog/detail",
-          // },
           {
             id: "addBlogs",
             title: "افزودن اخبار و مقالات",
             permissions: ["admin", "editor"],
             navLink: "/pages/blog/edit",
           },
+          {
+            id: "newsCategoryManagment",
+            title: "مدیریت دسته بندی اخبار",
+            permissions: ["admin", "editor"],
+            navLink: "/pages/blog/newscategorymanegment",
+          },
         ],
-      // },
-      // {
-       
-      // },
-    // ],
   },
   { id: "comments",
   title: "کامنت ها",

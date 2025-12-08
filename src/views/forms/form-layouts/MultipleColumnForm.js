@@ -1,32 +1,47 @@
 // ** Reactstrap Imports
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import {
-  Card,
-  CardBody,
-  Row,
-  Col,
-  Label,
-} from "reactstrap";
+import { Card, CardBody, Row, Col, Label, Button } from "reactstrap";
+
+// ** APIs Imports
+import { UpdateNewsApi } from "./../../../core/Services/api/News/UpdateNews/index";
+import instance from "../../../core/interseptor/Interseptor";
 
 import * as yup from "yup";
-import { UpdateNewsApi } from "./../../../core/Services/api/News/UpdateNews/index";
 import { useEffect, useState } from "react";
-import instance from "../../../core/interseptor/Interseptor";
 import { useMutation } from "@tanstack/react-query";
 
-const MultipleColumnForm = ({blogId}) => {
+const MultipleColumnForm = ({ blogId, onSuccess }) => {
+  const [initialData, setInitialData] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  // const [newsTitle, setNewsTitle] = useState();
+  // const [newsGoogleTitle, setNewsGoogleTitle] = useState();
+  // const [newsKeyword, setNewsKeyword] = useState();
+  // const [newsMiniDescribe, setNewsMiniDescribe] = useState();
 
- const [initialData, setInitialData] = useState(null);
- const [selectedFile,setSelectedFile] = useState(null)
 
- useEffect(() => {
-  // console.log(blogId)
-  if(blogId) {
-    instance.get(`/News/${blogId}`).then(res => {
-      setInitialData(res.data)})
-  }
- },[blogId])
- 
+  // ** Edit News
+  const { mutateAsync: UpdateNews } = useMutation({
+    mutationFn: UpdateNewsApi,
+  });
+
+  // const handleEdit = async(e) => {
+  //   e.preventDefault();
+
+  //   await UpdateNews({
+  //     id: blogId,
+  //     ...otherFields
+  //   });
+  // };
+
+  useEffect(() => {
+    // console.log(blogId)
+    if (blogId) {
+      instance.get(`/News/${blogId}`).then((res) => {
+        setInitialData(res.data);
+      });
+    }
+  }, [blogId]);
+
   // Form Validation
   const validationSchema = yup.object({
     GoogleDescribe: yup
@@ -45,9 +60,9 @@ const MultipleColumnForm = ({blogId}) => {
     Title: yup.string().required("پرکردن این فیلد ضروری است"),
   });
 
-  const {mutateAsync,isError,isPending,isSuccess} = useMutation({
-        mutationFn: UpdateNewsApi
-     })
+  const { mutateAsync } = useMutation({
+    mutationFn: UpdateNewsApi,
+  });
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
@@ -66,14 +81,14 @@ const MultipleColumnForm = ({blogId}) => {
     <Card>
       <CardBody>
         <Formik
-        enableReinitialize
+          enableReinitialize
           initialValues={{
             Title: initialData?.detailsNewsDto?.title || "",
             GoogleTitle: initialData?.detailsNewsDto?.googleTitle || "",
             Keyword: initialData?.detailsNewsDto?.keyword || "",
             MiniDescribe: initialData?.detailsNewsDto?.miniDescribe || "",
             Describe: initialData?.detailsNewsDto?.describe || "",
-            GoogleDescribe:initialData?.detailsNewsDto?.googleDescribe || "",
+            GoogleDescribe: initialData?.detailsNewsDto?.googleDescribe || "",
             // Image: initialData?.Image || "",
           }}
           onSubmit={handleSubmit}
@@ -92,7 +107,7 @@ const MultipleColumnForm = ({blogId}) => {
                   id="Title"
                   placeholder="عنوان را وارد کنید"
                 />
-                 <ErrorMessage
+                <ErrorMessage
                   name="Title"
                   className="text-danger"
                   component={"span"}
@@ -184,6 +199,15 @@ const MultipleColumnForm = ({blogId}) => {
                 />
               </Col>
             </Row>
+            <Button
+              color="primary"
+              onClick={() => {
+                handleEdit(item.id);
+                setBasicModal(!basicModal);
+              }}
+            >
+              ثبت تغییرات
+            </Button>
           </Form>
         </Formik>
       </CardBody>

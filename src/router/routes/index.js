@@ -58,6 +58,7 @@ const DTAdvance6 = lazy(() => import('../../views/apps/tables/data-tables-mentor
 const BlogList = lazy(() => import('./../../views/pages/blogs/list/index'))
 const BlogEdit = lazy(() => import('../../views/pages/blogs/addBlogs/index'))
 const BlogDetails = lazy(() => import('../../views/pages/blogs/details/index'))
+const NewsCategoryManagment = lazy(() => import('../../views/pages/blogs/newsCategoryManagment/NewsCategoryManagment'))
 const Comments = lazy(() => import('../../views/pages/comments/index'))
 
 
@@ -133,6 +134,10 @@ const Routes = [
   {
     path: '/pages/blog/edit',
     element: <Navigate to='/pages/blog/edit/1' />
+  },
+  {
+    path: '/pages/blog/newscategorymanegment',
+    element: <NewsCategoryManagment />
   },
   {
     path: '/pages/comments',

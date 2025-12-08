@@ -8,18 +8,18 @@ import { Row, Col, CardBody, CardText } from "reactstrap";
 import prism from "prismjs";
 
 // ** Demo Components
-import TableDark from "../TableDark";
+import TableDark from "../../../../tables/reactstrap/TableDark";
 import TableBasic from "./TableBasic";
-import TableHover from "../TableHover";
-import TableSmall from "../TableSmall";
-import TableStriped from "../TableStriped";
-import TableBordered from "../TableBordered";
-import TableTheadDark from "../TableTheadDark";
-import TableContextual from "../TableContextual";
-import TableResponsive from "../TableResponsive";
-import TableBorderless from "../TableBorderless";
-import TableTheadLight from "../TableTheadLight";
-import TableStripedDark from "../TableStripedDark";
+import TableHover from "../../../../tables/reactstrap/TableHover";
+import TableSmall from "../../../../tables/reactstrap/TableSmall";
+import TableStriped from "../../../../tables/reactstrap/TableStriped";
+import TableBordered from "../../../../tables/reactstrap/TableBordered";
+import TableTheadDark from "../../../../tables/reactstrap/TableTheadDark";
+import TableContextual from "../../../../tables/reactstrap/TableContextual";
+import TableResponsive from "../../../../tables/reactstrap/TableResponsive";
+import TableBorderless from "../../../../tables/reactstrap/TableBorderless";
+import TableTheadLight from "../../../../tables/reactstrap/TableTheadLight";
+import TableStripedDark from "../../../../tables/reactstrap/TableStripedDark";
 
 // ** Custom Components
 import Card from "@components/card-snippet";
@@ -38,13 +38,13 @@ import {
   tableContextual,
   tableStripedDark,
   tableTheadOptions,
-} from "../TableSourceCode";
+} from "../../../../tables/reactstrap/TableSourceCode";
 
 const Tables = ({ dataId, apiData, title, thList }) => {
   // useEffect(() => {
   //   prism.highlightAll()
   // })
-  thList = ["عنوان","آخرین آپدیت","دسته بندی","وضعیت","عملیات"]
+  thList = ["عنوان", "آخرین آپدیت", "دسته بندی", "وضعیت", "عملیات"];
 
   return (
     <Fragment>

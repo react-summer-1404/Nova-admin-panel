@@ -12,7 +12,7 @@ import { useDebounce } from "use-debounce";
 
 // ** Custom Components
 import Sidebar from "../BlogSidebar";
-import Tables from "../../../tables/reactstrap/blogTable";
+import Tables from "../../../apps/components/table/blogTable";
 
 // ** Reactstrap Imports
 import { Row, Col, InputGroup, InputGroupText, Input, Label } from "reactstrap";

@@ -1,7 +1,7 @@
 import instance from "../../../../interseptor/Interseptor";
 
-export const CreateNewsApi = async (formData) => {
-  const response = await instance.post("/News/CreateNews", formData, {
+export const ActiveDeactiveNewsApi = async (formData) => {
+  const response = await instance.put("/News/ActiveDeactiveNews", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 

@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // ** Custom Components
-import MultipleColumnForm from "../../../forms/form-layouts/MultipleColumnForm";
+import MultipleColumnForm from "../../../../forms/form-layouts/MultipleColumnForm";
 
 // ** Images
-import HandleImgError from "../../../../@core/assets/images/images.jpg";
+import HandleImgError from "../../../../../assets/images/images.jpg";
 
 // ** Icons Imports
 import { MoreVertical, Edit, Trash, XSquare, Check } from "react-feather";
 
 // ** APIs Imports
-import { DeleteNewsApi } from "../../../../core/Services/api/News/DeleteNews";
+import { DeleteNewsApi } from "../../../../../core/Services/api/News/DeleteNews";
+import { ActiveDeactiveNewsApi } from "../../../../../core/Services/api/News/ActiveDeactiveNews";
 
 // ** Reactstrap Imports
 import {
@@ -30,44 +31,54 @@ import {
   Button,
 } from "reactstrap";
 import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const TableBasic = ({ dataId, apiData, thList, title }) => {
   const [basicModal, setBasicModal] = useState(false);
-  const [editId, setEditId] = useState(null);
   const [blogId, setBlogId] = useState();
-  const [blogState, setBlogState] = useState([]);
+  const [blogState, setBlogState] = useState(
+    apiData?.news?.map((item) => item.active) || []
+  );
   const [blogs, setBlogs] = useState(apiData?.news || []);
+  const [editedNewsData, setEditedNewsData] = useState({});
 
-useEffect(() => {
-  setBlogs(apiData?.news || []);
-}, [apiData]);
-
-
-  // Handle Blogs State
   useEffect(() => {
-    const saveBlogState = localStorage.getItem("BlogState");
-    if (saveBlogState) {
-      setBlogState(JSON.parse(saveBlogState));
-    }
+    setBlogs(apiData?.news || []);
   }, [apiData]);
 
-  const handleBlogState = (index) => {
+  // ** News State
+  const { mutateAsync: ActiveDeactiveNews } = useMutation({
+    mutationFn: ActiveDeactiveNewsApi,
+  });
+
+  const handleBlogState = async (index, id) => {
+    const newState = !blogState[index];
+    await ActiveDeactiveNews({
+      Id: id,
+      Active: newState,
+    });
     setBlogState((prev) => {
       const updateState = [...prev];
-      updateState[index] = !updateState[index];
-      localStorage.setItem("BlogState", JSON.stringify(updateState));
+      updateState[index] = newState;
       return updateState;
     });
   };
 
-  const {mutateAsync } = useMutation({
-    mutationFn : DeleteNewsApi
-  })
+  // ** Delete News
+  const { mutateAsync: DeleteNews } = useMutation({
+    mutationFn: (id) => DeleteNewsApi(id),
+  });
 
-  const handleDeleteBlogs = (id) => {
-    const filteredData = apiData.news.filter((item) => item.id !== id);
-    setBlogState(filteredData.map(() => true));
-  }
+  const handleDeleteBlogs = async (id) => {
+    try {
+      await DeleteNews(id);
+      setBlogs((prev) => prev.filter((item) => item.id !== id));
+      toast.success('حذف با موفقیت صورت گرفت')
+    } catch(error) {
+      console.error("Error deleting blog:", error);
+      toast.error("عملیات با خطا مواجه شد")
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -126,7 +137,7 @@ useEffect(() => {
                   <DropdownMenu>
                     <DropdownItem
                       onClick={() => {
-                        setEditId(item?.id);
+                        setBlogId(item?.id);
                         setBasicModal(!basicModal);
                       }}
                     >
@@ -142,33 +153,29 @@ useEffect(() => {
                       </ModalHeader>
                       <ModalBody>
                         <Col sm="12">
-                          <MultipleColumnForm blogId={editId} />
+                          <MultipleColumnForm
+                            blogId={blogId}
+                            onSuccess={() => setBasicModal(false)}
+                          />
                         </Col>
                       </ModalBody>
-                      <ModalFooter>
-                        <Button
-                          color="primary"
-                          onClick={() => setBasicModal(!basicModal)}
-                        >
-                          ثبت تغییرات
-                        </Button>
-                      </ModalFooter>
                     </Modal>
                     <DropdownItem onClick={() => handleDeleteBlogs(item.id)}>
                       <Trash className="me-50" size={15} />{" "}
                       <span className="align-middle">حذف</span>
                     </DropdownItem>
-                    
+
                     <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                      {blogState[index] == true ?
-                      <Check className="me-50" size={15} /> :
-                      <XSquare className="me-50" size={15} /> 
-                      }
+                      {blogState[index] == true ? (
+                        <Check className="me-50" size={15} />
+                      ) : (
+                        <XSquare className="me-50" size={15} />
+                      )}
                       <span
                         className="align-middle"
                         onClick={() => {
                           setBlogId(item?.id);
-                          handleBlogState(index);
+                          handleBlogState(index, item.id);
                         }}
                       >
                         {blogState[index] === true
