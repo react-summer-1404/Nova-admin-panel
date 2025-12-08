@@ -22,6 +22,7 @@ import {
   getClassistDetail,
 } from "../../../../core/Services/api/ClassSection";
 import * as Yup from "yup";
+import ReactPaginate from "react-paginate";
 
 const validationSchema = Yup.object().shape({
   classRoomName: Yup.string().required("*الزامی"),
@@ -33,6 +34,8 @@ const validationSchema = Yup.object().shape({
 const TableClass = ({ data, isLoading, building }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const queryClient = useQueryClient();
+  const [perPage, setPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
   const mutationEditClass = useMutation({
     mutationFn: editClassist,
     onSuccess: () => {
@@ -56,7 +59,39 @@ const TableClass = ({ data, isLoading, building }) => {
     enabled: !!detailId,
     refetchOnWindowFocus: false,
   });
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
+
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={""}
+      nextLabel={""}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
   return (
     <>
       <Table hover responsive>
@@ -80,7 +115,7 @@ const TableClass = ({ data, isLoading, building }) => {
               </td>
             </tr>
           ) : (
-            data?.map((item) => {
+            dataToRender?.map((item) => {
               const buildingName = building?.find(
                 (b) => b.id == item?.buildingId
               );
@@ -123,6 +158,7 @@ const TableClass = ({ data, isLoading, building }) => {
           )}
         </tbody>
       </Table>
+      <CustomPagination />
       <Modal
         isOpen={modal}
         toggle={() => setModal(false)}

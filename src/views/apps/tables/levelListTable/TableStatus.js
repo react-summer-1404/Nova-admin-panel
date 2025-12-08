@@ -27,32 +27,51 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { editStatusList } from "../../../../core/Services/api/StatusSection";
+import ReactPaginate from "react-paginate";
 
 const TableLevel = ({ data, isLoading }) => {
-  // const [selectedItem, setSelectedItem] = useState(null);
-  // const queryClient = useQueryClient();
-  // const mutationEditStatus = useMutation({
-  //   mutationFn: editStatusList,
-  //   onSuccess: () => {
-  //     toast.success("وضعیت با موفقیت ویرایش شد");
-  //     queryClient.invalidateQueries(["getStatusList"]);
-  //   },
+  const [perPage, setPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  //   onError: () => toast.error("خطا در ویرایش وضعیت"),
-  // });
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
-  // const handleEditClick = (item) => {
-  //   setSelectedItem(item);
-  // };
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
 
-  // const handleCloseModal = () => setSelectedItem(null);
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={""}
+      nextLabel={""}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
 
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
   return (
     <>
       <Table hover responsive>
         <thead>
           <tr>
-          <th>عکس</th>
+            <th>عکس</th>
             <th>عنوان</th>
             {/* <th>توضیح </th> */}
             {/* <th>اقدام</th> */}
@@ -66,7 +85,7 @@ const TableLevel = ({ data, isLoading }) => {
               </td>
             </tr>
           ) : (
-            data?.map((item) => (
+            dataToRender?.map((item) => (
               <tr key={item.id}>
                 <td>
                   <img
@@ -78,84 +97,12 @@ const TableLevel = ({ data, isLoading }) => {
                 </td>
 
                 <td className="fw-bold text-black">{item.levelName}</td>
-                {/* <td className="fw-bold text-black">{item.describe}</td> */}
-                {/* <td>
-                  <Button
-                    color="primary"
-                    size="sm"
-                    onClick={() => handleEditClick(item)}
-                  >
-                    <Edit
-                      size={15}
-                      className="ms-50"
-                      style={{ marginLeft: "6px" }}
-                    />
-                    ادیت
-                  </Button>
-                </td> */}
               </tr>
             ))
           )}
         </tbody>
       </Table>
-
-
-      {/* <Modal
-        isOpen={selectedItem ? true : false}
-        toggle={handleCloseModal}
-        className="modal-dialog-centered"
-      >
-        <ModalHeader toggle={handleCloseModal}>ویرایش وضعیت</ModalHeader>
-
-        <ModalBody>
-          {selectedItem && (
-            <Formik
-              initialValues={{
-                statusName: selectedItem.statusName,
-                describe: selectedItem.describe,
-                statusNumber: selectedItem.statusNumber,
-              }}
-              onSubmit={(values) => {
-                mutationEditStatus.mutate({
-                  ...values,
-                  id: selectedItem.id,
-                });
-                handleCloseModal();
-              }}
-            >
-              {({ handleSubmit }) => (
-                <Form>
-                  <Field
-                    name="statusName"
-                    className="form-control mb-1"
-                    placeholder="نام وضعیت"
-                  />
-                  <Field
-                    name="describe"
-                    className="form-control mb-1"
-                    placeholder="توضیحات"
-                  />
-                  <Field
-                  type="number"
-                    name="statusNumber"
-                    className="form-control mb-1"
-                    placeholder="شماره"
-                  />
-
-                  <ModalFooter>
-                    <Button color="primary" onClick={handleSubmit}>
-                      ذخیره
-                    </Button>
-                    <Button color="secondary" onClick={handleCloseModal}>
-                      بستن
-                    </Button>
-                  </ModalFooter>
-                </Form>
-              )}
-            </Formik>
-          )}
-        </ModalBody>
-      </Modal> */}
+      <CustomPagination />
     </>
   );
 };

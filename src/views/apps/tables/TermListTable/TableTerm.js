@@ -31,11 +31,13 @@ import {
   editTermListTime,
   getTermDetail,
 } from "../../../../core/Services/api/TermSection";
+import ReactPaginate from "react-paginate";
 
 const TableTerm = ({ data, isLoading, dep }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedItemTime, setSelectedItemTime] = useState(null);
-
+  const [perPage, setPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
   const queryClient = useQueryClient();
   const mutationEditTerm = useMutation({
     mutationFn: editTermList,
@@ -74,6 +76,40 @@ const TableTerm = ({ data, isLoading, dep }) => {
     enabled: !!detailId,
     refetchOnWindowFocus: false,
   });
+
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
+  
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={''}
+      nextLabel={''}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+  
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  )
   return (
     <>
       <Table hover responsive>
@@ -98,7 +134,7 @@ const TableTerm = ({ data, isLoading, dep }) => {
               </td>
             </tr>
           ) : (
-            data?.map((item) => {
+            dataToRender?.map((item) => {
               return (
                 <tr key={item.id}>
                   <td
@@ -152,6 +188,7 @@ const TableTerm = ({ data, isLoading, dep }) => {
           )}
         </tbody>
       </Table>
+      <CustomPagination/>
       <Modal
         isOpen={modal}
         toggle={() => setModal(false)}

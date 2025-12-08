@@ -28,10 +28,13 @@ import {
   editTaskList,
   getTaskDetail,
 } from "../../../../core/Services/api/TaskSection";
+import ReactPaginate from "react-paginate";
 
 const TableTask = ({ data, isLoading, mentor }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const queryClient = useQueryClient();
+  const [perPage, setPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
   const mutationEditTask = useMutation({
     mutationFn: editTaskList,
     onSuccess: () => {
@@ -55,6 +58,40 @@ const TableTask = ({ data, isLoading, mentor }) => {
     enabled: !!detailId,
     refetchOnWindowFocus: false,
   });
+  
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
+  
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={''}
+      nextLabel={''}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+  
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  )
   return (
     <>
       <Table hover responsive>
@@ -79,7 +116,7 @@ const TableTask = ({ data, isLoading, mentor }) => {
               </td>
             </tr>
           ) : (
-            data?.map((item) => {
+            dataToRender?.map((item) => {
               const mentorName = mentor?.find(
                 (b) => b.id == item?.assistanceId
               );
@@ -127,6 +164,7 @@ const TableTask = ({ data, isLoading, mentor }) => {
           )}
         </tbody>
       </Table>
+      <CustomPagination />
       <Modal
         isOpen={modal}
         toggle={() => setModal(false)}

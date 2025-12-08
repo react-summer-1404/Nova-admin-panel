@@ -16,16 +16,17 @@ import {
 } from "reactstrap";
 
 // ** Reactstrap Imports
-import {
-  Table,
-} from "reactstrap";
+import { Table } from "reactstrap";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { editTechList } from "../../../../core/Services/api/TechSection";
 import toast from "react-hot-toast";
+import ReactPaginate from "react-paginate";
 
 const TableTech = ({ data, isLoading }) => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [perPage, setPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
   const queryClient = useQueryClient();
   const mutationEditTech = useMutation({
     mutationFn: editTechList,
@@ -42,7 +43,39 @@ const TableTech = ({ data, isLoading }) => {
   };
 
   const handleCloseModal = () => setSelectedItem(null);
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
+
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={""}
+      nextLabel={""}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
   return (
     <>
       <Table hover responsive>
@@ -57,13 +90,16 @@ const TableTech = ({ data, isLoading }) => {
         <tbody>
           {isLoading ? (
             <tr>
-              <td colSpan="4" className='d-flex justify-content-center'>
-              <Spinner color="primary" className='d-flex justify-content-center'/>;
-
+              <td colSpan="4" className="d-flex justify-content-center">
+                <Spinner
+                  color="primary"
+                  className="d-flex justify-content-center"
+                />
+                ;
               </td>
             </tr>
           ) : (
-            data?.map((item) => (
+            dataToRender?.map((item) => (
               <tr key={item.id}>
                 <td>
                   <img
@@ -99,7 +135,7 @@ const TableTech = ({ data, isLoading }) => {
           )}
         </tbody>
       </Table>
-
+      <CustomPagination />
       {/* Modal */}
       <Modal
         isOpen={selectedItem ? true : false}
