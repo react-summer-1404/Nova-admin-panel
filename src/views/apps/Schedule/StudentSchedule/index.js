@@ -20,6 +20,7 @@ import { useUserList } from "../../../../core/Hook/useQUserApi";
 import { getStudentSchedules } from "../../../../core/Services/api/Schedule";
 import UserModelTable from "../../tables/scheduleUserModalTable/UserModalTable";
 import ScheduleUserListTable from "../../tables/scheduleUserListTable/scheduleUserListTable";
+import DatePickerComponent from "../AdminSchedule/components/DatePickerComponent";
 
 function ScheduleUserList() {
   const [centeredModal, setCenteredModal] = useState(false);
@@ -28,6 +29,7 @@ function ScheduleUserList() {
   const [debounceProduct] = useDebounce(searchProduct, 500);
   const [searchUser, setSearchUser] = useState("");
   const [debounceUser] = useDebounce(searchUser, 500);
+  const [picker, setPicker] = useState(new Date());
 
   const apiParams = {
     PageNumber: 1,
@@ -35,16 +37,16 @@ function ScheduleUserList() {
     Query: debounceProduct,
   };
   const userApiParams = {
-   
     StudentId: selectedId,
-    
+    startDate: picker[0],
+    endDate: picker[1],
   };
   const { data: users, isLoading } = useQuery({
     queryFn: () => getStudentSchedules(userApiParams),
     queryKey: ["UserSchedules", userApiParams],
   });
 
-  const { data: userList, isLoading: loading } = useUserList(apiParams)
+  const { data: userList, isLoading: loading } = useUserList(apiParams);
   const current = userList?.listUser;
   return (
     <div>
@@ -62,14 +64,19 @@ function ScheduleUserList() {
             </InputGroupText>
           </InputGroup>
         </Col> */}
-        <Col xl="3" md="4" sm="6">
-          <Button
-            color="primary"
-            style={{ width: "100%" }}
-            onClick={() => setCenteredModal(!centeredModal)}
-          >
-            انتخاب کاربر
-          </Button>
+      
+          <div className="d-flex justify-content-between align-items-center">
+            <DatePickerComponent picker={picker} setPicker={setPicker} />
+
+            <Button
+              color="primary"
+              style={{ height: 40 ,width:300}}
+              onClick={() => setCenteredModal(!centeredModal)}
+            >
+              انتخاب کاربر
+            </Button>
+          </div>
+
           <Modal
             isOpen={centeredModal}
             toggle={() => setCenteredModal(!centeredModal)}
@@ -101,7 +108,7 @@ function ScheduleUserList() {
               />
             </ModalBody>
           </Modal>
-        </Col>
+ 
       </Row>
 
       <Row>
