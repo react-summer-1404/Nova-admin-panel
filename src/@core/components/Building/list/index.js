@@ -6,7 +6,13 @@ import { useEffect, useState } from "react";
 
 // ** Third Party Components
 import ReactPaginate from "react-paginate";
-import { ChevronDown, Edit, FileText, MoreVertical, Trash } from "react-feather";
+import {
+  ChevronDown,
+  Edit,
+  FileText,
+  MoreVertical,
+  Trash,
+} from "react-feather";
 import DataTable from "react-data-table-component";
 
 // ** Reactstrap Imports
@@ -24,14 +30,17 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from "reactstrap";
 
 // ** Styles
 import "@styles/react/apps/app-invoice.scss";
 import "@styles/react/libs/tables/react-dataTable-component.scss";
 import { useBuildingList } from "../../../../core/Hook/useQUserApi";
-import { useActiveDeactiveBuilding, useCreateBuilding } from "../../../../core/Hook/useMUserApi";
+import {
+  useActiveDeactiveBuilding,
+  useCreateBuilding,
+} from "../../../../core/Hook/useMUserApi";
 import { Controller, useForm } from "react-hook-form";
 
 import toast from "react-hot-toast";
@@ -40,33 +49,37 @@ import { useQueryClient } from "@tanstack/react-query";
 import DetailModal from "../DetailModal";
 import MapComponent from "../mapComponent/MapComponents";
 
-const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
-  const [data, setData] = useState(null)
-  
+const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage }) => {
+  const [data, setData] = useState(null);
+
   const queryClient = useQueryClient();
   const [isCreatedOpen, setIsCreatedOpen] = useState(false);
   const toggleCreate = () => setIsCreatedOpen(!isCreatedOpen);
   const [position, setPosition] = useState(null);
 
-  
   const {
     setValue,
     control,
     reset,
     handleSubmit,
-    formState: { errors,isValid },
-  } = useForm({ defaultValues : {
-    
-    buildingName: "",
-    floor: 0,
-    latitude: "",
-    longitude: "",
-  }, mode: "onChange" });
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: {
+      buildingName: "",
+      floor: 0,
+      latitude: "",
+      longitude: "",
+    },
+    mode: "onChange",
+  });
 
   const { mutate: createBuilding } = useCreateBuilding({
     onSuccess: (newItem) => {
       console.log("new Building: ", newItem);
-      queryClient.setQueriesData(["BuildingList"], (old = []) => [...old, newItem]);
+      queryClient.setQueriesData(["BuildingList"], (old = []) => [
+        ...old,
+        newItem,
+      ]);
       toast.success("ساختمان با موفقیت ایجاد شد");
       toggle();
       reset();
@@ -76,9 +89,8 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
     },
   });
 
-  
   const onSubmit = (formData) => {
-    if (!isValid){
+    if (!isValid) {
       console.log("Form invalid, not sending");
       return;
     }
@@ -89,17 +101,22 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
       longitude: String(formData.longitude),
     };
     createBuilding(finalData);
-    
-    console.log("sending to api:", finalData); 
+
+    console.log("sending to api:", finalData);
   };
   useEffect(() => {
     if (position) {
-      setValue("latitude", position.lat, { shouldValidate: true, shouldDirty: true });
-      setValue("longitude", position.lng, { shouldValidate: true, shouldDirty: true });
+      setValue("latitude", position.lat, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
+      setValue("longitude", position.lng, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   }, [position, setValue]);
-  
-  
+
   return (
     <>
       <div className="invoice-list-table-header w-100 py-2">
@@ -167,16 +184,18 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                   render={({ field }) => (
                     <>
                       <Input
-                        {...field}                        
+                        {...field}
                         placeholder="نام ساختمان را وارد کنید"
                       />
                       {errors.buildingName && (
-                        <span className='text-danger'>{errors.buildingName.message}</span>
+                        <span className="text-danger">
+                          {errors.buildingName.message}
+                        </span>
                       )}
                     </>
                   )}
                 />
-              </Col> 
+              </Col>
               <Col md={12} xs={12}>
                 <Label className="form-label" for="floor">
                   طبقه
@@ -187,59 +206,20 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                   rules={{ required: "طبقه الزامی است" }}
                   render={({ field }) => (
                     <>
-                      <Input
-                        {...field}                        
-                        placeholder=" طبقه را وارد کنید"
-                      />
-                      {errors.floor && <span className='text-danger'>{errors.floor.message}</span>}
+                      <Input {...field} placeholder=" طبقه را وارد کنید" />
+                      {errors.floor && (
+                        <span className="text-danger">
+                          {errors.floor.message}
+                        </span>
+                      )}
                     </>
                   )}
                 />
               </Col>
-              {/* <Col md={12} xs={12}>
-                <Label className="form-label" for="latitude">
-                عرض جغرافیایی
-                </Label>
-                <Controller
-                  control={control}
-                  name="latitude"
-                  rules={{ required: "عرض جغرافیایی الزامی است" }}
-                  render={({ field }) => (
-                    <>
-                      <Input
-                        {...field}
-                        
-                        placeholder=" عرض جغرافیایی را وارد کنید"
-                      />
-                      {errors.latitude && <span className='text-danger'>{errors.latitude.message}</span>}
-                    </>
-                  )}
-                />
-              </Col> */}
-              {/* <Col md={12} xs={12}>
-                <Label className="form-label" for="longitude">
-                طول جغرافیایی
-                </Label>
-                <Controller
-                  control={control}
-                  name="longitude"
-                  rules={{ required: "طول جغرافیایی الزامی است" }}
-                  render={({ field }) => (
-                    <>
-                      <Input
-                        {...field}
-                        
-                        placeholder="طول جغرافیایی را وارد کنید"
-                      />
-                      {errors.longitude && <span className='text-danger'>{errors.longitude.message}</span>}
-                    </>
-                  )}
-                />
-              </Col> */}<div style={{width:"100%",height:"300px"}}> 
-
-              <MapComponent position={position} setPosition={setPosition}/>
+              <div style={{ width: "100%", height: "300px" }}>
+                <MapComponent position={position} setPosition={setPosition} />
               </div>
-              <Col xs={12} className="text-center mt-2 pt-50"> 
+              <Col xs={12} className="text-center mt-2 pt-50">
                 <Button type="submit" className="me-1" color="primary">
                   تایید و ارسال
                 </Button>
@@ -255,7 +235,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                 </Button>
               </Col>
             </Row>
-            </Form>
+          </Form>
         </ModalBody>
       </Modal>
     </>
@@ -271,22 +251,24 @@ const InvoiceList = () => {
   const [perPage, setPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const queryClient = useQueryClient();
+  const [position, setPosition] = useState(null);
 
-  const {mutate: ActiveDeActive} = useActiveDeactiveBuilding({
+
+  const { mutate: ActiveDeActive } = useActiveDeactiveBuilding({
     onSuccess: (_, variables) => {
-      queryClient.setQueriesData(["BuildingList"], (old = []) => 
-        old.map((b) => 
-          b.id === variables.id ? {...b, active: variables.active} : b
+      queryClient.setQueriesData(["BuildingList"], (old = []) =>
+        old.map((b) =>
+          b.id === variables.id ? { ...b, active: variables.active } : b
         )
       );
       toast.success(
-        variables.active ? 'ساختمان غیر فعال شد' : 'ساختمان فعال شد'
-      )
+        variables.active ? "ساختمان غیر فعال شد" : "ساختمان فعال شد"
+      );
     },
-    onError : () => {
-      toast.error('خطا در تغییر وضعیت ساختمان');
-    }
-});
+    onError: () => {
+      toast.error("خطا در تغییر وضعیت ساختمان");
+    },
+  });
 
   const { data } = useBuildingList();
 
@@ -337,117 +319,134 @@ const InvoiceList = () => {
 
   useEffect(() => {
     console.log("selectedRow", selectedRow);
-  }, [selectedRow])
+  }, [selectedRow]);
 
-  const columns = [ 
+  const columns = [
     {
-      name: 'ردیف',
+      name: "ردیف",
       sortable: true,
-      minWidth: '150px',
-      sortField: 'id',
-      cell: (row, index) => index +1
+      minWidth: "150px",
+      sortField: "id",
+      cell: (row, index) => index + 1,
     },
     {
       sortable: true,
-      minWidth: '200px',
-      name: 'نام ساختمان ',
-      sortField: 'buildingName',
-      cell: row => row.buildingName
+      minWidth: "200px",
+      name: "نام ساختمان ",
+      sortField: "buildingName",
+      cell: (row) => row.buildingName,
     },
     {
       sortable: true,
-      minWidth: '200px',
-      name: 'طبقه  ',
-      sortField: 'floor',
-      cell: row => row.floor
+      minWidth: "200px",
+      name: "طبقه  ",
+      sortField: "floor",
+      cell: (row) => row.floor,
     },
     {
       sortable: true,
-      minWidth: '200px',
-      name: 'وضعیت',
-      sortField: 'floor',
-      cell: row => (
-        <span className ={`badge ${row.active? 'bg-success' : 'bg-danger'}`}>
-          {row.active ? 'فعال': " غیر فعال "}
+      minWidth: "200px",
+      name: "وضعیت",
+      sortField: "floor",
+      cell: (row) => (
+        <span className={`badge ${row.active ? "bg-success" : "bg-danger"}`}>
+          {row.active ? "فعال" : " غیر فعال "}
         </span>
-      )
+      ),
     },
     {
-      name: 'اقدام',
-      minWidth: '110px',
-      cell: row => (
-        <div className='column-action d-flex align-items-center'>
+      name: "اقدام",
+      minWidth: "110px",
+      cell: (row) => (
+        <div className="column-action d-flex align-items-center">
           <UncontrolledDropdown>
-            <DropdownToggle tag='span'>
-              <MoreVertical size={17} className='cursor-pointer' />
+            <DropdownToggle tag="span">
+              <MoreVertical size={17} className="cursor-pointer" />
             </DropdownToggle>
             <DropdownMenu end>
-              <DropdownItem className='w-100' onClick={() => {setSelectedRow(row.id);
-                setShowDetailModal(true)}}>
-                <FileText size={14} className='me-50' />
+              <DropdownItem
+                className="w-100"
+                onClick={() => {
+                  setSelectedRow(row.id);
+                  setShowDetailModal(true);
+                }}
+              >
+                <FileText size={14} className="me-50" />
                 جزئیات
               </DropdownItem>
-              <DropdownItem  className='w-100' onClick={() => {setSelectedRow(row);
+              <DropdownItem
+                className="w-100"
+                onClick={() => {
+                  setSelectedRow(row);
                   setShowEditModal(true);
-                  console.log("Row:", row)
-                }}>
-                <Edit size={14} className='me-50' />
+                  console.log("Row:", row);
+                }}
+              >
+                <Edit size={14} className="me-50" />
                 ویرایش
               </DropdownItem>
-              <DropdownItem  className='w-100' color={row.active ? 'danger' : 'success'} 
-                onClick={() => ActiveDeActive({id : row.id, active : !row.active})}       
+              <DropdownItem
+                className="w-100"
+                color={row.active ? "danger" : "success"}
+                onClick={() =>
+                  ActiveDeActive({ id: row.id, active: !row.active })
+                }
               >
-                <Trash size={14} className='me-50' />
-                <span className='align-middle'>{row.active ? 'غیر فعال کردن'  : 'فعال کردن'}</span>
-              </DropdownItem>            
+                <Trash size={14} className="me-50" />
+                <span className="align-middle">
+                  {row.active ? "غیر فعال کردن" : "فعال کردن"}
+                </span>
+              </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </div>
-      )
-    }
-    
-  ]
+      ),
+    },
+  ];
 
   return (
     <>
-    <div className="invoice-list-wrapper">
-      <Card>
-        <div className="invoice-list-dataTable react-dataTable">
-          <DataTable
-            noHeader
-            pagination
-            sortServer
-            paginationServer
-            subHeader={true}
-            columns={columns}
-            responsive={true}
-            data={dataToRender()}
-            sortIcon={<ChevronDown />}
-            className="react-dataTable"
-            defaultSortField="invoiceId"
-            paginationDefaultPage={currentPage}
-            paginationComponent={CustomPagination}
-            subHeaderComponent={
-              <CustomHeader
-                value={value}
-                perPage={perPage}
-                handleFilter={handleFilter}
-                handlePerPage={handlePerPage}
-              />
-            }
-          />
-        </div>
-      </Card>
-    </div>
-    <EditModal
-      isOpen={showEditModal}
-      toggle={() => setShowEditModal(false)}
-      data={selectedRow}
-    />
-    <DetailModal isOpen={showDetailModal}
-      toggle={() => setShowDetailModal(false)}
-      buildingId={selectedRow}
-    />
+      <div className="invoice-list-wrapper">
+        <Card>
+          <div className="invoice-list-dataTable react-dataTable">
+            <DataTable
+              noHeader
+              pagination
+              sortServer
+              paginationServer
+              subHeader={true}
+              columns={columns}
+              responsive={true}
+              data={dataToRender()}
+              sortIcon={<ChevronDown />}
+              className="react-dataTable"
+              defaultSortField="invoiceId"
+              paginationDefaultPage={currentPage}
+              paginationComponent={CustomPagination}
+              subHeaderComponent={
+                <CustomHeader
+                  value={value}
+                  perPage={perPage}
+                  handleFilter={handleFilter}
+                  handlePerPage={handlePerPage}
+                />
+              }
+            />
+          </div>
+        </Card>
+      </div>
+      <EditModal
+        isOpen={showEditModal}
+        toggle={() => setShowEditModal(false)}
+        data={selectedRow}
+      />
+      <DetailModal
+        position={position}
+        setPosition={setPosition}
+        isOpen={showDetailModal}
+        toggle={() => setShowDetailModal(false)}
+        buildingId={selectedRow}
+      />
     </>
   );
 };
