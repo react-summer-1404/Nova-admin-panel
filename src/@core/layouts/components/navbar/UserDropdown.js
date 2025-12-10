@@ -26,8 +26,18 @@ import {
 
 // ** Default Avatar Image
 import defaultAvatar from "@src/assets/images/portrait/small/avatar-s-11.jpg";
+import instance from "../../../../core/interseptor/Interseptor";
+import { useEffect, useState } from "react";
 
 const UserDropdown = () => {
+  // ** States
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    instance.get("/SharePanel/GetProfileInfo").then((res) => {
+      console.log(res.data);
+      setData(res.data);
+    });
+  }, []);
   return (
     <UncontrolledDropdown tag="li" className="dropdown-user nav-item">
       <DropdownToggle
@@ -37,11 +47,13 @@ const UserDropdown = () => {
         onClick={(e) => e.preventDefault()}
       >
         <div className="user-nav d-sm-flex d-none">
-          <span className="user-name fw-bold">John Doe</span>
+          <span className="user-name fw-bold">
+            {data?.fName}
+          </span>
           <span className="user-status">Admin</span>
         </div>
         <Avatar
-          img={defaultAvatar}
+          img={data?.currentPictureAddress}
           imgHeight="40"
           imgWidth="40"
           status="online"

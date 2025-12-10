@@ -56,13 +56,13 @@ const BlogList = () => {
   }, [searchDelay, selectedSort]);
 
   return (
-    <Fragment>
-      <Row className="w-50 content-header row">
-        <Col className="mb-1" md="6" sm="12">
+    <Fragment >
+      <Row className="content-header row d-flex justify-content-end">
+        <Col className="mb-1 d-flex justify-content-end align-items-center gap-1" md="6" sm="12">
           <Label className="form-label">مرتب سازی بر اساس</Label>
           <Select
             theme={selectThemeColors}
-            className="react-select"
+            className="w-50 react-select"
             classNamePrefix="select"
             defaultValue={sortOption1[1]}
             value={selectedSort}
@@ -75,6 +75,7 @@ const BlogList = () => {
           />
         </Col>
       </Row>
+      
       <div className="blog-wrapper">
         <div className="blog-search mb-2">
           <InputGroup className="input-group-merge">
@@ -90,7 +91,7 @@ const BlogList = () => {
             </InputGroupText>
           </InputGroup>
         </div>
-        <div className="content-detached content-left">
+        <div className="content-detached content-right">
           <div className="content-body">
             {data !== null ? (
               <div className="blog-list-wrapper">

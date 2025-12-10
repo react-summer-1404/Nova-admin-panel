@@ -14,6 +14,7 @@ import { CreateNewsApi } from "./../../../../core/Services/api/News/CreateNews/i
 
 // ** Reactstrap Imports
 import { Label, Row, Col, Button } from "reactstrap";
+import { CorrectTextAi } from "../../../../feature/aiAssistant/CorrectTextAi";
 
 const AddBlogMainInfo = ({ stepper, setFormData }) => {
   // Form Validation
@@ -31,12 +32,6 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
   });
 
   const handleSubmit = async (values) => {
-    // const formData = new FormData();
-    // formData.append("Title", values.Title);
-    // formData.append("MiniDescribe", values.MiniDescribe);
-    // formData.append("Describe", values.Describe);
-
-    // await mutateAsync(formData);
     setFormData(prev => ({...prev,...values}))
     stepper.next()
     
@@ -140,6 +135,7 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
                 className="align-middle ms-sm-25 ms-0"
               ></ArrowRight>
             </Button>
+             <CorrectTextAi/>
           </div>
         </Form>
       </Formik>
