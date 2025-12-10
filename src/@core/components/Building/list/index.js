@@ -38,6 +38,7 @@ import toast from "react-hot-toast";
 import EditModal from "../Editmodal";
 import { useQueryClient } from "@tanstack/react-query";
 import DetailModal from "../DetailModal";
+import MapComponent from "../mapComponent/MapComponents";
 
 const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
   const [data, setData] = useState(null)
@@ -45,6 +46,8 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
   const queryClient = useQueryClient();
   const [isCreatedOpen, setIsCreatedOpen] = useState(false);
   const toggleCreate = () => setIsCreatedOpen(!isCreatedOpen);
+  const [position, setPosition] = useState("");
+
   
   const {
     control,
@@ -182,7 +185,7 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                   )}
                 />
               </Col>
-              <Col md={12} xs={12}>
+              {/* <Col md={12} xs={12}>
                 <Label className="form-label" for="latitude">
                 عرض جغرافیایی
                 </Label>
@@ -201,8 +204,8 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                     </>
                   )}
                 />
-              </Col>
-              <Col md={12} xs={12}>
+              </Col> */}
+              {/* <Col md={12} xs={12}>
                 <Label className="form-label" for="longitude">
                 طول جغرافیایی
                 </Label>
@@ -221,7 +224,10 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
                     </>
                   )}
                 />
-              </Col>
+              </Col> */}<div style={{width:"100%",height:"300px"}}> 
+
+              <MapComponent position={position} setPosition={setPosition}/>
+              </div>
               <Col xs={12} className="text-center mt-2 pt-50"> 
                 <Button type="submit" className="me-1" color="primary">
                   تایید و ارسال
