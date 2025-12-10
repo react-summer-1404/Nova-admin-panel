@@ -4,7 +4,15 @@ import { lazy } from "react";
 import { Fragment, useState } from "react";
 
 // ** Icons Imports
-import { MessageCircle, Box, Users,CreditCard,Globe,UserCheck ,Bookmark} from "react-feather";
+import {
+  MessageCircle,
+  Box,
+  Users,
+  CreditCard,
+  Globe,
+  UserCheck,
+  Bookmark,
+} from "react-feather";
 
 // ** Reactstrap Imports
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
@@ -14,16 +22,16 @@ const DTAdvance3 = lazy(() =>
   import("../../tables/data-tables-groups/advance")
 );
 const DTAdvance4 = lazy(() =>
-import("../../../apps/tables/data-tables-payment/advance")
+  import("../../../apps/tables/data-tables-payment/advance")
 );
 const DTAdvance5 = lazy(() =>
-import("../../../apps/tables/data-tables-socialGroups/advance")
+  import("../../../apps/tables/data-tables-socialGroups/advance")
 );
 const DTAdvance6 = lazy(() =>
-import("../../../apps/tables/data-tables-mentors/advance")
+  import("../../../apps/tables/data-tables-mentors/advance")
 );
 const TableServerSide = lazy(() =>
-import("../../../apps/tables/userReserveList/TableServerSide")
+  import("../../../apps/tables/userReserveList/TableServerSide")
 );
 const TabsIcons = () => {
   {
@@ -41,6 +49,17 @@ const TabsIcons = () => {
   return (
     <Fragment>
       <Nav pills>
+        <NavItem>
+          <NavLink
+            active={active === "8"}
+            onClick={() => {
+              toggle("8");
+            }}
+          >
+            <MessageCircle size={18} />
+            <span className="align-middle">جزییات</span>
+          </NavLink>
+        </NavItem>
         <NavItem>
           <NavLink
             active={active === "7"}
@@ -78,7 +97,7 @@ const TabsIcons = () => {
         </NavItem>
 
         <NavItem>
-        <NavLink
+          <NavLink
             active={active === "3"}
             onClick={() => {
               toggle("3");
@@ -124,10 +143,15 @@ const TabsIcons = () => {
             <span className="align-middle">منتور ها</span>
           </NavLink>
         </NavItem>
-
-      
       </Nav>
       <TabContent className="py-50" activeTab={active}>
+        <TabPane tabId="8">
+          {/* comment table */}
+          <Suspense>
+            <DTAdvance />
+          </Suspense>
+        </TabPane>
+
         <TabPane tabId="7">
           {/* comment table */}
           <Suspense>
@@ -176,7 +200,6 @@ const TabsIcons = () => {
             <TableServerSide />
           </Suspense>
         </TabPane>
-
       </TabContent>
     </Fragment>
   );
