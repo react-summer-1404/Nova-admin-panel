@@ -13,6 +13,7 @@ import PublicRoute from "@components/routes/PublicRoute";
 
 // ** Utils
 import { isObjEmpty } from "@utils";
+import ChatPage from "../../views/pages/chat";
 
 
 const getLayout = {
@@ -144,6 +145,10 @@ const Routes = [
   {
     path: '/pages/comments',
     element: <Comments />
+  },
+  {
+    path: "/chat",
+    element : <ChatPage/>
   },
   {
     path: "/error",

@@ -1,4 +1,4 @@
-import { Clock, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User } from "react-feather";
+import { Clock, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User, MessageSquare } from "react-feather";
 // ** Navigation imports
 import pages from "./pages"
 
@@ -17,25 +17,7 @@ export default [
     navLink: "/list",
   },
   
-  // {
-  //   id: "secondPage",
-  //   title: "Second Page",
-  //   icon: <Mail size={20} />,
-  //   navLink: "/second-page",
-  // },
-  // {
-  //   id: "smaplePage",
-  //   title: "Sample Page",
-  //   icon: <Airplay size={20} />,
-  //   children: [
-  //     {
-  //       id: "invoiceList",
-  //       title: "List",
-  //       icon: <Circle size={12} />,
-  //       navLink: "/apps/invoice/list",
-  //     },
-  //   ],
-  // },
+  
   {
     id: "eCommerce",
     title: "مدیریت دوره ها",
@@ -129,6 +111,12 @@ export default [
     title: "ساختمان ها ",
     icon: <Home size={20} />,
     navLink: "/building",
+  },
+  {
+    id: "chat",
+    title: "پیام ها ",
+    icon: <MessageSquare size={20} />,
+    navLink: "/chat",
   },
   
 ];
