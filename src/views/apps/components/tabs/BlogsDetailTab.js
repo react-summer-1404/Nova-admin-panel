@@ -11,6 +11,7 @@ import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { User, Lock, Bookmark, Bell, Link } from "react-feather";
 import DetaileInfo from "../../../pages/blogs/details/DetaileInfo";
 import NewGoalOverview from "../../../ui-elements/cards/analytics/NewGoalOverview";
+import CommentTables from "../../tables/NewsCommentTable/CommentTables";
 
 const BlogsDetailTab = ({ active, toggleTab }) => {
   const { colors } = useContext(ThemeColors);
@@ -34,7 +35,9 @@ const BlogsDetailTab = ({ active, toggleTab }) => {
         <TabPane tabId="1">
           <DetaileInfo />
         </TabPane>
-        <TabPane tabId="2">{/* <SecurityTab /> */}</TabPane>
+        <TabPane tabId="2">
+          <CommentTables />
+        </TabPane>
       </TabContent>
     </Fragment>
   );
