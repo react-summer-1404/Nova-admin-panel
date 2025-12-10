@@ -46,10 +46,11 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
   const queryClient = useQueryClient();
   const [isCreatedOpen, setIsCreatedOpen] = useState(false);
   const toggleCreate = () => setIsCreatedOpen(!isCreatedOpen);
-  const [position, setPosition] = useState("");
+  const [position, setPosition] = useState(null);
 
   
   const {
+    setValue,
     control,
     reset,
     handleSubmit,
@@ -81,14 +82,24 @@ const CustomHeader = ({ handleFilter, value, handlePerPage, rowsPerPage}) => {
       console.log("Form invalid, not sending");
       return;
     }
-    const finalData= {
+    const finalData = {
       ...formData,
-      floor : Number(formData.floor),
-    }
-    console.log("sending to api:", finalData); 
+      floor: Number(formData.floor),
+      latitude: String(formData.latitude),
+      longitude: String(formData.longitude),
+    };
     createBuilding(finalData);
+    
+    console.log("sending to api:", finalData); 
   };
-
+  useEffect(() => {
+    if (position) {
+      setValue("latitude", position.lat, { shouldValidate: true, shouldDirty: true });
+      setValue("longitude", position.lng, { shouldValidate: true, shouldDirty: true });
+    }
+  }, [position, setValue]);
+  
+  
   return (
     <>
       <div className="invoice-list-table-header w-100 py-2">

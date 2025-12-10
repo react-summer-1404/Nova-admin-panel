@@ -1,25 +1,18 @@
 import React, { useState } from "react";
-import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
-import myMarkerIcon from "../../../assets/images";
-import L from "leaflet";
-
-const customIcon = new L.Icon({
-  iconUrl: MapPin,
-  iconSize: [35, 45], // اندازه دلخواه
-  iconAnchor: [17, 45], // نقطه‌ای که روی موقعیت قرار می‌گیرد
-  popupAnchor: [0, -40], // مکان نمایش Popup نسبت به آیکون
-});
-
 import {
   MapContainer,
   TileLayer,
   Marker,
   Popup,
+  ZoomControl,
   useMap,
   useMapEvents,
 } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
+import "leaflet-defaulticon-compatibility";
+
+
 function LocateButton({ setPosition }) {
   const map = useMap();
 
@@ -32,6 +25,7 @@ function LocateButton({ setPosition }) {
 
   return (
     <button
+    type="button"
       style={{
         position: "absolute",
         zIndex: 1000,
@@ -85,7 +79,7 @@ function MapComponent({ position, setPosition }) {
         <LocateButton setPosition={setPosition} />
 
         {position && (
-          <Marker position={position} icon={customIcon}>
+          <Marker position={position}>
             <Popup>📍 موقعیت مکانی شما</Popup>
           </Marker>
         )}
