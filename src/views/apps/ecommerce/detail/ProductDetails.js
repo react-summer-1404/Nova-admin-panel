@@ -40,7 +40,6 @@ import { getStatusList } from "../../../../core/Services/api/StatusSection";
 import EditStatus from "./components/EditStatus";
 import AddTechnology from "./components/addCategory";
 import EditCourse from "./components/EditCourse";
-import Explanation from "../../components/describe/Explanation";
 
 const MySwal = withReactContent(Swal);
 
