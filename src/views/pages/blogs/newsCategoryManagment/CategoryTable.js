@@ -4,7 +4,7 @@ import { Formik, Form, Field } from "formik";
 // ** Images
 import defaultpPic from "../../../../assets/images/defalt.png";
 // ** Icons Imports
-import { Edit } from "react-feather";
+import { Edit, MoreVertical } from "react-feather";
 import {
   Button,
   Modal,
@@ -14,19 +14,26 @@ import {
   Alert,
   Spinner,
   Label,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
 } from "reactstrap";
 
 // ** Reactstrap Imports
 import { Table } from "reactstrap";
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { editTechList } from "../../../../core/Services/api/TechSection";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { UpdateNewsCategoryApi } from "../../../../core/Services/api/News/UpdateNewsCategory";
 import ReactPaginate from "react-paginate";
+import { GetNewsCategoriesDetail } from "../../../../core/Services/api/News/GetNewsCategories";
 
 const CategoryTable = ({ data, isLoading }) => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const [modal, setModal] = useState(false);
+  const [detailId, setDetailId] = useState(false);
+
   // .........  استیت های مربوط به پجینیشن...........
   const [perPage, setPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +49,13 @@ const CategoryTable = ({ data, isLoading }) => {
     },
 
     onError: () => toast.error("خطا در ویرایش کتگوری"),
+  });
+
+  const { data: detail, isLoading: detailLoading } = useQuery({
+    queryKey: ["GetNewsCategoriesDetail"],
+    queryFn: () => GetNewsCategoriesDetail(detailId),
+    enabled: !!detailId,
+    refetchOnWindowFocus: false,
   });
 
   const handleEditClick = (item) => {
@@ -129,7 +143,7 @@ const CategoryTable = ({ data, isLoading }) => {
                 </td>
 
                 <td>
-                  <Button
+                  {/* <Button
                     color="primary"
                     size="sm"
                     onClick={() => handleEditClick(item)}
@@ -140,18 +154,63 @@ const CategoryTable = ({ data, isLoading }) => {
                       style={{ marginLeft: "6px" }}
                     />
                     ادیت
-                  </Button>
+                  </Button> */}
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      className="icon-btn hide-arrow"
+                      color="transparent"
+                      size="sm"
+                      caret
+                    >
+                      <MoreVertical size={15} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem
+                       onClick={() => handleEditClick(item)}
+                      >
+                        <Edit className="me-50" size={15} />{" "}
+                        <span className="align-middle">ویرایش</span>
+                      </DropdownItem>
+
+                      <DropdownItem
+                         onClick={() => {
+                            setModal(!modal);
+                            setDetailId(item.id);
+                          }}
+                      >
+                        <Edit className="me-50" size={15} />{" "}
+                        <span className="align-middle">جزییات</span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
                 </td>
               </tr>
             ))
           )}
         </tbody>
       </Table>
-      
+
       {/* این رو باید بعد تیبل بزاری */}
       <CustomPagination />
       {/* ................ */}
-
+      <Modal
+        isOpen={modal}
+        toggle={() => setModal(false)}
+        className="modal-dialog-centered"
+      >
+        <ModalHeader>جزئیات </ModalHeader>
+        <ModalBody>
+          {detailLoading ? (
+            <Spinner color="primary" />
+          ) : detail ? (
+            <>
+            details here
+            </>
+          ) : (
+            <p>اطلاعات یافت نشد</p>
+          )}
+        </ModalBody>
+      </Modal>
       <Modal
         isOpen={selectedItem ? true : false}
         toggle={handleCloseModal}
@@ -167,16 +226,9 @@ const CategoryTable = ({ data, isLoading }) => {
                 GoogleDescribe: selectedItem.GoogleDescribe,
                 CategoryName: selectedItem.categoryName,
               }}
-              //   onSubmit={(values) => {
-              //     mutationEditTech.mutate({
-              //       ...values,
-              //       id: selectedItem.id,
-              //     });
-              //     handleCloseModal();
-              //   }}
+           
               onSubmit={handleSubmit}
             >
-              {/* {({ handleSubmit }) => ( */}
               <Form>
                 <Label>نام کتگوری</Label>
                 <Field
@@ -207,7 +259,6 @@ const CategoryTable = ({ data, isLoading }) => {
                   </Button>
                 </ModalFooter>
               </Form>
-              {/* )} */}
             </Formik>
           )}
         </ModalBody>
