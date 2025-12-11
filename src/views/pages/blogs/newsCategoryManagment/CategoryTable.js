@@ -205,6 +205,8 @@ const CategoryTable = ({ data, isLoading }) => {
           ) : detail ? (
             <>
             details here
+              {/* <p> نام کلاس: {detail.classRoomName}</p>
+              <p> ظرفیت : {detail.capacity}</p> */}
             </>
           ) : (
             <p>اطلاعات یافت نشد</p>
