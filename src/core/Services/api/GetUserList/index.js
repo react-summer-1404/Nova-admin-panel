@@ -18,7 +18,7 @@ export const CreateUser = async (data) => {
   return response.data;
 };
 
-export const UpdateUser = async ({id, data}) => {
+export const UpdateUser = async (id, data) => {
   console.log('data',data)
   const response = await instance.put("/User/UpdateUser", {
     id,
