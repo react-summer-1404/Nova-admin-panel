@@ -70,7 +70,6 @@ const UserInfoCard = ({ selectedUser }) => {
     isTecher:  true,
     isStudent : true,
     insertDate: '',
-    // role : '',
   }, mode: "onChange"});
 
   useEffect(() => {
@@ -434,40 +433,6 @@ const UserInfoCard = ({ selectedUser }) => {
                   )}                  
                 />              
               </Col>
-              {/* <Col md={6} xs={12}>
-                <Label className='form-label' for='insertDate'>
-                  تاریخ درج:
-                </Label>
-                <Controller
-                  name='insertDate'
-                  control={control}
-                  rules={{required: 'تاریخ الزامی است'}}
-                  render={({field}) => (
-                    <>
-                    <input id='insertDate' type='text' {...field} className={`form-control ${errors.insertDate ? "is-invalid" : ""}`} placeholder='تاریخ درج را وارد کنید' />
-                    {errors.insertDate && <span className='text-danger'>{errors.insertDate.message}</span>}
-                  </>
-                  )}                  
-                />              
-              </Col> */}
-              {/* <Col md={6} xs={12}>
-                <Label className='form-label' for='role'>
-                    نقش
-                </Label>
-                <Controller
-                  name='role'
-                  control={control}
-                  rules={{required: 'نقش الزامی است'}}
-                  render={({field}) =>(        
-                    <select  id='role' className={`form-control ${errors.role ? "is-invalid" : ""}`}
-                      {...field}>
-                      <option value='student'>دانش اموز </option>
-                      <option value='teacher'> معلم </option>
-                      </select>           
-                  )}
-                /> 
-                {errors.role && <span className='text-danger'>{errors.role.message}</span>}       
-                </Col>      */}
               <Col xs={12} className='text-center mt-2 pt-50'>
                 <Button type='submit' className='me-1' color='primary'>
                   تایید و ارسال
