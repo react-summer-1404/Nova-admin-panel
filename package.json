@@ -92,7 +92,6 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "sass": "^1.51.0",
     "screenfull": "^6.0.2",
-    "socket.io-client": "^4.8.1",
     "sortablejs": "^1.12.0",
     "stream-browserify": "^3.0.0",
     "styled-components": "^5.3.5",
