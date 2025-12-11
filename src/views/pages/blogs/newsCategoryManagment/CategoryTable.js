@@ -27,11 +27,12 @@ import { UpdateNewsCategoryApi } from "../../../../core/Services/api/News/Update
 const CategoryTable = ({ data, isLoading }) => {
   const [selectedItem, setSelectedItem] = useState(null);
   const queryClient = useQueryClient();
-  const mutationEditTech = useMutation({
-    mutationFn: UpdateNewsCategoryApi,
+  const mutationEditCat = useMutation({
+    mutationFn: (formData)=>UpdateNewsCategoryApi(formData),
     onSuccess: () => {
       toast.success("کتگوری با موفقیت ویرایش شد");
       queryClient.invalidateQueries(["newsCategories"]);
+      handleCloseModal()
     },
 
     onError: () => toast.error("خطا در ویرایش کتگوری"),
@@ -42,7 +43,17 @@ const CategoryTable = ({ data, isLoading }) => {
   };
 
   const handleCloseModal = () => setSelectedItem(null);
+  const handleSubmit = async (values) => {
+    const formData = new FormData();
+    formData.append("CategoryName", values.CategoryName);
+    formData.append("Id", selectedItem.id);
+    // formData.append("Image", values.Image);
+    // formData.append("IconName", values.IconName);
+    formData.append("GoogleTitle", values.GoogleTitle);
+    formData.append("GoogleDescribe", values.GoogleDescribe);
 
+    await mutationEditCat.mutateAsync(formData);
+  };
   return (
     <>
       <Table hover responsive>
@@ -111,15 +122,16 @@ const CategoryTable = ({ data, isLoading }) => {
                 GoogleDescribe: selectedItem.GoogleDescribe,
                 CategoryName: selectedItem.categoryName,
               }}
-              onSubmit={(values) => {
-                mutationEditTech.mutate({
-                  ...values,
-                  id: selectedItem.id,
-                });
-                handleCloseModal();
-              }}
+            //   onSubmit={(values) => {
+            //     mutationEditTech.mutate({
+            //       ...values,
+            //       id: selectedItem.id,
+            //     });
+            //     handleCloseModal();
+            //   }}
+            onSubmit={handleSubmit}
             >
-              {({ handleSubmit }) => (
+              {/* {({ handleSubmit }) => ( */}
                 <Form>
                   <Label>نام کتگوری</Label>
                   <Field
@@ -142,7 +154,7 @@ const CategoryTable = ({ data, isLoading }) => {
                   />
 
                   <ModalFooter>
-                    <Button color="primary" onClick={handleSubmit}>
+                    <Button color="primary" type="submit">
                       ذخیره
                     </Button>
                     <Button color="secondary" onClick={handleCloseModal}>
@@ -150,7 +162,7 @@ const CategoryTable = ({ data, isLoading }) => {
                     </Button>
                   </ModalFooter>
                 </Form>
-              )}
+              {/* )} */}
             </Formik>
           )}
         </ModalBody>
