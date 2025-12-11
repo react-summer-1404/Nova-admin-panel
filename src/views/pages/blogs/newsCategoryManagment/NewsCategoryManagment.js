@@ -16,45 +16,22 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
 import {
   Row,
   Col,
-  Alert,
-  InputGroupText,
-  Input,
-  InputGroup,
   Button,
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
 } from "reactstrap";
-
-// ** User View Components
-// import BlogsDetailTab from './../../../apps/components/tabs/BlogsDetailTab'
-// import PlanCard from './PlanCard'
-import BlogsDetailInfoCard from "../../../apps/components/cards/BlogsDetailInfoCard";
 
 // ** Styles
 import "@styles/react/apps/app-users.scss";
 import NewsCategoryManagmentTables from "../../../apps/components/table/blogTable/newsCategoryManagmentTableComponents";
-import { Book, Search } from "react-feather";
+import { Book } from "react-feather";
 import { useQuery } from "@tanstack/react-query";
 import NewsCategoryManagmentInputGroup from "../../../forms/form-elements/input-groups/InputGroupBasic.js";
 
 const NewsCategoryManagment = () => {
-  // ** Store Vars
-  // const store = useSelector(state => state.users)
-  // const dispatch = useDispatch()
-
-  // ** Hooks
-  const { id } = useParams();
-
-  // ** Get suer on mount
-  // useEffect(() => {
-  //   dispatch(getUser(parseInt(id)))
-  // }, [dispatch])
-
   const [active, setActive] = useState("1");
   const [addCategoryModal, setAddCategoryModal] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
 
   const toggleTab = (tab) => {
     if (active !== tab) {

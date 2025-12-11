@@ -21,7 +21,7 @@ import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
 
-const List = () => {
+const NewsCategoryManagmentInputGroup = () => {
   const [centeredModal, setCenteredModal] = useState(false);
 
   const { data, isLoading } = useQuery({
@@ -121,4 +121,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default NewsCategoryManagmentInputGroup;

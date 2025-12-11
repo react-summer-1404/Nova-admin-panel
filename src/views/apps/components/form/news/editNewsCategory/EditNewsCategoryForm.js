@@ -10,19 +10,28 @@ import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
 
 // ** Import APIs
-import { CreateNewsCategoryApi } from "./../../../../core/Services/api/News/CreateNewsCategory/index";
+import { UpdateNewsCategoryApi } from "../../../../../../core/Services/api/News/UpdateNewsCategory";
 
-const NewsCategoryManagmentInputGroup = () => {
+const EditNewsCategoryForm = ({newsId}) => {
   const [centeredModal, setCenteredModal] = useState(false);
+  const [initialData, setInitialData] = useState(null);
+
+  useEffect(() => {
+    if (newsId) {
+      instance.get(`/News/GetNewsCategory/${newsId}`).then((res) => {
+        setInitialData(res.data);
+      });
+    }
+  }, [blogId]);
 
   const { mutateAsync } = useMutation({
-    mutationFn: CreateNewsCategoryApi,
+    mutationFn: UpdateNewsCategoryApi,
     onSuccess: () => {
-    toast.success("دسته بندی با موفقیت اضافه شد");
-  },
-  onError: () => {
-    toast.error("خطا در افزودن دسته‌بندی");
-  },
+      toast.success("دسته بندی با موفقیت اضافه شد");
+    },
+    onError: () => {
+      toast.error("خطا در افزودن دسته‌بندی");
+    },
   });
 
   const handleSubmit = async (values) => {
@@ -40,7 +49,7 @@ const NewsCategoryManagmentInputGroup = () => {
     <Row>
       <Formik
         initialValues={{
-          CategoryName: "",
+          CategoryName: initialData?.detailsNewsDto?.title || "",
           Image: "",
           IconName: "",
           GoogleTitle: "",
@@ -97,4 +106,4 @@ const NewsCategoryManagmentInputGroup = () => {
   );
 };
 
-export default NewsCategoryManagmentInputGroup;
+export default EditNewsCategoryForm;

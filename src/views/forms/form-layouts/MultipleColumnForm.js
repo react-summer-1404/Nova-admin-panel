@@ -13,11 +13,6 @@ import { useMutation } from "@tanstack/react-query";
 const MultipleColumnForm = ({ blogId, onSuccess }) => {
   const [initialData, setInitialData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [newsTitle, setNewsTitle] = useState();
-  // const [newsGoogleTitle, setNewsGoogleTitle] = useState();
-  // const [newsKeyword, setNewsKeyword] = useState();
-  // const [newsMiniDescribe, setNewsMiniDescribe] = useState();
-
 
   // ** Edit News
   const { mutateAsync: UpdateNews } = useMutation({
@@ -34,7 +29,6 @@ const MultipleColumnForm = ({ blogId, onSuccess }) => {
   // };
 
   useEffect(() => {
-    // console.log(blogId)
     if (blogId) {
       instance.get(`/News/${blogId}`).then((res) => {
         setInitialData(res.data);
