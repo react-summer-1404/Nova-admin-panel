@@ -15,11 +15,12 @@ import { CreateNewsApi } from "./../../../../core/Services/api/News/CreateNews/i
 // ** Reactstrap Imports
 import { Label, Row, Col, Button } from "reactstrap";
 import { CorrectTextAi } from "../../../../feature/aiAssistant/CorrectTextAi";
+import { EditorComponent } from "../../../../configs/EditorComponent";
 
 const AddBlogMainInfo = ({ stepper, setFormData }) => {
   // Form Validation
   const validationSchema = yup.object({
-    Describe: yup.string().required("پرکردن این فیلد ضروری است"),
+    // Describe: yup.string().required("پرکردن این فیلد ضروری است"),
     MiniDescribe: yup.string().required("پرکردن این فیلد ضروری است"),
     Title: yup
       .string()
@@ -32,9 +33,9 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
   });
 
   const handleSubmit = async (values) => {
-    setFormData(prev => ({...prev,...values}))
-    stepper.next()
-    
+    setFormData((prev) => ({ ...prev, ...values }));
+    stepper.next();
+
     console.log(mutateAsync);
   };
   return (
@@ -96,19 +97,28 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
               <Label className="form-label" for="Describe">
                 توضیحات کامل خبر
               </Label>
-              <Field
-                type="textarea"
-                className="mb-1 p-1"
-                name="Describe"
-                id="Describe"
-                rows="3"
-                placeholder="توضیحات خبر ..."
-              />
-              <ErrorMessage
+              <Field name="Describe">
+                {({ field, form }) => (
+                  <EditorComponent
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                  // <Flatpickr
+                  //   className="form-control"
+                  //   id="startDate"
+                  //   value={field.value}
+                  //   onChange={(date) =>
+                  //     form.setFieldValue("startDate", date[0])
+                  //   }
+                  // />
+                )}
+              </Field>
+
+              {/* <ErrorMessage
                 name="Describe"
                 className="text-danger"
                 component={"span"}
-              />
+              /> */}
             </Col>
           </Row>
           <div className="d-flex justify-content-between">
@@ -135,7 +145,7 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
                 className="align-middle ms-sm-25 ms-0"
               ></ArrowRight>
             </Button>
-             <CorrectTextAi/>
+            <CorrectTextAi />
           </div>
         </Form>
       </Formik>
