@@ -119,7 +119,7 @@ const Comments = () => {
   return (
     <Fragment>
       <Row className="w-100 content-header row">
-        <Col className="d-flex gap-2 justify-content-between">
+        <Col className="d-flex gap-2 ">
           {/* Stats With Icons Horizontal */}
           <StatsHorizontal
             icon={<Icon.Send size={21} />}
