@@ -39,7 +39,7 @@ import {
 // ** Styles
 import "@styles/base/pages/page-blog.scss";
 import { useDebounce } from "use-debounce";
-import Tables from "../../tables/reactstrap/blogTable";
+// import Tables from "../../tables/reactstrap/blogTable";
 import CommentTables from "../../tables/reactstrap/commentTable";
 
 // ** Icons
