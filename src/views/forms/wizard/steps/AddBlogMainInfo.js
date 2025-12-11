@@ -33,11 +33,21 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
   });
 
   const handleSubmit = async (values) => {
-    setFormData((prev) => ({ ...prev, ...values }));
+  // دلیل لینکه این قسمت با بقیه فرق داره اینه که 
+  //   باید اینجا مفادیری که با ادیتور جی اس نوشتیم رو جیسون تیدبل میکردیم
+  
+    const payload = {
+      ...values,
+      Describe: JSON.stringify(values.Describe),
+    };
+
+    setFormData((prev) => ({ ...prev, ...payload }));
+
     stepper.next();
 
-    console.log(mutateAsync);
+    await mutateAsync(payload);
   };
+
   return (
     <Fragment>
       <div className="content-header">
