@@ -67,8 +67,10 @@ const UserInfoCard = ({ selectedUser }) => {
     gender :true,
     active : true,
     birthDay : '',
+    isTecher:  true,
+    isStudent : true,
     insertDate: '',
-    role : '',
+    // role : '',
   }, mode: "onChange"});
 
   useEffect(() => {
@@ -83,8 +85,11 @@ const UserInfoCard = ({ selectedUser }) => {
         gender : Boolean(selectedUser.gender) || false,
         active : Boolean(selectedUser.active) ||  false,
         birthDay : selectedUser.birthDay || "",
+        isTecher : Boolean(selectedUser.isTecher) || false,
+        isStudent : Boolean(selectedUser.isStudent) || false,
+
         insertDate : selectedUser.insertDate || "",
-        role : selectedUser.isTecher? "teacher":"student"
+        // role : selectedUser.isTecher? "teacher":"student"
       });
     }
     
@@ -429,7 +434,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   )}                  
                 />              
               </Col>
-              <Col md={6} xs={12}>
+              {/* <Col md={6} xs={12}>
                 <Label className='form-label' for='insertDate'>
                   تاریخ درج:
                 </Label>
@@ -444,8 +449,8 @@ const UserInfoCard = ({ selectedUser }) => {
                   </>
                   )}                  
                 />              
-              </Col>
-              <Col md={6} xs={12}>
+              </Col> */}
+              {/* <Col md={6} xs={12}>
                 <Label className='form-label' for='role'>
                     نقش
                 </Label>
@@ -462,7 +467,7 @@ const UserInfoCard = ({ selectedUser }) => {
                   )}
                 /> 
                 {errors.role && <span className='text-danger'>{errors.role.message}</span>}       
-                </Col>     
+                </Col>      */}
               <Col xs={12} className='text-center mt-2 pt-50'>
                 <Button type='submit' className='me-1' color='primary'>
                   تایید و ارسال
