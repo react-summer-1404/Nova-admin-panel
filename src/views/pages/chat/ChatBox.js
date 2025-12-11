@@ -1,74 +1,80 @@
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import React, { useState, useEffect } from "react";
+import io from "socket.io-client";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const socket = io("http://localhost:3001");
 
 const ChatBox = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [input, setInput] = useState("");
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log(" Connected to server:", socket.id);
-    });
+    useEffect(() => {
+        fetch("http://localhost:3001/messages")
+        .then((res) => res.json())
+        .then((data) => setMessages(data));
 
-    socket.on("chat message", (msg) => {
-      console.log(" Received message:", msg);
-      setMessages((prev) => [...prev, msg]);
-    });
+        socket.on("chat message", (msg) => {
+        setMessages((prev) => [...prev, msg]);
+        });
 
-    return () => socket.disconnect();
-  }, []);
+        return () => {
+        socket.off("chat message");
+        socket.disconnect();
+        };
+    }, []);
 
-  const handleSend = (e) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const message = {
-      user: { role: "ادمین" }, 
-      text: input,
-      time: new Date().toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" }),
+    const handleSend = (e) => {
+        e.preventDefault();
+        if (!input.trim()) return;
+        const message = {
+        user: { role: "ادمین" },
+        text: input,
+        time: new Date().toLocaleTimeString("fa-IR", {
+            hour: "2-digit",
+            minute: "2-digit",
+        }),
     };
-
     socket.emit("chat message", message);
     setInput("");
-  };
+    };
 
-  return (
-    <div style={{ padding: "1rem", maxWidth: "500px", margin: "auto" }}>
-      <h2> چت</h2>
+    return (
+        <div className="container-fluid vh-100 d-flex flex-column bg-light p-3"> 
+        <div className="overflow-auto mb-3 border rounded p-3 " style={{height: "60vh", background: "url('/public/telegram.jpg')", backgroundSize:"cover", backgroundPosition:"center"}}>
+            {messages.length > 0 ? (
+            messages.map((msg, index) => (
+                <div
+                key={index}
+                className ={`d-flex mb-2 p-2 rounded shadow ${
+                    msg.user?.role === "ادمین"
+                    ? "bg-info text-end ms-auto"
+                    : "bg-white text-start me-auto"
+                }`}
+                style={{maxWidth:'15%'}}
+                >
+                <span className="text-secondary fw-bold">{msg.user?.role}</span> ({msg.time}):<br />
+                {msg.text}
+                </div>
+            ))
+            ) : (
+            <p className="text-muted bg-white py-3 rounded text-center" style={{width:"150px"}}>هیچ پیامی وجود ندارد</p>
+            )}
+        </div>
 
-      <div
-        style={{
-          border: "1px solid #ccc",
-          padding: "1rem",
-          height: "300px",
-          overflowY: "auto",
-          marginBottom: "1rem",
-          background: "#f9f9f9",
-        }}
-      >
-        {messages.map((msg, index) => (
-          <div key={index} style={{ marginBottom: "0.5rem" }}>
-            <strong>{msg.user?.role || "ناشناس"}</strong> ({msg.time}): {msg.text}
-          </div>
-        ))}
-      </div>
-
-      <form onSubmit={handleSend}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="پیام خود را بنویسید..."
-          style={{ width: "80%", padding: "0.5rem" }}
-        />
-        <button type="submit" style={{ padding: "0.5rem 1rem" }}>
-          ارسال
-        </button>
-      </form>
-    </div>
-  );
+        <form onSubmit={handleSend} className="d-flex">
+            <input
+            type="text"
+            className="form-control py-3 me-2 border-primary"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="پیام خود را بنویسید..."
+            />
+            <button type="submit" className="px-4 btn btn-primary">
+            ارسال
+            </button>
+        </form>
+        </div>
+    );
 };
 
 export default ChatBox;
