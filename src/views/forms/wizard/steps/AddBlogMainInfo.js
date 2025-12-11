@@ -101,16 +101,8 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
                 {({ field, form }) => (
                   <EditorComponent
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(data) => form.setFieldValue("Describe", data)}
                   />
-                  // <Flatpickr
-                  //   className="form-control"
-                  //   id="startDate"
-                  //   value={field.value}
-                  //   onChange={(date) =>
-                  //     form.setFieldValue("startDate", date[0])
-                  //   }
-                  // />
                 )}
               </Field>
 
