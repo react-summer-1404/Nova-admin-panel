@@ -9,39 +9,46 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import TableTech from "../../tables/techListTable/TableTech";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  getTechList,
-  postTechList,
-} from "../../../../core/Services/api/TechSection";
 import StatsVertical from "@components/widgets/stats/StatsVertical";
 import { Cpu } from "react-feather";
 import { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import toast from "react-hot-toast";
+import { GetNewsCategories } from "../../../../core/Services/api/News/GetNewsCategories";
+import { CreateNewsCategoryApi } from "../../../../core/Services/api/News/CreateNewsCategory";
+import CategoryTable from "./CategoryTable";
 
 const List = () => {
   const [centeredModal, setCenteredModal] = useState(false);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["getTechList"],
-    queryFn: getTechList,
+    queryKey: ["newsCategories"],
+    queryFn: GetNewsCategories,
     refetchOnWindowFocus: false,
     staleTime: 5 * 1000 * 60,
   });
   const queryClient = useQueryClient();
   const mutationPostTech = useMutation({
-    mutationFn: postTechList,
+    mutationFn: (formData) => CreateNewsCategoryApi(formData),
     onSuccess: () => {
-      toast.success("تکنولوژی با موفقیت اضافه شد");
-      queryClient.invalidateQueries(["getTechList"]);
+      toast.success("کتگوری با موفقیت اضافه شد");
+      queryClient.invalidateQueries(["newsCategories"]);
       setCenteredModal(!centeredModal);
     },
 
-    onError: () => toast.error("خطا در افزودن تکنولوژی"),
+    onError: () => toast.error("خطا در افزودن کتگوری"),
   });
+  const handleSubmit = async (values) => {
+    const formData = new FormData();
+    formData.append("CategoryName", values.CategoryName);
+    formData.append("Image", values.Image);
+    // formData.append("IconName", values.IconName);
+    formData.append("GoogleTitle", values.GoogleTitle);
+    formData.append("GoogleDescribe", values.GoogleDescribe);
 
+    await mutationPostTech.mutateAsync(formData);
+  };
   return (
     <Row>
       <Col xl="3" md="4" sm="6">
@@ -49,14 +56,14 @@ const List = () => {
           icon={<Cpu size={21} />}
           color="primary"
           stats={data?.length}
-          statTitle="تعداد تکنولوژی ها"
+          statTitle="تعداد کتگوری ها"
         />
         <Button
           color="primary"
           style={{ width: "100%" }}
           onClick={() => setCenteredModal(!centeredModal)}
         >
-          افزودن تکنولوژِی +
+          افزودن کتگوری +
         </Button>
         <Modal
           isOpen={centeredModal}
@@ -64,39 +71,49 @@ const List = () => {
           className="modal-dialog-centered"
         >
           <ModalHeader toggle={() => setCenteredModal(!centeredModal)}>
-            افزودن تکنولوژی
+            افزودن کتگوری
           </ModalHeader>
 
           <ModalBody>
             <Formik
               initialValues={{
-                techName: "",
-                describe: "",
-                iconAddress: "",
+                GoogleDescribe: "",
+                GoogleTitle: "",
+                // IconName: "",
+                // IconAddress: "",
+                Image: "",
+                CategoryName: "",
               }}
-              onSubmit={(values) => {
-                mutationPostTech.mutate(values);
-              }}
+              //   onSubmit={(values) => {
+              //     mutationPostTech.mutate(values);
+              //   }}
+              onSubmit={handleSubmit}
             >
               <Form>
                 <Field
-                  name="techName"
+                  name="CategoryName"
                   className="form-control mb-1"
-                  placeholder="نام تکنولوژی"
+                  placeholder="نام کتگوری"
                 />
                 <Field
-                  name="describe"
+                  name="GoogleTitle"
                   className="form-control mb-1"
-                  placeholder="توضیحات"
+                  placeholder="عنوان گوگل"
                 />
                 <Field
-                  name="iconAddress"
+                  name="GoogleDescribe"
                   className="form-control mb-1"
-                  placeholder="آدرس آیکون"
+                  placeholder="توضیحات گوگل"
+                />
+                <Field
+                  className="form-control mb-1"
+                  type="file"
+                  id="Image"
+                  name="Image"
                 />
 
                 <ModalFooter>
-                  <Button color="primary" onClick={onsubmit}>
+                  <Button color="primary" type="submit">
                     ذخیره
                   </Button>
                   <Button
@@ -114,7 +131,7 @@ const List = () => {
 
       <Col md="9">
         <Card>
-          <TableTech data={data} isLoading={isLoading} />
+          <CategoryTable data={data} isLoading={isLoading} />
         </Card>
       </Col>
     </Row>
