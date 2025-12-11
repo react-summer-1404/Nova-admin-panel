@@ -40,6 +40,7 @@ import { getStatusList } from "../../../../core/Services/api/StatusSection";
 import EditStatus from "./components/EditStatus";
 import AddTechnology from "./components/addCategory";
 import EditCourse from "./components/EditCourse";
+import Explanation from "../../components/describe/Explanation";
 
 const MySwal = withReactContent(Swal);
 
@@ -71,7 +72,6 @@ const Product = ({ selectedCourse }) => {
       }
     }
   };
-
 
   const apiParams = {
     id: selectedCourse.id,
@@ -126,10 +126,6 @@ const Product = ({ selectedCourse }) => {
         });
       }
     });
-
-
-
-    
   };
 
   return (
@@ -157,8 +153,8 @@ const Product = ({ selectedCourse }) => {
               </div>
             </div>
           </div>
-          <div className="d-flex justify-content-around my-2 pt-75">
-            <div className="d-flex align-items-start me-2">
+          {/* <div className="d-flex justify-content-around my-2 pt-75"> */}
+            {/* <div className="d-flex align-items-start me-2">
               <Badge color="light-primary" className="rounded p-75">
                 <Book className="font-medium-2" />
               </Badge>
@@ -175,8 +171,8 @@ const Product = ({ selectedCourse }) => {
                 <h4 className="mb-0">{selectedCourse.courseCommentTotal}</h4>
                 <small>تعداد کامنت ها</small>
               </div>
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
           <h4 className="fw-bolder border-bottom pb-50 mb-1">جزییات دوره</h4>
           <div className="info-container">
             <ul className="list-unstyled">
@@ -211,7 +207,7 @@ const Product = ({ selectedCourse }) => {
             </ul>
             <div className="mb-75">
               <span className="fw-bolder me-25"> توضیحات:</span>
-              <p>{selectedCourse.describe}</p>
+              <p>{selectedCourse.miniDescribe}</p>
             </div>
           </div>
           <div className="d-flex justify-content-center pt-2">
