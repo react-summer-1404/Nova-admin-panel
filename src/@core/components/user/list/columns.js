@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import Avatar from '../../avatar'
 
 // ** Icons Imports
-import { Slack, User, MoreVertical, FileText, Trash2, Archive, Shield, BookOpen } from 'react-feather'
+import { Slack, User, MoreVertical, Trash2,Shield, BookOpen, Bell } from 'react-feather'
 
 // ** Reactstrap Imports
 import { Badge, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
@@ -98,7 +98,7 @@ export const columns = ({handleDelete}) => [
     // selector: row => row.roles.join(", "),
     cell: row => (
     <div className='d-flex, flex-column'>
-      {row.roles.map(role => renderRole(role))}
+      {row.roles.slice(0,4).map(role => renderRole(role))}
     </div>
     )
   },
@@ -127,8 +127,27 @@ export const columns = ({handleDelete}) => [
     name: 'عملیات',
     minWidth: '80px',
     cell: row => (
-      <div onClick={() => handleDelete(row)} className='w-100'>
-        <Trash2 size={14} className='me-50' />
+      // <div onClick={() => handleDelete(row)} className='w-100'>
+      //   <Trash2 size={14} className='me-50' />
+      // </div>
+      <div className='column-action'>
+        <UncontrolledDropdown>
+          <DropdownToggle tag='div' className='btn btn-sm'>
+            <MoreVertical size={14} className='cursor-pointer' />
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem>
+              <Bell size={14} className='me-50' />
+              <span className='align-middle'>نوتیفیکیشن</span>
+            </DropdownItem>
+            <DropdownItem
+              onClick={() => handleDelete(row)}
+            >
+              <Trash2 size={14} className='me-50' />
+              <span className='align-middle'>حذف</span>
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledDropdown>
       </div>
     )
   }
