@@ -77,7 +77,7 @@ const ScheduleUserListTable = ({
       <div className="text-center p-4">
         <Alert color="warning">
           <div className="alert-body">
-            <span className="fw-bold">کاربری برای این دوره یافت نشد</span>
+            <span className="fw-bold">دوره ای برای این کاربر یافت نشد</span>
           </div>
         </Alert>
       </div>

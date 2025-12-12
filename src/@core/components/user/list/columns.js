@@ -65,7 +65,7 @@ const renderRole = role => {
 
 const statusObj = {  
   true: 'light-success',
-  false: 'light-warning',
+  false: 'light-danger',
 }
 
 export const columns = ({handleDelete}) => [

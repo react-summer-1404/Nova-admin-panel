@@ -51,20 +51,6 @@ function ScheduleUserList() {
   return (
     <div>
       <Row className="d-flex justify-content-between align-items-center">
-        {/* <Col sm="6">
-          <InputGroup className="input-group-merge">
-            <Input
-              className="search-product"
-              placeholder="جستجو کاربران..."
-              onChange={(e) => setSearchUser(e.target.value)}
-              value={searchUser}
-            />
-            <InputGroupText>
-              <Search className="text-muted" size={14} />
-            </InputGroupText>
-          </InputGroup>
-        </Col> */}
-      
           <div className="d-flex justify-content-between align-items-center">
             <DatePickerComponent picker={picker} setPicker={setPicker} />
 

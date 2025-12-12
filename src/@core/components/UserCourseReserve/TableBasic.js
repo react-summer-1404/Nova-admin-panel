@@ -5,8 +5,8 @@ import { MoreVertical, Edit, Trash } from 'react-feather'
 import { Table, Badge, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
 const statusColors = {
-  true: 'bg-success',
-  false: 'bg-danger'
+  true: 'success',
+  false: 'warning'
 }
 
 const statusOptions = [
@@ -31,7 +31,7 @@ const TableBasic = ({data}) => {
             <span className='align-middle fw-bold'>{item.courseName}</span>
           </td>
           <td>
-            <Badge className ='text-capitalize' color={statusColors[item.active]}>
+            <Badge className ='text-capitalize' color={item.active ? "light-success" : "light-danger"}>
               {item.active == true ? "فعال" : "غیرفعال"}
             </Badge>
           </td>

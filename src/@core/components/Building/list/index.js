@@ -387,7 +387,7 @@ const InvoiceList = () => {
               </DropdownItem>
               <DropdownItem
                 className="w-100"
-                color={row.active ? "danger" : "success"}
+                color={row.active ? "light-danger" : "light-success"}
                 onClick={() =>
                   ActiveDeActive({ id: row.id, active: !row.active })
                 }
