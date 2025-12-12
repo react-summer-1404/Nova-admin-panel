@@ -72,7 +72,6 @@ const Product = ({ selectedCourse }) => {
     }
   };
 
-
   const apiParams = {
     id: selectedCourse.id,
     active: !active,
@@ -126,10 +125,6 @@ const Product = ({ selectedCourse }) => {
         });
       }
     });
-
-
-
-    
   };
 
   return (
