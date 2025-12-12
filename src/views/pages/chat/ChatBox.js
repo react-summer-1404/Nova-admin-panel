@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,19 +10,19 @@ const ChatBox = () => {
     const [input, setInput] = useState("");
 
     useEffect(() => {
-        fetch("http://localhost:3001/messages")
-        .then((res) => res.json())
-        .then((data) => setMessages(data));
-
+        axios.get("http://localhost:3001/messages")
+          .then(res => setMessages(res.data))
+          .catch(err => console.error("Error fetching messages:", err));
+      }, []);
+    useEffect(() => {
         socket.on("chat message", (msg) => {
         setMessages((prev) => [...prev, msg]);
         });
 
         return () => {
         socket.off("chat message");
-        socket.disconnect();
         };
-    }, []);
+    },[])
 
     const handleSend = (e) => {
         e.preventDefault();
