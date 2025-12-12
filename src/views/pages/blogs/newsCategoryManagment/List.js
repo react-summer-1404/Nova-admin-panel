@@ -79,14 +79,9 @@ const List = () => {
               initialValues={{
                 GoogleDescribe: "",
                 GoogleTitle: "",
-                // IconName: "",
-                // IconAddress: "",
                 Image: "",
                 CategoryName: "",
               }}
-              //   onSubmit={(values) => {
-              //     mutationPostTech.mutate(values);
-              //   }}
               onSubmit={handleSubmit}
             >
               <Form>

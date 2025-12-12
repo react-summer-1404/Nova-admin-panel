@@ -64,7 +64,7 @@ const BlogList = () => {
             theme={selectThemeColors}
             className="w-50 react-select"
             classNamePrefix="select"
-            defaultValue={sortOption1[1]}
+            // defaultValue={sortOption1[1]}
             value={selectedSort}
             onChange={(option) => {
               setSelectedSort(option);

@@ -13,27 +13,17 @@ import Select from "react-select";
 import { selectThemeColors } from "@utils";
 
 // ** Custom Components
-import Sidebar from "../blogs/BlogSidebar";
-import Avatar from "@components/avatar";
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
 
 // ** Reactstrap Imports
 import {
   Row,
   Col,
-  Card,
-  CardBody,
-  CardText,
-  CardTitle,
-  CardImg,
-  Badge,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   InputGroup,
   InputGroupText,
   Input,
   Label,
+  Button,
 } from "reactstrap";
 
 // ** Styles
@@ -44,29 +34,14 @@ import CommentTables from "../../tables/reactstrap/commentTable";
 
 // ** Icons
 
-// const sortOption1 = [
-//   { value: { col: "insertDate", type: "DESC" }, label: "جدیدترین" },
-//   { value: { col: "insertDate", type: "ASC" }, label: "قدیمی ترین ها" },
-// ];
-
-// const sortOption2 = [
-//   { value: { col: "currentView", type: "DESC" }, label: "پربازدیدترین ها" },
-//   { value: { col: "newsRate", type: "DESC" }, label: "محبوب ترین ها" },
-// ];
-
-const sortType = [
-  { label: "ascending", key: "asc" },
-  { label: "Descending", key: "desc" },
+const sortColOptions = [
+  { value: "insertDate", label: "تاریخ بارگزاری" },
+  { value: "currentView", label: "بازدید" },
 ];
 
-const sortCol1 = [
-  { key: "Approved", label: "تایید شده" },
-  { key: "Pending", label: "تایید نشده" },
-];
-const sortCol2 = [{ key: "Approved", label: "تعداد ریپلای" }];
-const sortCol3 = [
-  { key: "Approved", label: "تایید شده" },
-  { key: "Pending", label: "تایید نشده" },
+const sortTypeOptions = [
+  { value: "asc", label: "صعودی" },
+  { value: "desc", label: "نزولی" },
 ];
 
 const Comments = () => {
@@ -75,7 +50,8 @@ const Comments = () => {
   const [commentId, detCommentId] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [rowsOfthePage, setRowsOfthePage] = useState(10);
-  const [selectedSort, setSelectedSort] = useState();
+  const [selectedSortCol, setSelectedSortCol] = useState();
+  const [selectedSortType, setSelectedSortType] = useState();
   const [searchInput, setSearchInput] = useState("");
   const [searchDelay] = useDebounce(searchInput, 500);
 
@@ -84,18 +60,32 @@ const Comments = () => {
     RowsOfPage: rowsOfthePage,
     PageNumber: pageNumber,
     Query: searchDelay,
-    SortType: selectedSort?.sortType?.key,
-    SortingCol: selectedSort?.sortCol?.key,
+    SortType: selectedSortType,
+    SortingCol: selectedSortCol,
+  };
+
+  const handleSortChange = (option, setter) => {
+    setter(option?.value || null);
   };
 
   useEffect(() => {
     instance
       .get("/Course/CommentManagment", { params: apiParams })
-      .then((res) => {
+      .then(async (res) => {
         console.log(res.data);
         setData(res.data);
       });
-  }, [searchDelay, selectedSort]);
+  }, [
+    searchDelay,
+    selectedSortCol,
+    selectedSortType,
+    rowsOfthePage,
+    pageNumber,
+  ]);
+
+  useEffect(() => {
+    console.log(apiParams);
+  }, [selectedSortCol, selectedSortType, rowsOfthePage]);
 
   const tableHeaderList = [
     "کاربر",
@@ -107,7 +97,6 @@ const Comments = () => {
     "عملیات",
   ];
 
-  console.log(data?.comments[0]?.accept);
   const approvedCommentCount = data?.comments?.filter(
     (appc) => appc.accept === true
   )?.length;
@@ -152,13 +141,11 @@ const Comments = () => {
             theme={selectThemeColors}
             className="react-select"
             classNamePrefix="select"
-            // defaultValue={sortOption1[1]}
-            value={selectedSort}
-            onChange={(option) => {
-              setSelectedSort(option);
-            }}
-            name="clear"
-            options={sortCol1}
+            value={
+              sortTypeOptions.find((x) => x.value === selectedSortType) || null
+            }
+            onChange={(option) => handleSortChange(option, setSelectedSortType)}
+            options={sortTypeOptions}
             isClearable
           />
         </Col>
@@ -168,35 +155,17 @@ const Comments = () => {
             theme={selectThemeColors}
             className="react-select"
             classNamePrefix="select"
-            // defaultValue={sortOption2[1]}
-            value={selectedSort}
-            onChange={(option) => {
-              setSelectedSort(option);
-            }}
-            name="clear"
-            options={sortCol2}
-            isClearable
-          />
-        </Col>
-        <Col className="mb-1" md="4" sm="4">
-          <Label className="form-label">مرتب سازی بر اساس</Label>
-          <Select
-            theme={selectThemeColors}
-            className="react-select"
-            classNamePrefix="select"
-            // defaultValue={sortOption2[1]}
-            value={selectedSort}
-            onChange={(option) => {
-              setSelectedSort(option);
-            }}
-            name="clear"
-            options={sortCol3}
+            value={
+              sortColOptions.find((x) => x.value === selectedSortCol) || null
+            }
+            onChange={(option) => setSelectedSortCol(option?.value || null)}
+            options={sortColOptions}
             isClearable
           />
         </Col>
       </Row>
       <div className="blog-wrapper">
-        <div className="blog-search mb-2">
+        {/* <div className="blog-search mb-2">
           <InputGroup className="input-group-merge">
             <Input
               placeholder="جستوجو کنید ..."
@@ -209,8 +178,47 @@ const Comments = () => {
               <Icon.Search size={14} />
             </InputGroupText>
           </InputGroup>
-        </div>
+        </div> */}
         <div className="content-detached">
+          <div className="invoice-list-table-header w-100 py-2">
+            <Row>
+              <Col lg="6" className="d-flex align-items-center px-0 px-lg-1">
+                <div className="d-flex align-items-center me-2">
+                  <label htmlFor="rows-per-page">نمایش</label>
+                  <Input
+                    type="select"
+                    id="rows-per-page"
+                    value={rowsOfthePage}
+                    onChange={(e) => setRowsOfthePage(Number(e.target.value))}
+                    className="form-control ms-50 pe-3"
+                  >
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    {console.log("rowsOfthePage", rowsOfthePage)}
+                  </Input>
+                </div>
+              </Col>
+              <Col
+                lg="6"
+                className="actions-right d-flex align-items-center justify-content-lg-end flex-lg-nowrap flex-wrap mt-lg-0 mt-1 pe-lg-1 p-0"
+              >
+                <div className="d-flex align-items-center">
+                  <label htmlFor="search-invoice">جستوجو</label>
+                  <Input
+                    id="search-invoice"
+                    className="ms-50 me-2 w-100"
+                    type="text"
+                    value={searchInput}
+                    onChange={(e) => {
+                      setSearchInput(e.target.value);
+                    }}
+                    placeholder="جستوجو کنید ..."
+                  />
+                </div>
+              </Col>
+            </Row>
+          </div>
           <div className="content-body">
             {data !== null ? (
               <div className="blog-list-wrapper">

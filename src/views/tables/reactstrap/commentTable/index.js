@@ -7,20 +7,6 @@ import { Row, Col, CardBody, CardText } from "reactstrap";
 // ** Third Party Components
 import prism from "prismjs";
 
-// ** Demo Components
-// import TableDark from './TableDark'
-// import TableBasic from './TableBasic'
-// import TableHover from './TableHover'
-// import TableSmall from './TableSmall'
-// import TableStriped from './TableStriped'
-// import TableBordered from './TableBordered'
-// import TableTheadDark from './TableTheadDark'
-// import TableContextual from './TableContextual'
-// import TableResponsive from './TableResponsive'
-// import TableBorderless from './TableBorderless'
-// import TableTheadLight from './TableTheadLight'
-// import TableStripedDark from './TableStripedDark'
-
 // ** Custom Components
 import Card from "@components/card-snippet";
 import Breadcrumbs from "@components/breadcrumbs";
