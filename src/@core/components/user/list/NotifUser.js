@@ -13,7 +13,6 @@ import toast from "react-hot-toast";
 
 const NotifUser = ({ isOpen, toggle, user }) => {
   const [message, setMessage] = useState("");
-  console.log("user", user);
   const mutationAddNotif = useMutation({
     mutationFn: (data) => addNotifForUser(data),
     onSuccess: (data) => {
