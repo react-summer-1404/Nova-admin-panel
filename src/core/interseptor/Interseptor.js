@@ -24,7 +24,8 @@ instance.interceptors.response.use(
     const status = error.response?.status;
 
     if (status === 401) {
-      toast.error("ابتدا لاگین کنید")
+      const msg = error?.response?.data?.message
+      toast.error(msg)
       removeToken("token");
       
     } else if (status >= 404 && status < 500) {
