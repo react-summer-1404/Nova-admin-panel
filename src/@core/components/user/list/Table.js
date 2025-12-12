@@ -36,6 +36,7 @@ import '@styles/react/libs/tables/react-dataTable-component.scss'
 import { useUserList } from '../../../../core/Hook/useQUserApi'
 import { useDeleteUser } from '../../../../core/Hook/useMUserApi'
 import toast from 'react-hot-toast'
+import NotifUser from './NotifUser'
 
 
 
@@ -99,6 +100,8 @@ const [sortType, setSortType] = useState('desc')
 const [searchTerm, setSearchTerm] = useState('')
 const [selectedRoleID, setSelectedRoleID] = useState({ value: '', label: 'همه'})
 const [sidebarOpen, setSidebarOpen] = useState(false)
+const [notifyModalOpen, setNotifyModalOpen] = useState(false)
+const [selectedUser, setSelectedUser] = useState(null)
 
 
   // ** Function to toggle sidebar
@@ -227,8 +230,16 @@ const total = data?.totalCount || 0
   const handleDelete = (row) => {
     deleteUser(row.id)
   }
-
-  const tableColumns = columns({handleDelete})
+  const handleOpenNotify = (row) => {
+    setSelectedUser(row)
+    setNotifyModalOpen(true)
+  }
+  
+  const handleCloseNotify = () => {
+    setNotifyModalOpen(false)
+    setSelectedUser(null)
+  }
+  const tableColumns = columns({handleDelete,handleOpenNotify})
 
   return (
     <Fragment>
@@ -314,6 +325,11 @@ const total = data?.totalCount || 0
       </Card>
 
       <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <NotifUser 
+  isOpen={notifyModalOpen}
+  toggle={handleCloseNotify}
+  user={selectedUser}
+/>
     </Fragment>
   )
 }

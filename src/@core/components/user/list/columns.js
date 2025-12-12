@@ -68,7 +68,7 @@ const statusObj = {
   false: 'light-danger',
 }
 
-export const columns = ({handleDelete}) => [
+export const columns = ({handleDelete,handleOpenNotify}) => [
   {
     name: 'کاربر',
     sortable: true,
@@ -127,6 +127,7 @@ export const columns = ({handleDelete}) => [
     name: 'عملیات',
     minWidth: '80px',
     cell: row => (
+    
       // <div onClick={() => handleDelete(row)} className='w-100'>
       //   <Trash2 size={14} className='me-50' />
       // </div>
@@ -136,10 +137,10 @@ export const columns = ({handleDelete}) => [
             <MoreVertical size={14} className='cursor-pointer' />
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem>
-              <Bell size={14} className='me-50' />
-              <span className='align-middle'>نوتیفیکیشن</span>
-            </DropdownItem>
+          <DropdownItem onClick={() => handleOpenNotify(row)}>
+  <Bell size={14} className='me-50' />
+  <span className='align-middle'>ارسال نوتیف به کاربر</span>
+</DropdownItem>
             <DropdownItem
               onClick={() => handleDelete(row)}
             >
@@ -148,7 +149,9 @@ export const columns = ({handleDelete}) => [
             </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
+        
       </div>
+    
     )
   }
 ]
