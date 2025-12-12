@@ -1,4 +1,4 @@
-import { Clock, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User, MessageSquare } from "react-feather";
+import { Clock, Home, Airplay, Circle, Users, BookOpen ,Briefcase ,User, MessageSquare, Globe } from "react-feather";
 // ** Navigation imports
 import pages from "./pages"
 
@@ -109,7 +109,7 @@ export default [
   {
     id: "buildings",
     title: "ساختمان ها ",
-    icon: <Home size={20} />,
+    icon: <Globe size={20} />,
     navLink: "/building",
   },
   {

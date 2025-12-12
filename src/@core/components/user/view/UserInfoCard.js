@@ -86,9 +86,7 @@ const UserInfoCard = ({ selectedUser }) => {
         birthDay : selectedUser.birthDay || "",
         isTecher : Boolean(selectedUser.isTecher) || false,
         isStudent : Boolean(selectedUser.isStudent) || false,
-
         insertDate : selectedUser.insertDate || "",
-        // role : selectedUser.isTecher? "teacher":"student"
       });
     }
     
@@ -143,8 +141,6 @@ const UserInfoCard = ({ selectedUser }) => {
       id : selectedUser.id,
       gender : formData.gender === true,
       active : formData.active === true,
-      isTecher : formData.role === "teacher",
-      isStudent : formData.role === "student",
     }
     console.log("sending :", finalData)
     updateUser({id:finalData.id,data:finalData});

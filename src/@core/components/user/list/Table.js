@@ -108,7 +108,7 @@ const [sidebarOpen, setSidebarOpen] = useState(false)
   const roleOptions = [
     { value: '', label: 'همه' },
     { value: 1, label: 'مدیر' },
-    { value: 2, label: 'معلم' },
+    { value: 2, label: 'استاد' },
     { value: 3, label: 'دانش آموز' },
     // { value: 4, label: 'مدیر ویژه' },
   ]

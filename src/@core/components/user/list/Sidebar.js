@@ -185,7 +185,7 @@ const SidebarNewUsers = ({ open, toggleSidebar }) => {
             <select  id='mappedRole' className={`form-control ${errors.password ? "is-invalid" : ""}`}
               {...field}>
               <option value='student'>دانش اموز </option>
-              <option value='teacher'> معلم </option>
+              <option value='teacher'> استاد </option>
               </select>           
           )}
         />   

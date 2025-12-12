@@ -1,4 +1,4 @@
-import { Circle, FileText, MessageSquare } from "react-feather";
+import { Circle, FileText, MessageSquare, Send } from "react-feather";
 
 export default [
   {
@@ -33,6 +33,6 @@ export default [
   },
   { id: "comments",
   title: "کامنت ها",
-  icon: <MessageSquare size={20} />,
+  icon: <Send size={20} />,
   navLink: "/pages/comments",}
 ];

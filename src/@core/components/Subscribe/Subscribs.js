@@ -5,6 +5,7 @@ import { Card} from 'reactstrap'
 
 import { useQuery } from '@tanstack/react-query'
 import { getReport } from '../../../core/Services/api/Dashbord/DashboardReport'
+import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
 
 const SubscribersGained = () => {
   const {data} = useQuery({
@@ -13,12 +14,12 @@ const SubscribersGained = () => {
   });
 
   return  (
-    <Card className='test-center p-2 shadow-sm bg-white '>    
-      <Users size={24} className='text-primary mb-2'/>
-      <h6 className='text-muted text-center'> کاربران</h6>
-      <h4 className='fw-bold text-center'>{data?.allUser}</h4>
-    </Card>
-   
+      <StatsHorizontal
+        color='primary'          
+        icon={<Users size={20} />}
+        statTitle='تعداد کاربران '
+        renderStats={<h3 className='fw-bolder'>{data?.allUser}</h3>}
+      />    
   ) 
 }
 

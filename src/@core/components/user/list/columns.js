@@ -35,7 +35,7 @@ const renderRole = role => {
       icon: User
     },
     teacher: {
-      label:"معلم" ,
+      label:"استاد" ,
       class : 'text-success',
       icon: BookOpen
     },

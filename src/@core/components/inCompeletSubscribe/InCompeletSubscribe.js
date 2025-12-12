@@ -1,5 +1,6 @@
-import { Users } from 'react-feather'
-import { Card} from 'reactstrap'
+import { Users, UserX } from 'react-feather'
+import { Card, Col} from 'reactstrap'
+import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
 // ** Custom Components
 
 import { useQuery } from '@tanstack/react-query'
@@ -11,12 +12,13 @@ const InCompeletSubscribe = () => {
         queryFn : getReport,
     });
     
-    return  (
-        <Card className='test-center p-2 shadow-sm bg-white '>    
-            <Users size={24} className='text-primary mb-2'/>
-            <h6 className='text-muted text-center'> کاربران با اطلاعات ناقص</h6>
-            <h4 className='fw-bold text-center'>{data?.inCompeletUserCount}</h4>
-        </Card>       
+    return  (          
+        <StatsHorizontal
+            color='warning'          
+            icon={<UserX size={20} />}
+            statTitle='کاربران با اطلاعات ناقص '
+            renderStats={<h3 className='fw-bolder'>{data?.inCompeletUserCount}</h3>}
+        />         
     ) 
 }
 

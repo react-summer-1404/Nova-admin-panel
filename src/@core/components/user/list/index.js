@@ -17,9 +17,7 @@ import { useUserList } from '../../../../core/Hook/useQUserApi'
 const UsersList = () => {
   const apiParams = {
       PageNumber:1,
-      RowsOfPage:10,
-      
-      
+      RowsOfPage:10,     
   }
   // console.log("selectedRoleID", selectedRoleID)
   const {data} = useUserList(apiParams)

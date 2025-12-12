@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const socket = io("http://localhost:3001");
 
@@ -40,7 +39,7 @@ const ChatBox = () => {
 
     return (
         <div className="container-fluid vh-100 d-flex flex-column bg-light p-3"> 
-        <div className="overflow-auto mb-3 border rounded p-3 " style={{height: "60vh", background: "url('/public/telegram.jpg')", backgroundSize:"cover", backgroundPosition:"center"}}>
+        <div className="overflow-auto mb-2 border rounded p-3 " style={{height: "60vh", background: "url('/public/telegram.jpg')", backgroundSize:"cover", backgroundPosition:"center"}}>
             {messages.length > 0 ? (
             messages.map((msg, index) => (
                 <div
@@ -60,11 +59,10 @@ const ChatBox = () => {
             <p className="text-muted bg-white py-3 rounded text-center" style={{width:"150px"}}>هیچ پیامی وجود ندارد</p>
             )}
         </div>
-
         <form onSubmit={handleSend} className="d-flex">
             <input
             type="text"
-            className="form-control py-3 me-2 border-primary"
+            className ="form-control py-1 me-2 border-primary"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="پیام خود را بنویسید..."

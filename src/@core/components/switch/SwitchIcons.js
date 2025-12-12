@@ -39,7 +39,7 @@ const SwitchIcons = ({userId, userRoles:userRolesProp}) => {
 
   const roles = [
     {id : 1, label : "ادمین"},
-    {id : 2, label : "معلم"},
+    {id : 2, label : "استاد"},
     {id: 3, label: "دانش اموز"}
   ];
   return (
