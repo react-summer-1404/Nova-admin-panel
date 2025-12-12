@@ -159,7 +159,7 @@ const Explanation = ({ describe }) => {
             textAlign: "right",
           }}
         >
-         توضیحات
+          توضیحات
         </h2>
 
         <div style={{ textAlign: "right", lineHeight: "1.75" }} dir="rtl">
