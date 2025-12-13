@@ -14,7 +14,7 @@ import { getProducts } from "../store";
 
 // ** Styles
 import "@styles/react/apps/app-ecommerce.scss";
-import { Button, Card, CardBody } from "reactstrap";
+import { Button, Card, CardBody, Col } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import CoursesListTab from "../../components/tabs/CoursesListTab";
 import StatsVertical from "@components/widgets/stats/StatsVertical";
@@ -74,12 +74,14 @@ const Shop = () => {
         stats={myCourse?.totalCount}
         statTitle="تعددا دوره های من"
       />
-      <StatsHorizontal
+     <Col md={3}>
+     <StatsHorizontal
         icon={<CheckCircle size={21} />}
         color="success"
         stats={active?.length}
         statTitle="تعداد دوره های فعال"
-      />
+        
+      /></Col>
 
       <Button
         color="primary"
