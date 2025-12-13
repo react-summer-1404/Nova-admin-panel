@@ -9,9 +9,13 @@ import { getGroupList } from '../../../core/Services/api/getGroup';
 import { getProductsCourse } from '../../../core/Services/api/getCourseList';
 
 const TableBasic = ({data}) => {
+    const apiParamsGroup={
+        PageNumber:1,
+        RowsOfPage:120
+    }
     const { data: groups } = useQuery({
-        queryKey: ["getGroupList3"],
-        queryFn: getGroupList,
+        queryKey: ["getGroupList3",apiParamsGroup],
+        queryFn: ()=>getGroupList(apiParamsGroup),
     });
     const cr = groups?.courseGroupDtos;
     const apiParams={
