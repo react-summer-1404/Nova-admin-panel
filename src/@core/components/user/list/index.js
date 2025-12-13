@@ -8,7 +8,7 @@ import { Row, Col } from 'reactstrap'
 import StatsHorizontal from '@components/widgets/stats/StatsHorizontal'
 
 // ** Icons Imports
-import { User, UserPlus, UserCheck, UserX } from 'react-feather'
+import { User, UserPlus, UserCheck, UserX, Users } from 'react-feather'
 
 // ** Styles
 import '@styles/react/apps/app-users.scss'
@@ -55,7 +55,7 @@ const UsersList = () => {
           <StatsHorizontal
             color='warning'
             statTitle='دانشجویان '
-            icon={<UserX size={20} />}
+            icon={<Users size={20} />}
             renderStats={<h3 className='fw-bolder mb-75'>{studentUser?.length}</h3>}
           />
         </Col>

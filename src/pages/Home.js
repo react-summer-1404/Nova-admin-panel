@@ -15,6 +15,7 @@ import PolarAreaChart from '../@core/components/Chart/ChartjsPolarAreaChart.js';
 import BarChart from '../@core/components/Chart/ChartjsBarChart.js';
 
 const Home = () => {
+  
   const {data} = useQuery({
     queryKey : ["adminTechReport"],
     queryFn : getTechReport,
@@ -35,8 +36,10 @@ const Home = () => {
   })
   const teacherUser = dataCount?.listUser?.filter(listUser => listUser.roles?.includes("teacher"))
   const studentUser = dataCount?.listUser?.filter(listUser => listUser.roles?.includes("student"))
+
   
   return (
+    
     <>
     <Row>                      
       <Col lg={6} sm={6}>   
