@@ -14,7 +14,9 @@ export const GetDataCount = async () => {
     return response.data;
 };
 
-export const GetCourseCount = async () => {
-    const response = await instance.get("/Home/GetCoursesWithPagination");
-    return response.data;
-};
+// export const GetCourseCount = async (apiParams) => {
+//     const response = await instance.get("/Home/GetCoursesWithPagination",{
+//         params:apiParams
+//     });
+//     return response.data;
+// };
