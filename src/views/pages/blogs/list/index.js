@@ -53,12 +53,21 @@ const BlogList = () => {
         console.log(res.data);
         setData(res.data);
       });
-  }, [searchDelay, selectedSort]);
+  }, [
+    searchDelay,
+    selectedSort,
+    rowsOfthePage,
+    pageNumber,
+  ]);
 
   return (
-    <Fragment >
+    <Fragment>
       <Row className="content-header row d-flex justify-content-end">
-        <Col className="mb-1 d-flex justify-content-end align-items-center gap-1" md="6" sm="12">
+        <Col
+          className="mb-1 d-flex justify-content-end align-items-center gap-1"
+          md="6"
+          sm="12"
+        >
           <Label className="form-label">مرتب سازی بر اساس</Label>
           <Select
             theme={selectThemeColors}
@@ -75,21 +84,46 @@ const BlogList = () => {
           />
         </Col>
       </Row>
-      
+
       <div className="blog-wrapper">
-        <div className="blog-search mb-2">
-          <InputGroup className="input-group-merge">
-            <Input
-              placeholder="جستوجو کنید ..."
-              value={searchInput}
-              onChange={(e) => {
-                setSearchInput(e.target.value);
-              }}
-            />
-            <InputGroupText>
-              <Icon.Search size={14} />
-            </InputGroupText>
-          </InputGroup>
+        <div className="invoice-list-table-header w-100 py-2">
+          <Row>
+            <Col lg="6" className="d-flex align-items-center px-0 px-lg-1">
+              <div className="d-flex align-items-center me-2">
+                <label htmlFor="rows-per-page">نمایش</label>
+                <Input
+                  type="select"
+                  id="rows-per-page"
+                  value={rowsOfthePage}
+                  onChange={(e) => setRowsOfthePage(Number(e.target.value))}
+                  className="form-control ms-50 pe-3"
+                >
+                  <option value="10">10</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                  {console.log("rowsOfthePage", rowsOfthePage)}
+                </Input>
+              </div>
+            </Col>
+            <Col
+              lg="6"
+              className="actions-right d-flex align-items-center justify-content-lg-end flex-lg-nowrap flex-wrap mt-lg-0 mt-1 pe-lg-1 p-0"
+            >
+              <div className="d-flex align-items-center">
+                <label htmlFor="search-invoice">جستوجو</label>
+                <Input
+                  id="search-invoice"
+                  className="ms-50 me-2 w-100"
+                  type="text"
+                  value={searchInput}
+                  onChange={(e) => {
+                    setSearchInput(e.target.value);
+                  }}
+                  placeholder="جستوجو کنید ..."
+                />
+              </div>
+            </Col>
+          </Row>
         </div>
         <div className="content-detached content-right">
           <div className="content-body">

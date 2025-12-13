@@ -139,6 +139,7 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
               className="btn-next"
               // onClick={() => }
             >
+              <CorrectTextAi />
               <span className="align-middle d-sm-inline-block d-none">
                 بعدی
               </span>
@@ -147,7 +148,6 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
                 className="align-middle ms-sm-25 ms-0"
               ></ArrowRight>
             </Button>
-            <CorrectTextAi />
           </div>
         </Form>
       </Formik>

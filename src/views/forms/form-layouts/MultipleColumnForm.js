@@ -9,9 +9,11 @@ import instance from "../../../core/interseptor/Interseptor";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const MultipleColumnForm = ({ blogId, onSuccess }) => {
   const [initialData, setInitialData] = useState(null);
+  const [basicModal, setBasicModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
   // ** Edit News
@@ -19,15 +21,7 @@ const MultipleColumnForm = ({ blogId, onSuccess }) => {
     mutationFn: UpdateNewsApi,
   });
 
-  // const handleEdit = async(e) => {
-  //   e.preventDefault();
-
-  //   await UpdateNews({
-  //     id: blogId,
-  //     ...otherFields
-  //   });
-  // };
-
+ 
   useEffect(() => {
     if (blogId) {
       instance.get(`/News/${blogId}`).then((res) => {
@@ -56,7 +50,11 @@ const MultipleColumnForm = ({ blogId, onSuccess }) => {
 
   const { mutateAsync } = useMutation({
     mutationFn: UpdateNewsApi,
-  });
+    onError: () => {
+      toast.error("عملیات با خطا مواجه شد");
+      setBasicModal(!basicModal);
+    },
+  }); 
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
@@ -196,9 +194,10 @@ const MultipleColumnForm = ({ blogId, onSuccess }) => {
             <Button
               color="primary"
               onClick={() => {
-                handleEdit(item.id);
+                // handleEdit(item.id);
                 setBasicModal(!basicModal);
               }}
+              type="submit"
             >
               ثبت تغییرات
             </Button>

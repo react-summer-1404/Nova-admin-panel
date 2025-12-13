@@ -19,11 +19,8 @@ import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
 import {
   Row,
   Col,
-  InputGroup,
-  InputGroupText,
   Input,
   Label,
-  Button,
 } from "reactstrap";
 
 // ** Styles

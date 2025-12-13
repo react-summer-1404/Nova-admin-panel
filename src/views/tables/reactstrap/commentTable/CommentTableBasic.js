@@ -66,12 +66,6 @@ const CommentTableBasic = ({ apiData }) => {
     });
   };
 
-  // const { data } = useQuery({
-  //   queryKey: "replyData",
-  //   queryFn: DeleteCommentApi,
-  // });
-
-  // ** Handle Delete Comment
   const { mutateAsync: deleteComment } = useMutation({
     mutationFn: DeleteCommentApi,
     onSuccess: () => {
