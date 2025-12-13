@@ -30,6 +30,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { DeleteCommentApi } from "../../../../core/Services/api/CommentsManagment/DeleteComment/index.js";
 import toast from "react-hot-toast";
 import instance from "../../../../core/interseptor/Interseptor.js";
+import { AcceptCourseCommentApi } from "./../../../../core/Services/api/CommentsManagment/ActiveDeactiveCourseComment/index";
 
 const CommentTableBasic = ({ apiData }) => {
   const [disabledModal, setDisabledModal] = useState(false);
@@ -51,20 +52,42 @@ const CommentTableBasic = ({ apiData }) => {
 
   // ** Handle comment state changing
   useEffect(() => {
-    const savedCommentState = localStorage.getItem("commentState");
-    if (savedCommentState) {
-      setCommentState(JSON.parse(savedCommentState));
-    } else apiData?.comments?.map((c) => c.accept);
+    setComments(apiData?.comments || []);
   }, [apiData]);
 
-  const handleAproved = (index) => {
-    setCommentState((prev) => {
-      const update = [...prev];
-      update[index] = !update[index];
-      localStorage.setItem("commentState", JSON.stringify(update));
-      return update;
-    });
+  const { mutateAsync: acceptCourseComment } = useMutation({
+    mutationFn: (CommentCourseId) => AcceptCourseCommentApi(CommentCourseId),
+  });
+
+  const handleAproved = async (CommentCourseId, index) => {
+    try {
+      await acceptCourseComment(CommentCourseId);
+
+      setCommentState((prev) => {
+        const updated = [...prev];
+        updated[index] = !updated[index];
+        return updated;
+      });
+    } catch (error) {
+      console.log("خطا در تایید کامنت", error);
+    }
   };
+
+  // useEffect(() => {
+  //   const savedCommentState = localStorage.getItem("commentState");
+  //   if (savedCommentState) {
+  //     setCommentState(JSON.parse(savedCommentState));
+  //   } else apiData?.comments?.map((c) => c.accept);
+  // }, [apiData]);
+
+  // const handleAproved = (index) => {
+  //   setCommentState((prev) => {
+  //     const update = [...prev];
+  //     update[index] = !update[index];
+  //     localStorage.setItem("commentState", JSON.stringify(update));
+  //     return update;
+  //   });
+  // };
 
   const { mutateAsync: deleteComment } = useMutation({
     mutationFn: DeleteCommentApi,
@@ -118,7 +141,6 @@ const CommentTableBasic = ({ apiData }) => {
             apiData={apiData}
             selectedComment={selectedComment}
             setShowReplyModal={setShowReplyModal}
-            
           />
         </ModalBody>
       </Modal>
@@ -214,7 +236,7 @@ const CommentTableBasic = ({ apiData }) => {
                           onClick={() => {
                             setCommentId(item?.commentId);
 
-                            handleAproved(index);
+                            handleAproved(item?.commentId,index);
                           }}
                         >
                           {commentState[index] === true
@@ -226,7 +248,7 @@ const CommentTableBasic = ({ apiData }) => {
                         <DropdownItem
                           onClick={() => {
                             setSelectedComment(item);
-                            setCourseId(item.courseId)
+                            setCourseId(item.courseId);
                             setShowReplyModal(true);
                           }}
                         >

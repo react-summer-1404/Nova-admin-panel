@@ -162,20 +162,6 @@ const Comments = () => {
         </Col>
       </Row>
       <div className="blog-wrapper">
-        {/* <div className="blog-search mb-2">
-          <InputGroup className="input-group-merge">
-            <Input
-              placeholder="جستوجو کنید ..."
-              value={searchInput}
-              onChange={(e) => {
-                setSearchInput(e.target.value);
-              }}
-            />
-            <InputGroupText>
-              <Icon.Search size={14} />
-            </InputGroupText>
-          </InputGroup>
-        </div> */}
         <div className="content-detached">
           <div className="invoice-list-table-header w-100 py-2">
             <Row>
@@ -192,6 +178,7 @@ const Comments = () => {
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
+                    <option value="50">100</option>
                     {console.log("rowsOfthePage", rowsOfthePage)}
                   </Input>
                 </div>
