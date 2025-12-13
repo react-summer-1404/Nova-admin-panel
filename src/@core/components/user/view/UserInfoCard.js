@@ -19,6 +19,7 @@ import { useUpdateUser } from '../../../../core/Hook/useMUserApi'
 import SwitchIcons from '../../switch/SwitchIcons'
 import { error } from 'jquery'
 import toast from 'react-hot-toast'
+import { useQueryClient } from '@tanstack/react-query'
 
 const roleColors = {
   SuperAdmin: 'light-info',
@@ -91,10 +92,11 @@ const UserInfoCard = ({ selectedUser }) => {
     }
     
   },[selectedUser, reset]);
-
+  const queryClient = useQueryClient();
   const {mutate: updateUser} = useUpdateUser({
     onSuccess : () => {      
       toast.success("اطلاعات با موفقیت ویرایش شد.")
+      queryClient.invalidateQueries(["user", selectedUser.id])
     },
 
     onError : () => {      
@@ -163,7 +165,7 @@ const UserInfoCard = ({ selectedUser }) => {
         MySwal.fire({
           icon: 'success',
           title: 'غیر فعال!',
-          text: 'کاربر غیر فعال شد.',
+          text: ' کاربر غیر فعال شد. در انتظار تایید مدیران',
           customClass: {
             confirmButton: 'btn btn-success'
           }

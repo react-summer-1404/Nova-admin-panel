@@ -5,15 +5,14 @@ import { Check, X } from 'react-feather'
 import { Card, CardBody, Input, Label } from 'reactstrap'
 import { useAddUserAccess } from '../../../core/Hook/useMUserApi'
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
+import { data } from 'jquery'
+import { useQueryClient } from '@tanstack/react-query'
 
 const CustomLabel = ({ htmlFor, enabled }) => {
   console.log("custom:", enabled)
   return (
-    <Label className ='form-check-label d-flex align-items-center gap-1' htmlFor={htmlFor} >
-      {/* {enabled ?<Check size={14} color='green' /> 
-      : <X size={14} />} */}
-      {/* <span>{enabled ? "غیر فعال" : "فعال"}</span> */}
-    </Label>
+    <Label className ='form-check-label d-flex align-items-center gap-1' htmlFor={htmlFor} ></Label>
   )
 }
 
@@ -21,20 +20,40 @@ const CustomLabel = ({ htmlFor, enabled }) => {
 const SwitchIcons = ({userId, userRoles:userRolesProp}) => {
 
   const [userRoles, setUserRoles] = useState([]);
+  const queryClient = useQueryClient();
+  const roleMap = {
+    admin : 1,
+    teacher: 2,
+    student: 3
+  }
   useEffect(() => {
-    if (userRolesProp) {
-      setUserRoles(userRolesProp);
+    console.log("userRolesProp :", userRolesProp)
+    if (Array.isArray(userRolesProp)) {
+      const name = userRolesProp.map(r => roleMap[r.roleName])
+      setUserRoles(name);
     }
   },[userRolesProp]);
 
-  const {mutate : toggleAccess} = useAddUserAccess(() => {
-    // setUserRoles((prev) =>{
-    //   const hasRole = prev.includes(roleId);
-    //   if (enable && !hasRole) return [...prev, roleId]
-    //   if (!enable && hasRole) return prev.filter((r) => r !== roleId);
-    //   return prev;
-    // })
+  const {mutate : toggleAccess} = useAddUserAccess( {
+    onSuccess : (data) => {
+      if(data.success){
+    setUserRoles((prev) =>{
+      const hasRole = prev.includes(data.roleId);
+      if (data.enable && !hasRole) return [...prev, data.roleId]
+      if (!data.enable && hasRole) return prev.filter((r) => r !== data.roleId);
+      return prev;
+    })
     console.log("نقش با موفقیت تغییر کرد");
+    
+      toast.success(data.message || "نقش با موفقیت تغییر کرد")
+      queryClient.invalidateQueries(["userRoles", data.userId])
+  } else{
+    toast.error("خطا در تغییر نقش")
+  }
+  },
+    onError : () => {
+      toast.error("خطا در ارتباط با سرور ")
+    }
   });
 
   const roles = [
@@ -78,48 +97,6 @@ const SwitchIcons = ({userId, userRoles:userRolesProp}) => {
         </Card>
       )
     })}
-      {/* <Card>
-       <CardBody>
-           <div className='d-flex align-items-center justify-content-center gap-2'>
-             <Label for='icon-primary' className='form-check-label mb-50'>
-               <span className='fw-bold'>دانش اموز :</span>
-             </Label>
-             <div className='form-switch form-check-primary '>
-               <Input type='switch' defaultChecked id='icon-primary' name='icon-primary' />
-               <CustomLabel htmlFor='icon-primary' />
-             </div>
-           </div>  
-       </CardBody>
-     </Card> */}
-    {/* {roles.map((role) => {
-      const isEnabled = userRoles.includes(role.id);
-      const switchId = `switch-${role.id}`
-      return (
-        <Card key={role.id} className='mb-2'>
-          <CardBody>              
-                <Label for='icon-primary' className ='from-check-label fw-bold mb-1'>
-                  {role.lable}
-                </Label>
-                <div className='d-flex align-items-center justify-content-between'>
-                  <Input 
-                  type='switch'
-                  className='form-check-input'
-                  id={switchId}
-                  name={switchId}
-                  checked ={isEnabled}
-                  onChange={(e) => toggleAccess({
-                    userId,
-                    roleId : role.id,
-                    enable : e.target.checked
-                  })}
-                  />
-                  <CustomLabel htmlFor={switchId} enabled={isEnabled} />
-                </div>              
-          </CardBody>
-        </Card>
-      
-      );
-    })} */}
       
     </>
   )

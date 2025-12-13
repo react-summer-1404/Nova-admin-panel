@@ -39,11 +39,15 @@ export const useReverseToActiveUser = (onSuccess) =>
         onSuccess,
     });
 
-export const useAddUserAccess = (onSuccess) =>
+export const useAddUserAccess = ({onSuccess, onError}) =>
     useMutation({
-        mutationFn: async (data) => await AddUserAccess(data),
-        onSuccess,
-    });
+        mutationFn: async (data) => {
+            const res = await AddUserAccess(data);
+            return {...data, ...res}
+    },
+    onSuccess,
+    onError
+});
 
 export const useUpdateBuilding = ({onSuccess,onError}) => 
     useMutation({

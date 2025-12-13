@@ -5,13 +5,19 @@ import { MoreVertical, Edit, Trash } from 'react-feather'
 // ** Reactstrap Imports
 import { Table, Badge, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 import { getGroupList } from '../../../core/Services/api/getGroup';
+import { GetCourseCount } from '../../../core/Services/api/Dashbord/DashboardReport';
 
 const TableBasic = ({data}) => {
     const { data: groups } = useQuery({
-        queryKey: ["getGroupList2"],
+        queryKey: ["getGroupList3"],
         queryFn: getGroupList,
     });
     const cr = groups?.courseGroupDtos;
+    const {data : course } = useQuery({
+        queryKey:['courseName'],
+        queryFn : GetCourseCount
+    })
+    const name = data?.courseFilterDtos
     return (
         <Table responsive>
         <thead>
@@ -26,13 +32,14 @@ const TableBasic = ({data}) => {
             {data?.map((item) => {
                     const foundedItem = cr?.find(g => g.id == item.courseGroupId);
                     console.log("foundedItem: ",foundedItem)
+                    const courseIdName = name?.find(v => v.id === item.courseId);
                 return (
                 <tr key={item.id}>
                     <td>
                         <span className='align-middle fw-bold'> {foundedItem?.groupName || "نامشخص"}</span>
                     </td>
                     <td>
-                        <span className='align-middle fw-bold'>{item.courseId}</span>
+                        <span className='align-middle fw-bold'>{courseIdName?.courseId}</span>
                     </td>
                     <td>
                         <span>{item.studentId}</span>
