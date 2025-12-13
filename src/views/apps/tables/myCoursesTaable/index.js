@@ -45,6 +45,7 @@ const MyCoursesTable = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["muCourses", apiParams],
     queryFn: () => listMyCourse(apiParams),
+    retry:1
   });
   const sortToggleText = [
     { label: "صعودی", key: "asc" },

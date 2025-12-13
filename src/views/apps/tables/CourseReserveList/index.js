@@ -1,6 +1,7 @@
 // ** Custom Components
 import React from "react";
 import { useState } from "react";
+import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import { Button, Spinner, Badge } from "reactstrap";
 // ** Reactstrap Imports
@@ -10,7 +11,8 @@ const CourseReserveList = ({ data, isLoading }) => {
   const navigate = useNavigate();
 
   const [filterType, setFilterType] = useState("all");
-
+  const [perPage, setPerPage] = useState(12);
+  const [currentPage, setCurrentPage] = useState(1);
   const acceptedList = data?.filter((item) => item.accept);
   const notAcceptedList = data?.filter((item) => !item.accept);
 
@@ -20,8 +22,40 @@ const CourseReserveList = ({ data, isLoading }) => {
       : filterType === "notAccepted"
       ? notAcceptedList
       : data;
-  //   console.log("accept", listToShow);
-  //   console.log("notAcceptedList", notAcceptedList);
+
+      const handlePagination = (pageNumber) => {
+        setCurrentPage(pageNumber);
+      };
+    
+      const pageCount = Math.ceil((data?.length || 0) / perPage);
+    
+      const CustomPagination = () => (
+        <ReactPaginate
+          previousLabel={""}
+          nextLabel={""}
+          breakLabel="..."
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={2}
+          activeClassName="active"
+          forcePage={currentPage - 1}
+          onPageChange={(page) => handlePagination(page.selected + 1)}
+          pageClassName="page-item"
+          breakClassName="page-item"
+          nextLinkClassName="page-link"
+          pageLinkClassName="page-link"
+          breakLinkClassName="page-link"
+          previousLinkClassName="page-link"
+          nextClassName="page-item next-item"
+          previousClassName="page-item prev-item"
+          containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+        />
+      );
+    
+      const dataToRender = listToShow?.slice(
+        (currentPage - 1) * perPage,
+        currentPage * perPage
+      );
   return (
     <>
       <div className="content-detached content-right">
@@ -66,7 +100,7 @@ const CourseReserveList = ({ data, isLoading }) => {
                   </td>
                 </tr>
               ) : (
-                listToShow?.map((item) => (
+                dataToRender?.map((item) => (
                   <tr key={item.id}>
                     <td className="fw-bold text-black">{item.studentName}</td>
 
@@ -100,6 +134,7 @@ const CourseReserveList = ({ data, isLoading }) => {
               )}
             </tbody>
           </Table>
+          <CustomPagination />
         </div>
       </div>
     </>

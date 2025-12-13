@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import ReactPaginate from "react-paginate";
 import { useNavigate } from "react-router-dom";
 import { Button, Spinner, Badge } from "reactstrap";
 // ** Reactstrap Imports
@@ -9,12 +10,9 @@ import { Table } from "reactstrap";
 
 const CoursePayMentList = ({ data, isLoading }) => {
   const navigate = useNavigate();
-  // const [selected, setSelected] = useState("");
   const [filterType, setFilterType] = useState("all");
-  // const handleClick = (item) => {
-  //   setSelected(item);
-  //   navigate(`/apps/ecommerce/product-detail/${item.courseId}`);
-  // };
+  const [perPage, setPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
   const acceptedList = data?.filter((item) => item.accept);
   const notAcceptedList = data?.filter((item) => !item.accept);
   const listToShow =
@@ -24,9 +22,39 @@ const CoursePayMentList = ({ data, isLoading }) => {
       ? notAcceptedList
       : data;
 
-//     useEffect(() => {
-//   console.log("selected updated:", selected);
-// }, [selected]);
+      const handlePagination = (pageNumber) => {
+        setCurrentPage(pageNumber);
+      };
+    
+      const pageCount = Math.ceil((data?.length || 0) / perPage);
+    
+      const CustomPagination = () => (
+        <ReactPaginate
+          previousLabel={""}
+          nextLabel={""}
+          breakLabel="..."
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={2}
+          activeClassName="active"
+          forcePage={currentPage - 1}
+          onPageChange={(page) => handlePagination(page.selected + 1)}
+          pageClassName="page-item"
+          breakClassName="page-item"
+          nextLinkClassName="page-link"
+          pageLinkClassName="page-link"
+          breakLinkClassName="page-link"
+          previousLinkClassName="page-link"
+          nextClassName="page-item next-item"
+          previousClassName="page-item prev-item"
+          containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+        />
+      );
+    
+      const dataToRender = listToShow?.slice(
+        (currentPage - 1) * perPage,
+        currentPage * perPage
+      );
 
   return (
     <>
@@ -73,7 +101,7 @@ const CoursePayMentList = ({ data, isLoading }) => {
                   </td>
                 </tr>
               ) : (
-                listToShow?.map((item) => {
+                dataToRender?.map((item) => {
                   return (
                     <tr key={item.id}>
                       <td className="fw-bold text-black">{item.studentName}</td>
@@ -108,6 +136,7 @@ const CoursePayMentList = ({ data, isLoading }) => {
               )}
             </tbody>
           </Table>
+          <CustomPagination />
         </div>
       </div>
     </>
