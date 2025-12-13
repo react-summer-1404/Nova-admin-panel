@@ -72,17 +72,7 @@ const TabsIcons = () => {
               toggle("8");
             }}
           >
-            <MessageCircle size={18} />
-            <span className="align-middle">جزییات</span>
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink
-            active={active === "7"}
-            onClick={() => {
-              toggle("7");
-            }}
-          >
+           
             <MessageCircle size={18} />
             <span className="align-middle">نظرات کاربران</span>
           </NavLink>
