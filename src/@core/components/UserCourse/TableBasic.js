@@ -14,10 +14,10 @@ const TableBasic = ({data}) => {
     });
     const cr = groups?.courseGroupDtos;
     const {data : course } = useQuery({
-        queryKey:['courseName'],
-        queryFn : GetCourseCount
+        queryKey:['courseName1'],
+        queryFn : GetCourseCount,
     })
-    const name = data?.courseFilterDtos
+    const name = course?.courseFilterDtos;
     return (
         <Table responsive>
         <thead>
@@ -32,14 +32,15 @@ const TableBasic = ({data}) => {
             {data?.map((item) => {
                     const foundedItem = cr?.find(g => g.id == item.courseGroupId);
                     console.log("foundedItem: ",foundedItem)
-                    const courseIdName = name?.find(v => v.id === item.courseId);
+                    const courseIdName = name?.find(v => v.id == item.courseId);
+                    console.log("courseIdName: ", courseIdName)
                 return (
                 <tr key={item.id}>
                     <td>
                         <span className='align-middle fw-bold'> {foundedItem?.groupName || "نامشخص"}</span>
                     </td>
                     <td>
-                        <span className='align-middle fw-bold'>{courseIdName?.courseId}</span>
+                        <span className='align-middle fw-bold'>{courseIdName?.courseId || "نامشخص"}</span>
                     </td>
                     <td>
                         <span>{item.studentId}</span>
