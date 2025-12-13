@@ -19,26 +19,22 @@ import { useQuery } from "@tanstack/react-query";
 import { getCreateCourse } from "../../../../../../core/Services/api/CreateCourse";
 
 const schema = yup.object().shape({
-  CourseLvlId: yup
-    .number()
-    .required("انتخاب سطح دوره الزامی است")
-    .typeError("انتخاب سطح دوره الزامی است"),
-  TremId: yup
-    .number()
-    .required("انتخاب ترم دوره الزامی است")
-    .typeError("انتخاب ترم دوره الزامی است"),
-  ClassId: yup
-    .number()
-    .required("انتخاب کلاس دوره الزامی است")
-    .typeError("انتخاب کلاس دوره الزامی است"),
+  // CourseLvlId: yup
+    // .required("انتخاب سطح دوره الزامی است")
+    // .typeError("انتخاب سطح دوره الزامی است"),
+  // TremId: yup
+    // .required("انتخاب ترم دوره الزامی است")
+    // .typeError("انتخاب ترم دوره الزامی است"),
+  // ClassId: yup
+    // .required("انتخاب کلاس دوره الزامی است")
+    // .typeError("انتخاب کلاس دوره الزامی است"),
   SessionNumber: yup
-    .number()
+  .number()
     .typeError("تعداد جلسات باید عدد باشد")
     .positive("عدد باید مثبت باشد")
     .required("ظرفیت الزامی است"),
-  TeacherId: yup
-    .number()
-    .typeError("وارد کردن استاد الزامی است")
+  // TeacherId: yup
+    // .typeError("وارد کردن استاد الزامی است")
     // .required("نام استاد الزامی است"),
 });
 
@@ -47,6 +43,7 @@ const SecondStep = ({ stepper, updateStepData }) => {
     queryKey: ["getSomeInfo"],
     queryFn: getCreateCourse,
   });
+  console.log("courses info ====>",courseInfo)
   const levelList =
     courseInfo?.courseLevelDtos?.map((level) => ({
       value: level.id,
@@ -132,11 +129,11 @@ const SecondStep = ({ stepper, updateStepData }) => {
                 />
               )}
             />
-            {errors.CourseTypeId && (
+            {/* {errors.CourseTypeId && (
               <FormFeedback className="d-block">
                 {errors.CourseTypeId.message}
               </FormFeedback>
-            )}
+            )} */}
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="SessionNumber">
@@ -184,11 +181,11 @@ const SecondStep = ({ stepper, updateStepData }) => {
                 />
               )}
             />
-            {errors.CourseLvlId && (
+            {/* {errors.CourseLvlId && (
               <FormFeedback className="d-block">
                 {errors.CourseLvlId.message}
               </FormFeedback>
-            )}
+            )} */}
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="TremId">
@@ -212,11 +209,11 @@ const SecondStep = ({ stepper, updateStepData }) => {
                 />
               )}
             />
-            {errors.TremId && (
+            {/* {errors.TremId && (
               <FormFeedback className="d-block">
                 {errors.TremId.message}
               </FormFeedback>
-            )}
+            )} */}
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="ClassId">
@@ -240,11 +237,11 @@ const SecondStep = ({ stepper, updateStepData }) => {
                 />
               )}
             />
-            {errors.ClassId && (
+            {/* {errors.ClassId && (
               <FormFeedback className="d-block">
                 {errors.ClassId.message}
               </FormFeedback>
-            )}
+            )} */}
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="TeacherId">
@@ -268,11 +265,11 @@ const SecondStep = ({ stepper, updateStepData }) => {
                 />
               )}
             />
-            {errors.TeacherId && (
+            {/* {errors.TeacherId && (
               <FormFeedback className="d-block">
                 {errors.TeacherId.message}
               </FormFeedback>
-            )}
+            )} */}
           </Col>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="UniqeUrlString">
