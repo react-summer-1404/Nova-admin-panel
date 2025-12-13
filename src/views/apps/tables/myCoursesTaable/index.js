@@ -118,7 +118,7 @@ const MyCoursesTable = () => {
               </Col>
             </Row>
           </div>
-          <Table hover responsive style={{marginTop:20}}>
+          <Table hover responsive style={{ marginTop: 20 }}>
             <thead>
               <tr>
                 <th>عکس دوره</th>
@@ -136,6 +136,12 @@ const MyCoursesTable = () => {
                 <tr>
                   <td colSpan="4" className="d-flex justify-content-center">
                     <Spinner color="primary" />
+                  </td>
+                </tr>
+              ) : data?.listOfMyCourses?.length? (
+                <tr>
+                  <td >
+                    <p>  دوره‌ای وجود ندارد</p>
                   </td>
                 </tr>
               ) : (

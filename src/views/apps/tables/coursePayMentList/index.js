@@ -1,6 +1,6 @@
 // ** Custom Components
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Spinner, Badge } from "reactstrap";
@@ -9,22 +9,25 @@ import { Table } from "reactstrap";
 
 const CoursePayMentList = ({ data, isLoading }) => {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState("");
+  // const [selected, setSelected] = useState("");
   const [filterType, setFilterType] = useState("all");
-  const handleClick = (item) => {
-    setSelected(item);
-  };
+  // const handleClick = (item) => {
+  //   setSelected(item);
+  //   navigate(`/apps/ecommerce/product-detail/${item.courseId}`);
+  // };
   const acceptedList = data?.filter((item) => item.accept);
   const notAcceptedList = data?.filter((item) => !item.accept);
-  console.log("selected", selected);
   const listToShow =
     filterType === "accepted"
       ? acceptedList
       : filterType === "notAccepted"
       ? notAcceptedList
       : data;
-  
-console.log("datapay",data)
+
+//     useEffect(() => {
+//   console.log("selected updated:", selected);
+// }, [selected]);
+
   return (
     <>
       <div className="content-detached content-right">
@@ -71,8 +74,6 @@ console.log("datapay",data)
                 </tr>
               ) : (
                 listToShow?.map((item) => {
-                    
-                      
                   return (
                     <tr key={item.id}>
                       <td className="fw-bold text-black">{item.studentName}</td>
@@ -81,7 +82,7 @@ console.log("datapay",data)
                         <p style={{ color: "#7367f0" }}>{item.Paid}</p>
                       </td>
                       <td>
-                        <p >{item.PeymentDate?.slice(0,10)}</p>
+                        <p>{item.PeymentDate?.slice(0, 10)}</p>
                       </td>
 
                       <td>
@@ -96,7 +97,7 @@ console.log("datapay",data)
                         <Button
                           color="primary"
                           size="sm"
-                          onClick={() => handleClick(item)}
+                          onClick={() => navigate(`/list/view/${item.studentId}`)}
                         >
                           جزییات
                         </Button>
