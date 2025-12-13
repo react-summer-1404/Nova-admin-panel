@@ -256,11 +256,7 @@ const InvoiceList = () => {
 
   const { mutate: ActiveDeActive } = useActiveDeactiveBuilding({
     onSuccess: (_, variables) => {
-      queryClient.setQueriesData(["BuildingList"], (old = []) =>
-        old.map((b) =>
-          b.id === variables.id ? { ...b, active: variables.active } : b
-        )
-      );
+      queryClient.invalidateQueries(["BuildingList"])
       toast.success(
         variables.active ? "ساختمان غیر فعال شد" : "ساختمان فعال شد"
       );

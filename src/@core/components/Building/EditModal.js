@@ -41,9 +41,7 @@ const EditModal = ({isOpen, toggle, data}) => {
     const { mutate: updateBuilding } = useUpdateBuilding({
         onSuccess: (_, variables) => {      
         queryClient.invalidateQueries(["BuildingList"]) 
-        // queryClient.setQueryData(["BuildingList"], (old) => 
-        //     old.map((b) => (b.id === variables.id ? {...b, ...variables} : b))
-        // );
+
         toast.success("ویرایش انجام شد");
         toggle();
     },
