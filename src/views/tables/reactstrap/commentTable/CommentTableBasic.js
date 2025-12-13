@@ -30,6 +30,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { DeleteCommentApi } from "../../../../core/Services/api/CommentsManagment/DeleteComment/index.js";
 import toast from "react-hot-toast";
 import instance from "../../../../core/interseptor/Interseptor.js";
+import ReactPaginate from "react-paginate";
 
 const CommentTableBasic = ({ apiData }) => {
   const [disabledModal, setDisabledModal] = useState(false);
@@ -42,7 +43,8 @@ const CommentTableBasic = ({ apiData }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [commentState, setCommentState] = useState([]);
-
+  const [perPage, setPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     if (apiData?.comments) {
       setComments(apiData.comments);
@@ -84,7 +86,39 @@ const CommentTableBasic = ({ apiData }) => {
     setComments(updatedComments);
     setShowDeleteModal(false);
   };
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
+  const pageCount = Math.ceil((comments?.length || 0) / perPage);
+
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={""}
+      nextLabel={""}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+
+  const dataToRender = comments?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
   return (
     <>
       <Modal
@@ -136,7 +170,7 @@ const CommentTableBasic = ({ apiData }) => {
           </tr>
         </thead>
 
-        {comments.map((item, index) => {
+        {dataToRender?.map((item, index) => {
           return (
             <tbody>
               <tr>
@@ -241,6 +275,8 @@ const CommentTableBasic = ({ apiData }) => {
           );
         })}
       </Table>
+      <CustomPagination />
+
     </>
   );
 };
