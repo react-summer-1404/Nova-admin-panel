@@ -18,41 +18,41 @@ const UserInfoCard2 = ({ selectedUser }) => {
             {selectedUser !== null ? (
               <ul className='list-unstyled'>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>محل سکونت:</span>
+                  <span className='fw-bolder me-25 text-primary'>محل سکونت:</span>
                   <span>{selectedUser?.homeAdderess}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'> تاریخ تولد:</span>
+                  <span className='fw-bolder me-25 text-primary'> تاریخ تولد:</span>
                   <span>{selectedUser?.birthDay?.slice(0,10)}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>تکمیل پروفایل:</span>                  
+                  <span className='fw-bolder me-25 text-primary'>تکمیل پروفایل:</span>                  
                     {selectedUser?.profileCompletionPercentage}%
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>ادرس تلگرام:</span>
+                  <span className='fw-bolder me-25 text-primary'>ادرس تلگرام:</span>
                   <span className='text-capitalize'>{selectedUser?.telegramLink}</span>
                 </li>
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>درباره کاربر :</span>
+                  <span className='fw-bolder me-25 text-primary'>درباره کاربر :</span>
                   <span className='text-capitalize'>{selectedUser?.userAbout}</span>
                 </li>  
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'> لینکدین :</span>
+                  <span className='fw-bolder me-25 text-primary'> لینکدین :</span>
                   <span className='text-capitalize'>{selectedUser?.linkdinProfile}</span>
                 </li> 
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>کد ملی  :</span>
+                  <span className='fw-bolder me-25 text-primary'>کد ملی  :</span>
                   <span className='text-capitalize'>{selectedUser?.nationalCode}</span>
                 </li>             
                 <li className='mb-75'>
-                  <span className='fw-bolder me-25'>تاریخ درج :</span>
+                  <span className='fw-bolder me-25 text-primary'>تاریخ درج :</span>
                   <span className='text-capitalize'>{selectedUser?.insertDate}</span>
                 </li> 
-                {/* <li className='mb-75'>
-                  <span className='fw-bolder me-25'>درباره کاربر :</span>
+                <li className='mb-75'>
+                  <span className='fw-bolder me-25 text-primary'>درباره کاربر :</span>
                   <span className='text-capitalize'>{selectedUser?.userAbout}</span>
-                </li>  */}
+                </li> 
               </ul>
             ) : null}
           </div>
