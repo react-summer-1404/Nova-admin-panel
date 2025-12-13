@@ -107,7 +107,8 @@ const SecondStep = ({ stepper, updateStepData }) => {
         <Row>
           <Col md="6" className="mb-1">
             <Label className="form-label" for="CourseTypeId">
-              <span>نوع دوره (درحال حاض در دسترس نیست)</span>
+              {/* <span>نوع دوره (درحال حاض در دسترس نیست)</span> */}
+              نوع دوره
             </Label>
 
             <Controller
@@ -115,7 +116,7 @@ const SecondStep = ({ stepper, updateStepData }) => {
               control={control}
               render={({ field }) => (
                 <Select
-                isDisabled={true}
+                // isDisabled={true}
                   {...field}
                   theme={selectThemeColors}
                   isClearable={false}
