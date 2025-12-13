@@ -14,11 +14,13 @@ import { CreateNewsApi } from "./../../../../core/Services/api/News/CreateNews/i
 
 // ** Reactstrap Imports
 import { Label, Row, Col, Button } from "reactstrap";
+import { CorrectTextAi } from "../../../../feature/aiAssistant/CorrectTextAi";
+import { EditorComponent } from "../../../../configs/EditorComponent";
 
 const AddBlogMainInfo = ({ stepper, setFormData }) => {
   // Form Validation
   const validationSchema = yup.object({
-    Describe: yup.string().required("پرکردن این فیلد ضروری است"),
+    // Describe: yup.string().required("پرکردن این فیلد ضروری است"),
     MiniDescribe: yup.string().required("پرکردن این فیلد ضروری است"),
     Title: yup
       .string()
@@ -31,17 +33,21 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
   });
 
   const handleSubmit = async (values) => {
-    // const formData = new FormData();
-    // formData.append("Title", values.Title);
-    // formData.append("MiniDescribe", values.MiniDescribe);
-    // formData.append("Describe", values.Describe);
+  // دلیل لینکه این قسمت با بقیه فرق داره اینه که 
+  //   باید اینجا مفادیری که با ادیتور جی اس نوشتیم رو جیسون تیدبل میکردیم
+  
+    const payload = {
+      ...values,
+      Describe: JSON.stringify(values.Describe),
+    };
 
-    // await mutateAsync(formData);
-    setFormData(prev => ({...prev,...values}))
-    stepper.next()
-    
-    console.log(mutateAsync);
+    setFormData((prev) => ({ ...prev, ...payload }));
+
+    stepper.next();
+
+    await mutateAsync(payload);
   };
+
   return (
     <Fragment>
       <div className="content-header">
@@ -101,19 +107,20 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
               <Label className="form-label" for="Describe">
                 توضیحات کامل خبر
               </Label>
-              <Field
-                type="textarea"
-                className="mb-1 p-1"
-                name="Describe"
-                id="Describe"
-                rows="3"
-                placeholder="توضیحات خبر ..."
-              />
-              <ErrorMessage
+              <Field name="Describe">
+                {({ field, form }) => (
+                  <EditorComponent
+                    value={field.value}
+                    onChange={(data) => form.setFieldValue("Describe", data)}
+                  />
+                )}
+              </Field>
+
+              {/* <ErrorMessage
                 name="Describe"
                 className="text-danger"
                 component={"span"}
-              />
+              /> */}
             </Col>
           </Row>
           <div className="d-flex justify-content-between">
@@ -132,6 +139,7 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
               className="btn-next"
               // onClick={() => }
             >
+              <CorrectTextAi />
               <span className="align-middle d-sm-inline-block d-none">
                 بعدی
               </span>

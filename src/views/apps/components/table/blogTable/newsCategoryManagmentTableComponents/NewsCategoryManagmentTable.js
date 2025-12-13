@@ -32,13 +32,6 @@ const NewsCategoryManagmentTable = ({ dataId, apiData, thList, title }) => {
   const [editModal, setEditModal] = useState(false);
   const [categoriesId, setCategoriesId] = useState(null);
 
-  
-
- 
-  // const { mutateAsync } = useMutation({
-  //   mutationFn: DeleteNewsApi,
-  // });
-
   const handleDeleteCategory = (id) => {
     // const filteredData = apiData.news.filter((item) => item.id !== id);
     // setBlogState(filteredData.map(() => true));
@@ -108,7 +101,7 @@ const NewsCategoryManagmentTable = ({ dataId, apiData, thList, title }) => {
                     </Modal>
                     <DropdownItem onClick={() => handleDeleteCategory(item.id)}>
                       <Trash className="me-50" size={15} />{" "}
-                      <span className="align-middle">حذف</span>
+                      <span className="align-middle">جزییات</span>
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>

@@ -8,6 +8,7 @@ const TechManagement = () => {
       <BreadCrumbs title='  تکنولوژِی' data={[{ title: ' تکنولوژی دوره ها' }, { title: ' تکنولوژِی' }]} />
       <div>
       <List/>
+      
     </div>
     </>
  

@@ -16,6 +16,7 @@ import { CreateNewsApi } from "./../../../../core/Services/api/News/CreateNews/i
 
 // ** Reactstrap Imports
 import { Label, Row, Col, Button, Input } from "reactstrap";
+import toast from "react-hot-toast";
 
 const AddBlogMainInfo = ({ stepper, setFormData,formData }) => {
   // Form Validation
@@ -25,6 +26,12 @@ const AddBlogMainInfo = ({ stepper, setFormData,formData }) => {
 
   const { mutateAsync, isError, isSuccess } = useMutation({
     mutationFn: CreateNewsApi,
+    onSuccess:() =>{
+      toast.success("ثبت خبر با موفقیت صورت گرفت");
+    },
+    onError:() =>{
+      toast.error("ثبت خبر با خطا صورت گرفت");
+    },
   });
 
   const handleSubmit = async () => {

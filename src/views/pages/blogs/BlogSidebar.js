@@ -8,13 +8,10 @@ import classnames from "classnames";
 import * as Icon from "react-feather";
 
 // ** Custom Components
-import Avatar from "@components/avatar";
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
 
 // ** Reactstrap Imports
-import { InputGroup, Input, InputGroupText, Row, Col } from "reactstrap";
-import { useDebounce } from "use-debounce";
-import { Query } from "@tanstack/react-query";
+import { Row, Col } from "reactstrap";
 
 const BlogSidebar = ({ blogId, blogsData }) => {
   const activeBlogsCount = () => {

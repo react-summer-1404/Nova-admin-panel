@@ -2,7 +2,7 @@
 // import Table from './Table'
 
 // ** Reactstrap Imports
-import { Row, Col, Card, CardBody } from "reactstrap";
+import { Row, Col, CardBody, Card } from "reactstrap";
 
 // ** Custom Components
 import StatsHorizontal from "@components/widgets/stats/StatsHorizontal";
@@ -28,61 +28,61 @@ import { ThemeColors } from "@src/utility/context/ThemeColors";
 import instance from "../../../../core/interseptor/Interseptor";
 import { useParams } from "react-router-dom";
 import NewGoalOverview from "../../../ui-elements/cards/analytics/NewGoalOverview";
-import Explanation from "../../../apps/components/describe/Explanation";
+import CoursesGoalOverview from "./CoursesGoalOverview";
+import Explanation from "../../components/describe/Explanation";
 
-const DetaileInfo = () => {
+const DetailTable = () => {
   const [data, setData] = useState(null);
   const { id } = useParams();
-  const detailItems = data?.detailsNewsDto;
 
   useEffect(() => {
-    instance.get(`/News/${id}`).then((res) => setData(res.data));
+    instance.get(`/Course/${id}`).then((res) => setData(res.data));
   }, [id]);
-
+  console.log("get id", id);
+  console.log("get data", data);
+  console.log("get کامنت", data?.courseCommentTotal);
   const { colors } = useContext(ThemeColors);
   return (
-    <Row className="g-3">
-      <Col>
-        <Col>
+    <Row className="g-3" >
+       <Col>
+       <Col >
           <StatsHorizontal
             color="primary"
-            statTitle="تعداد بازدید"
+            statTitle="تعداد گروه ها"
             icon={<Eye size={20} />}
             renderStats={
-              <h3 className="fw-bolder mb-75">{detailItems?.currentView}</h3>
+              <h3 className="fw-bolder mb-75">{data?.courseGroupTotal}</h3>
             }
           />
         </Col>
-        <Col>
+        <Col >
           <StatsHorizontal
             color="primary"
             statTitle="تعداد کامنت ها"
             icon={<MessageCircle size={20} />}
             renderStats={
-              <h3 className="fw-bolder mb-75">{detailItems?.commentsCount}</h3>
+              <h3 className="fw-bolder mb-75">{data?.courseCommentTotal}</h3>
             }
           />
         </Col>
-        <Col>
+        <Col >
           <StatsHorizontal
             color="primary"
-            statTitle="تعداد ذخیره شده"
+            statTitle="تعداد رزرو شده"
             icon={<Bookmark size={20} />}
             renderStats={
-              <h3 className="fw-bolder mb-75">
-                {detailItems?.inUsersFavoriteCount}
-              </h3>
+              <h3 className="fw-bolder mb-75">{data?.reserveUserTotal}</h3>
             }
           />
-        </Col>
-      </Col>
+        </Col></Col>
       <Col md={6}>
-        <NewGoalOverview />
+        <CoursesGoalOverview />
       </Col>
+      
       <Col md={12}>
         <Card>
           <CardBody>
-            <Explanation describe={detailItems?.describe} />
+            <Explanation describe={data?.describe}/>
           </CardBody>
         </Card>
       </Col>
@@ -90,4 +90,4 @@ const DetaileInfo = () => {
   );
 };
 
-export default DetaileInfo;
+export default DetailTable;

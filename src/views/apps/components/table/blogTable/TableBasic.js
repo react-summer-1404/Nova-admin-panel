@@ -73,10 +73,10 @@ const TableBasic = ({ dataId, apiData, thList, title }) => {
     try {
       await DeleteNews(id);
       setBlogs((prev) => prev.filter((item) => item.id !== id));
-      toast.success('حذف با موفقیت صورت گرفت')
-    } catch(error) {
+      toast.success("حذف با موفقیت صورت گرفت");
+    } catch (error) {
       console.error("Error deleting blog:", error);
-      toast.error("عملیات با خطا مواجه شد")
+      toast.error("عملیات با خطا مواجه شد");
     }
   };
 
@@ -155,7 +155,7 @@ const TableBasic = ({ dataId, apiData, thList, title }) => {
                         <Col sm="12">
                           <MultipleColumnForm
                             blogId={blogId}
-                            onSuccess={() => setBasicModal(false)}
+                            // onSuccess={() => setBasicModal(false)}
                           />
                         </Col>
                       </ModalBody>

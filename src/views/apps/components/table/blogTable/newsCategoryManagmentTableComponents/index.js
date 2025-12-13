@@ -1,11 +1,8 @@
 // ** React Imports
-import { Fragment, useEffect } from "react";
+import { Fragment} from "react";
 
 // ** Reactstrap Imports
-import { Row, Col, CardBody, CardText } from "reactstrap";
-
-// ** Third Party Components
-import prism from "prismjs";
+import { Row, Col } from "reactstrap";
 
 // ** Demo Components
 import NewsCategoryManagmentTable from "./NewsCategoryManagmentTable";
@@ -14,9 +11,6 @@ import NewsCategoryManagmentTable from "./NewsCategoryManagmentTable";
 import Card from "@components/card-snippet";
 
 const NewsCategoryManagmentTables = ({ dataId, apiData, title, thList }) => {
-  // useEffect(() => {
-  //   prism.highlightAll()
-  // })
 
   return (
     <Fragment>

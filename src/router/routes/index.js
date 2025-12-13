@@ -61,7 +61,8 @@ const DTAdvance6 = lazy(() => import('../../views/apps/tables/data-tables-mentor
 const BlogList = lazy(() => import('./../../views/pages/blogs/list/index'))
 const BlogEdit = lazy(() => import('../../views/pages/blogs/addBlogs/index'))
 const BlogDetails = lazy(() => import('../../views/pages/blogs/details/index'))
-const NewsCategoryManagment = lazy(() => import('../../views/pages/blogs/newsCategoryManagment/NewsCategoryManagment'))
+// const NewsCategoryManagment = lazy(() => import('../../views/pages/blogs/newsCategoryManagment/NewsCategoryManagment'))
+const NewsCategoryManagment = lazy(() => import('../../views/pages/blogs/newsCategoryManagment'))
 const Comments = lazy(() => import('../../views/pages/comments/index'))
 
 

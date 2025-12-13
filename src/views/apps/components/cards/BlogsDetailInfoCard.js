@@ -26,30 +26,10 @@ import { Check, Briefcase, X } from "react-feather";
 import { useForm, Controller } from "react-hook-form";
 import withReactContent from "sweetalert2-react-content";
 
-// ** Custom Components
-import Avatar from "@components/avatar";
-
-// ** Utils
-import { selectThemeColors } from "@utils";
-
 // ** Styles
 import "@styles/react/libs/react-select/_react-select.scss";
 import { useParams } from "react-router-dom";
 import instance from "../../../../core/interseptor/Interseptor";
-
-const roleColors = {
-  editor: "light-info",
-  admin: "light-danger",
-  author: "light-warning",
-  maintainer: "light-success",
-  subscriber: "light-primary",
-};
-
-const statusColors = {
-  active: "light-success",
-  pending: "light-warning",
-  inactive: "light-secondary",
-};
 
 const MySwal = withReactContent(Swal);
 

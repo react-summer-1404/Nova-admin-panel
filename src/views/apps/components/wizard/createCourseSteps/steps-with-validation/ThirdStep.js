@@ -8,6 +8,7 @@ import { ArrowLeft, ArrowRight } from "react-feather";
 import { EditorComponent } from "../../../../../../configs/EditorComponent";
 // ** Reactstrap Imports
 import { Label, Row, Col, Button, Form, Input, FormFeedback } from "reactstrap";
+import { CorrectTextAi } from "../../../../../../feature/aiAssistant/CorrectTextAi";
 
 const defaultValues = {
   MiniDescribe: "",
@@ -95,6 +96,7 @@ const ThirdStep = ({ stepper ,updateStepData}) => {
               قبلی
             </span>
           </Button>
+          <CorrectTextAi />
           <Button type="submit" color="primary" className="btn-next">
             <span className="align-middle d-sm-inline-block d-none">بعدی</span>
             <ArrowRight

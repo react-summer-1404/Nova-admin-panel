@@ -1,9 +1,7 @@
 // ** React Import
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 // ** Custom Components
-import MultipleColumnForm from "../../../forms/form-layouts/MultipleColumnForm";
 
 // ** Images
 // import HandleImgError from "../../../../assets/images/";
@@ -28,17 +26,30 @@ import {
 } from "reactstrap";
 import CommentReplyTable from "./CommentReplyTable.js";
 import CommentReplyForm from "../../../forms/form-layouts/CommentReplyForm.js";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { DeleteCommentApi } from "../../../../core/Services/api/CommentsManagment/DeleteComment/index.js";
+import toast from "react-hot-toast";
+import instance from "../../../../core/interseptor/Interseptor.js";
 
-const CommentTableBasic = ({ dataId, apiData, thList, title }) => {
+const CommentTableBasic = ({ apiData }) => {
   const [disabledModal, setDisabledModal] = useState(false);
+  const [replyData, setReplyData] = useState(null);
   const [closedModal, setClosedModal] = useState(false);
+  const [comments, setComments] = useState([]);
   const [commentId, setCommentId] = useState();
+  const [courseId, setCourseId] = useState();
+  const [selectedComment, setSelectedComment] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showReplyModal, setShowReplyModal] = useState(false);
   const [commentState, setCommentState] = useState([]);
-  const [selectedComment, setSelectedComment] = useState();
-  const [deleteComment, setDeleteComment] = useState();
-  const [replyComment, setReplyComment] = useState();
 
-  // Handle comment state changing
+  useEffect(() => {
+    if (apiData?.comments) {
+      setComments(apiData.comments);
+    }
+  }, [apiData]);
+
+  // ** Handle comment state changing
   useEffect(() => {
     const savedCommentState = localStorage.getItem("commentState");
     if (savedCommentState) {
@@ -55,143 +66,182 @@ const CommentTableBasic = ({ dataId, apiData, thList, title }) => {
     });
   };
 
-  // Handle Deleting Comment
-  useEffect(() => {
-    const savedCommentDelete = localStorage.getItem("deleteComment");
-    console.log("savedCommentDelete:", savedCommentDelete);
-
-    if (savedCommentDelete && savedCommentDelete !== "undefined") {
-      setDeleteComment(JSON.parse(savedCommentDelete));
-    }
-  }, []);
-
-  const handleDeleteComment = (item) => {
-    const deleteChosenComment = apiData?.comments?.filter(
-      (comment) => comment?.id !== item.id
+  const { mutateAsync: deleteComment } = useMutation({
+    mutationFn: DeleteCommentApi,
+    onSuccess: () => {
+      toast.success("عملیات با موفقیت انجام شد");
+    },
+    onError: () => {
+      toast.error("عملیات با خطا مواجه شد");
+    },
+  });
+  const handleDeleteComment = async () => {
+    if (!selectedComment) return;
+    await deleteComment(selectedComment.commentId);
+    const updatedComments = comments.filter(
+      (c) => c.commentId !== selectedComment.commentId
     );
-    localStorage.setItem("deleteComment", JSON.stringify(deleteChosenComment));
-    setDeleteComment(deleteChosenComment);
-    console.log("deleteChosenComment:", deleteChosenComment);
+    setComments(updatedComments);
+    setShowDeleteModal(false);
   };
 
   return (
-    <Table responsive>
-      <thead>
-        <tr>
-          {thList.map((item) => {
-            return <th>{item}</th>;
-          })}
-        </tr>
-      </thead>
-      {apiData?.comments?.map((item, index) => {
-        return (
-          <tbody>
-            <tr>
-              <td>{item?.author === "null null" || "" ? "نامشخص" : item?.author}</td>
-              <td>{item?.commentTitle}</td>
-              <td>{item?.describe}</td>
-              <td>{item?.courseTitle}</td>
-              <td>
-                <Badge
-                  pill
-                  color={commentState[index] === true ? "success" : "warning"}
-                  className="me-1"
-                >
-                  {commentState[index] === true ? "تایید شده" : "تایید نشده"}
-                </Badge>
-              </td>
-              <td>
-                {item.replyCount && item.replyCount !== "null" ? <Eye /> : "-"}
-              </td>
-              <td>
-                <UncontrolledDropdown>
-                  <DropdownToggle
-                    className="icon-btn hide-arrow"
-                    color="transparent"
-                    size="sm"
-                    caret
+    <>
+      <Modal
+        isOpen={showDeleteModal}
+        toggle={() => setShowDeleteModal(false)}
+        className="modal-dialog-centered"
+        backdrop={false}
+      >
+        <ModalBody>آیا مایل به حذف کامنت هستید؟</ModalBody>
+        <ModalFooter>
+          <Button color="primary" onClick={handleDeleteComment}>
+            تایید
+          </Button>
+          <Button color="secondary" onClick={() => setShowDeleteModal(false)}>
+            انصراف
+          </Button>
+        </ModalFooter>
+      </Modal>
+
+      <Modal
+        isOpen={showReplyModal}
+        toggle={() => setShowReplyModal(false)}
+        className="modal-dialog-centered"
+        backdrop={false}
+      >
+        <ModalHeader>لطفاً پاسخ کامنت را وارد کنید</ModalHeader>
+        <ModalBody>
+          <CommentReplyForm
+            CommentId={commentId}
+            CourseId={courseId}
+            apiData={apiData}
+            selectedComment={selectedComment}
+            setShowReplyModal={setShowReplyModal}
+            
+          />
+        </ModalBody>
+      </Modal>
+
+      <Table responsive>
+        <thead>
+          <tr>
+            <th>کاربر</th>
+            <th>عنوان کامنت</th>
+            <th>توضیحات کامنت</th>
+            <th>نام دوره</th>
+            <th> وضعیت</th>
+            <th> پاسخ ها</th>
+            <th>عملیات </th>
+          </tr>
+        </thead>
+
+        {comments.map((item, index) => {
+          return (
+            <tbody>
+              <tr>
+                <td>
+                  {item?.author === "null null" || "" ? "نامشخص" : item?.author}
+                </td>
+                <td>{item?.commentTitle}</td>
+                <td>{item?.describe}</td>
+                <td>{item?.courseTitle}</td>
+                <td>
+                  <Badge
+                    pill
+                    color={commentState[index] === true ? "success" : "warning"}
+                    className="me-1"
                   >
-                    <MoreVertical size={15} />
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem
-                      onClick={() => {
-                        setDisabledModal(!disabledModal);
-                      }}
+                    {commentState[index] === true ? "تایید شده" : "تایید نشده"}
+                  </Badge>
+                </td>
+                <td>
+                  {console.log("item.replyCount:", item.replyCount)}
+                  <td>{item.replyCount > 0 ? <Eye /> : "-"}</td>
+                </td>
+                <td>
+                  <UncontrolledDropdown>
+                    <DropdownToggle
+                      className="icon-btn hide-arrow"
+                      color="transparent"
+                      size="sm"
+                      caret
                     >
-                      <Trash className="me-50" size={15} />{" "}
-                      <span className="align-middle">حذف</span>
-                    </DropdownItem>
-                    <Modal
-                      isOpen={disabledModal}
-                      toggle={() => setDisabledModal(!disabledModal)}
-                      className="modal-dialog-centered"
-                      backdrop={false}
-                    >
-                      <ModalBody>آیا مایل به حذف کامنت هستید؟</ModalBody>
-                      <ModalFooter>
-                        <Button
-                          color="primary"
-                          onClick={() => {
-                            setDisabledModal(!disabledModal);
-                            handleDeleteComment(item);
-                          }}
-                        >
-                          تایید
-                        </Button>{" "}
-                        <Button
-                          color="secondery"
-                          onClick={() => setDisabledModal(!disabledModal)}
-                        >
-                          انصراف
-                        </Button>{" "}
-                      </ModalFooter>
-                    </Modal>
-                    <DropdownItem href="/" onClick={(e) => e.preventDefault()}>
-                      <XSquare className="me-50" size={15} />{" "}
-                      <span
-                        className="align-middle"
+                      <MoreVertical size={15} />
+                    </DropdownToggle>
+                    <DropdownMenu>
+                      <DropdownItem
                         onClick={() => {
-                          setCommentId(item?.commentId);
-                          handleAproved(index);
+                          setSelectedComment(item);
+                          setShowDeleteModal(true);
                         }}
                       >
-                        {commentState[index] === true
-                          ? "رد کردن"
-                          : "تایید کردن"}
-                      </span>
-                    </DropdownItem>
-                    {commentState[index] === true && <DropdownItem
-                      onClick={() => {
-                        // setCommentId(item?.id);
-                        setClosedModal(!closedModal);
-                        setSelectedComment(item);
-                      }}
-                    >
-                      <Send className="me-50" size={15} />{" "}
-                      <span className="align-middle">پاسخ</span>
-                    </DropdownItem>}
-                    <Modal
-                      isOpen={closedModal}
-                      toggle={() => setClosedModal(!closedModal)}
-                      className="modal-dialog-centered"
-                      backdrop={false}
-                    >
-                      <ModalHeader toggle={() => setClosedModal(!closedModal)}>
-                        لطفا پاسخ کامنت را وارد کنید
-                      </ModalHeader>
-                      <ModalBody>
-                        <CommentReplyForm apiData={apiData}/>
-                      </ModalBody>
-                    </Modal>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </td>
-            </tr>
-          </tbody>
-        );
-      })}
-    </Table>
+                        <Trash className="me-50" size={15} />{" "}
+                        <span className="align-middle">حذف</span>
+                      </DropdownItem>
+                      <Modal
+                        isOpen={disabledModal}
+                        toggle={() => setDisabledModal(!disabledModal)}
+                        className="modal-dialog-centered"
+                        backdrop={false}
+                      >
+                        <ModalBody>آیا مایل به حذف کامنت هستید؟</ModalBody>
+                        <ModalFooter>
+                          <Button
+                            color="primary"
+                            onClick={() => {
+                              setDisabledModal(!disabledModal);
+                              handleDeleteComment(item.commentId);
+                            }}
+                          >
+                            تایید
+                          </Button>{" "}
+                          <Button
+                            color="secondery"
+                            onClick={() => setDisabledModal(!disabledModal)}
+                          >
+                            انصراف
+                          </Button>{" "}
+                        </ModalFooter>
+                      </Modal>
+                      <DropdownItem
+                        href="/"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <XSquare className="me-50" size={15} />{" "}
+                        <span
+                          className="align-middle"
+                          onClick={() => {
+                            setCommentId(item?.commentId);
+
+                            handleAproved(index);
+                          }}
+                        >
+                          {commentState[index] === true
+                            ? "رد کردن"
+                            : "تایید کردن"}
+                        </span>
+                      </DropdownItem>
+                      {commentState[index] && (
+                        <DropdownItem
+                          onClick={() => {
+                            setSelectedComment(item);
+                            setCourseId(item.courseId)
+                            setShowReplyModal(true);
+                          }}
+                        >
+                          <Send className="me-50" size={15} /> پاسخ
+                        </DropdownItem>
+                      )}
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </td>
+              </tr>
+            </tbody>
+          );
+        })}
+      </Table>
+    </>
   );
 };
 

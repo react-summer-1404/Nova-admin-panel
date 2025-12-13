@@ -12,6 +12,7 @@ import {
   Globe,
   UserCheck,
   Bookmark,
+  FileText
 } from "react-feather";
 
 // ** Reactstrap Imports
@@ -33,6 +34,9 @@ const DTAdvance6 = lazy(() =>
 const TableServerSide = lazy(() =>
   import("../../../apps/tables/userReserveList/TableServerSide")
 );
+const DetailTable = lazy(() =>
+  import("../../../apps/tables/detailTable/DetailTable")
+);
 const TabsIcons = () => {
   {
     /* payment table */
@@ -49,6 +53,18 @@ const TabsIcons = () => {
   return (
     <Fragment>
       <Nav pills>
+      <NavItem>
+          <NavLink
+            active={active === "8"}
+            onClick={() => {
+              toggle("8");
+            }}
+          >
+            <FileText size={18} />
+            <span className="align-middle">جزییات</span>
+          </NavLink>
+        </NavItem>
+
         <NavItem>
           <NavLink
             active={active === "8"}
@@ -148,7 +164,7 @@ const TabsIcons = () => {
         <TabPane tabId="8">
           {/* comment table */}
           <Suspense>
-            <DTAdvance />
+            <DetailTable />
           </Suspense>
         </TabPane>
 
