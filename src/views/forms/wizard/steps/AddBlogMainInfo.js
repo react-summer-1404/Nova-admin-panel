@@ -133,13 +133,13 @@ const AddBlogMainInfo = ({ stepper, setFormData }) => {
                 قبلی
               </span>
             </Button>
+            <CorrectTextAi />
             <Button
               type="submit"
               color="primary"
               className="btn-next"
               // onClick={() => }
             >
-              <CorrectTextAi />
               <span className="align-middle d-sm-inline-block d-none">
                 بعدی
               </span>
