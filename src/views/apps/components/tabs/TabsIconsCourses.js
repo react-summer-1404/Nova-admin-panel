@@ -167,7 +167,7 @@ const TabsIcons = () => {
           </Suspense>
         </TabPane>
 
-        <TabPane tabId="2">
+        <TabPane tabId="7">
           {/* students table */}
           <Suspense>
             <DTAdvance2 />
