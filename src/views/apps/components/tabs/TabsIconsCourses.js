@@ -80,9 +80,9 @@ const TabsIcons = () => {
 
         <NavItem>
           <NavLink
-            active={active === "2"}
+            active={active === "7"}
             onClick={() => {
-              toggle("2");
+              toggle("7");
             }}
           >
             <Users size={18} />
@@ -150,6 +150,7 @@ const TabsIcons = () => {
           </NavLink>
         </NavItem>
       </Nav>
+
       <TabContent className="py-50" activeTab={active}>
         <TabPane tabId="9">
           {/* comment table */}
