@@ -53,6 +53,7 @@ const TabsIcons = () => {
   return (
     <Fragment>
       <Nav pills>
+        
       <NavItem>
           <NavLink
             active={active === "9"}
@@ -67,9 +68,9 @@ const TabsIcons = () => {
 
         <NavItem>
           <NavLink
-            active={active === "7"}
+            active={active === "2"}
             onClick={() => {
-              toggle("7");
+              toggle("2");
             }}
           >
            
@@ -159,7 +160,7 @@ const TabsIcons = () => {
           </Suspense>
         </TabPane>
 
-        <TabPane tabId="7">
+        <TabPane tabId="2">
           {/* comment table */}
           <Suspense>
             <DTAdvance />
