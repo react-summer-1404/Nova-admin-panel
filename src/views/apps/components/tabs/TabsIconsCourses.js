@@ -68,9 +68,9 @@ const TabsIcons = () => {
 
         <NavItem>
           <NavLink
-            active={active === "2"}
+            active={active === "10"}
             onClick={() => {
-              toggle("2");
+              toggle("10");
             }}
           >
            
@@ -160,7 +160,7 @@ const TabsIcons = () => {
           </Suspense>
         </TabPane>
 
-        <TabPane tabId="2">
+        <TabPane tabId="10">
           {/* comment table */}
           <Suspense>
             <DTAdvance />
