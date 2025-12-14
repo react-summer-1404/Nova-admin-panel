@@ -55,9 +55,9 @@ const TabsIcons = () => {
       <Nav pills>
       <NavItem>
           <NavLink
-            active={active === "8"}
+            active={active === "9"}
             onClick={() => {
-              toggle("8");
+              toggle("9");
             }}
           >
             <FileText size={18} />
@@ -67,9 +67,9 @@ const TabsIcons = () => {
 
         <NavItem>
           <NavLink
-            active={active === "8"}
+            active={active === "7"}
             onClick={() => {
-              toggle("8");
+              toggle("7");
             }}
           >
            
@@ -151,7 +151,7 @@ const TabsIcons = () => {
         </NavItem>
       </Nav>
       <TabContent className="py-50" activeTab={active}>
-        <TabPane tabId="8">
+        <TabPane tabId="9">
           {/* comment table */}
           <Suspense>
             <DetailTable />
