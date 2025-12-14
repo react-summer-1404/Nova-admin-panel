@@ -74,7 +74,7 @@ const TabsIcons = () => {
           >
            
             <MessageCircle size={18} />
-            <span className="align-middle">نظرات کاربران</span>
+            <span className="align-middle">نظرات</span>
           </NavLink>
         </NavItem>
 
