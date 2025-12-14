@@ -1,6 +1,8 @@
 // ** Icons Imports
 // import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { MoreVertical, Edit, Trash } from 'react-feather'
+import ReactPaginate from 'react-paginate';
 
 // ** Reactstrap Imports
 import { Table, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
@@ -8,18 +10,53 @@ import { Table, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle
 
 
 const TableStriped = ({data}) => {
+  const handlePagination = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  const [perPage,setPerPage]=useState(5)
+const [currentPage,setCurrentPage]=useState(1)
   
+  const pageCount = Math.ceil((data?.length || 0) / perPage);
+  
+  const CustomPagination = () => (
+    <ReactPaginate
+      previousLabel={''}
+      nextLabel={''}
+      breakLabel="..."
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={2}
+      activeClassName="active"
+      forcePage={currentPage - 1}
+      onPageChange={(page) => handlePagination(page.selected + 1)}
+      pageClassName="page-item"
+      breakClassName="page-item"
+      nextLinkClassName="page-link"
+      pageLinkClassName="page-link"
+      breakLinkClassName="page-link"
+      previousLinkClassName="page-link"
+      nextClassName="page-item next-item"
+      previousClassName="page-item prev-item"
+      containerClassName="pagination react-paginate separated-pagination pagination-sm justify-content-end pe-1 mt-1"
+    />
+  );
+  
+  const dataToRender = data?.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  )
   return (
+    <>
     <Table striped responsive>
       <thead>
         <tr>
-          <th>نام دوره</th>
+          <th>نام تکنولوژی</th>
           <th>تعداد دفعات استفاده</th>
           <th>اقدام </th>
         </tr>
       </thead>
       <tbody>
-        {data?.map((item) => (
+        {dataToRender?.map((item) => (
           <tr key={item.id}>
           <td>
             <span className='align-middle fw-bold'>{item.techName}</span>
@@ -47,6 +84,7 @@ const TableStriped = ({data}) => {
         
       </tbody>
     </Table>
+    <CustomPagination/></>
   )
 }
 

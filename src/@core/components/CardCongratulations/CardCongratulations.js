@@ -12,12 +12,22 @@ import decorationLeft from '@src/assets/images/elements/decore-left.png'
 import decorationRight from '@src/assets/images/elements/decore-right.png'
 import {useQuery} from "@tanstack/react-query";
 import { getReport } from '../../../core/Services/api/Dashbord/DashboardReport'
+import { useEffect, useState } from 'react'
+import instance from '../../../core/interseptor/Interseptor'
 
 const CardCongratulations = () => {
+  const [name, setName] = useState(null);
+  useEffect(() => {
+    instance.get("/SharePanel/GetProfileInfo").then((res) => {
+      console.log(res.data);
+      setName(res.data);
+    });
+  }, []);
   const {data} = useQuery({
     queryKey : ["adminReport"],
     queryFn : getReport,
   });
+
 
   return (
     <Card className='card-congratulations'>
@@ -27,7 +37,7 @@ const CardCongratulations = () => {
         
         <Avatar icon={<Award size={28} />} className='shadow' color='primary' size='xl' />
         <div className='text-center'>
-          <h1 className='mb-1 text-white'>عزیز تبریک! John</h1>
+          <h1 className='mb-1 text-white'>{` ${name?.fName + name?.lName} عزیز تبریک `}</h1>
           <CardText className='m-auto w-75'>
            مبلغ تمام پرداختی دوره های تیم نامبر وان  <strong>{data?.allPaymentCost}</strong> تومان رسید.
           </CardText>

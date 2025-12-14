@@ -48,7 +48,7 @@ const UserDropdown = () => {
       >
         <div className="user-nav d-sm-flex d-none">
           <span className="user-name fw-bold">
-            {data?.fName}
+            {data?.fName + data?.lName}
           </span>
           <span className="user-status">Admin</span>
         </div>
