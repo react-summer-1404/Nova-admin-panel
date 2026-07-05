@@ -8,7 +8,6 @@
 
 <br>
 
-<img src="./docs/banner.png" alt="Nova Admin Banner"/>
 
 </div>
 
@@ -81,13 +80,13 @@ Nova Admin Panel is the management dashboard for the Nova e-learning platform. I
 <img src="./docs/dashboard.png" width="100%"/>
 
 ### User Management
-<img src="./docs/users.png" width="100%"/>
+<img src="./docs/user-management.png" width="100%"/>
 
 ### Course Management
-<img src="./docs/courses.png" width="100%"/>
+<img src="./docs/course-managment.png" width="100%"/>
 
 ### Blog Management
-<img src="./docs/blogs.png" width="100%"/>
+<img src="./docs/blog-management.png" width="100%"/>
 
 <br/>
 
