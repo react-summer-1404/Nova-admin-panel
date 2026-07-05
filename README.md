@@ -88,6 +88,10 @@ Nova Admin Panel is the management dashboard for the Nova e-learning platform. I
 ### Blog Management
 <img src="./docs/blog-management.png" width="100%"/>
 
+## 📁 More Screenshots
+
+Additional screenshots for every module are available in the [`docs/screenshots`](./docs/screenshots) directory.
+
 <br/>
 
 ## 📂 Project Structure
