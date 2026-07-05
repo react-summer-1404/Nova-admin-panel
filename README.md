@@ -149,7 +149,7 @@ VITE_API_URL=https://sepehracademy.liara.run
 ### 4. Start the Development Server
 
 ```bash
-npm run dev
+npm start
 ```
 
 The application will be available at `http://localhost:5173`.
